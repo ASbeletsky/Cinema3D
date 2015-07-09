@@ -1,0 +1,85 @@
+﻿@using VideoLib.WebUI.Models.Admin
+@model CRUD_FilmViewModel
+
+
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal">×</a>
+        <h3 class="text-center">@Model.Title</h3>
+    </div>
+
+    @using (Ajax.BeginForm(new AjaxOptions() { HttpMethod = "POST", OnSuccess = "Success" }))
+    {
+        <div id="modal_body" class="row modal-body">
+            <div>
+                @Html.ValidationSummary("Перед сохранением устраните следующие ошибки:")
+            </div>
+            <div class="col-xs-6">
+               <h4 class="text-center">Общая информация</h4>
+
+                @Html.HiddenFor(m => m.Id)
+
+                @Html.LabelFor(m => m.Name)
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+
+                @Html.LabelFor(m => m.Genre.SelectedGenreId)
+                @Html.DropDownListFor(m => m.Genre.SelectedGenreId, Model.Genre.GenreItems, "Жанр", new { @class = "form-control" })
+   
+                @Html.LabelFor(m => m.Country.SelectedCountryId)
+                @Html.DropDownListFor(m => m.Country.SelectedCountryId, Model.Country.CountryItems, "Производитель", new { @class = "form-control" })
+              
+                @Html.LabelFor(m => m.Company.SelectedCompanyId)
+                @Html.DropDownListFor(m => m.Company.SelectedCompanyId, Model.Company.CompanyItems, "Кинокомпания", new { @class = "form-control" })
+                
+                @Html.LabelFor(m => m.ReleaseDate)
+                @Html.EditorFor(m => m.ReleaseDate, new { htmlAttributes = new { @class = "form-control", placeholder = "10/01/1995" } })
+                
+                @Html.LabelFor(m => m.TimeDuration)
+                @Html.EditorFor(m => m.TimeDuration, new { htmlAttributes = new { @class = "form-control", placeholder = "2/53/36" } })
+                
+                @Html.LabelFor(m => m.Describtion)
+                @Html.TextAreaFor(m => m.Describtion, 6,3, new { @class = "form-control" })
+                
+            </div>
+            
+            <div class="col-xs-6">
+                <h4 class="text-center">Съемочная группа</h4>
+
+                @Html.LabelFor(m => m.Producer)
+                @Html.TextBoxFor(m => m.Producer, new { @class = "form-control" })
+               
+                @Html.LabelFor(m => m.Operator)
+                @Html.TextBoxFor(m => m.Operator, new { @class = "form-control" })
+                
+                @Html.LabelFor(m => m.Painter)
+                @Html.TextBoxFor(m => m.Painter, new { @class = "form-control" })
+               
+                @Html.LabelFor(m => m.Composer)
+                @Html.TextBoxFor(m => m.Composer, new { @class = "form-control" })
+                
+                @Html.LabelFor(m => m.Director)
+                @Html.TextBoxFor(m => m.Director, new { @class = "form-control" })
+                
+
+                <h4 class="text-center">Ссылки </h4>
+
+                @Html.LabelFor(m => m.ImageSmallUrl)
+                @Html.TextBoxFor(m => m.ImageSmallUrl, new { @class = "form-control" })
+                
+                @Html.LabelFor(m => m.ImageBigUrl)
+                @Html.TextBoxFor(m => m.ImageBigUrl, new { @class = "form-control" })
+
+                @Html.LabelFor(m => m.DownloadUrl)
+                @Html.TextBoxFor(m => m.DownloadUrl, new { @class = "form-control" })
+               
+            </div>
+        </div>
+
+    <div class="modal-footer ">
+        <input type="submit" value="Сохранить" class="btn btn-primary" />
+        <a href="#" class="btn" data-dismiss="modal">Отмена</a>
+    </div>
+    }
+
+<script type="text/javascript" language=javascript>
+    $.validator.unobtrusive.parse(document);
+</script>

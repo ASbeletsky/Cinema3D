@@ -1,0 +1,906 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище videolibdbModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="desctiption">
+          <Key>
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="Film_Id" Type="int" Nullable="false" />
+          <Property Name="ReleaseDate" Type="date" />
+          <Property Name="TimeDuration" Type="time" Precision="0" />
+          <Property Name="Text" Type="text" />
+          <Property Name="Country_id" Type="int" Nullable="false" />
+          <Property Name="Genre_Id" Type="int" Nullable="false" />
+          <Property Name="Company_Id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="download">
+          <Key>
+            <PropertyRef Name="User_Id" />
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="User_Id" Type="int" Nullable="false" />
+          <Property Name="Film_Id" Type="int" Nullable="false" />
+          <Property Name="DownloadTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="favoritefilms">
+          <Key>
+            <PropertyRef Name="users_Id" />
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="users_Id" Type="int" Nullable="false" />
+          <Property Name="Film_Id" Type="int" Nullable="false" />
+          <Property Name="AdditionTime" Type="datetime" Precision="0" />
+        </EntityType>
+        <EntityType Name="film">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+          <Property Name="AdditionDate" Type="date" />
+          <Property Name="DownloadUrl" Type="varchar" MaxLength="256" />
+          <Property Name="ImageSmallUrl" Type="varchar" MaxLength="256" />
+          <Property Name="ImageBigUrl" Type="varchar" MaxLength="256" />
+        </EntityType>
+        <EntityType Name="genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+        </EntityType>
+        <EntityType Name="producerstaff">
+          <Key>
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="Film_Id" Type="int" Nullable="false" />
+          <Property Name="director" Type="varchar" MaxLength="45" />
+          <Property Name="producer" Type="varchar" MaxLength="45" />
+          <Property Name="operator" Type="varchar" MaxLength="45" />
+          <Property Name="composer" Type="varchar" MaxLength="45" />
+          <Property Name="painter" Type="varchar" MaxLength="45" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userclaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="ClaimType" Type="longtext" />
+          <Property Name="ClaimValue" Type="longtext" />
+        </EntityType>
+        <EntityType Name="userlogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="ProviderKey" Type="varchar" MaxLength="128" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="userroles">
+          <Key>
+            <PropertyRef Name="UserId" />
+            <PropertyRef Name="RoleId" />
+          </Key>
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="RoleId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Email" Type="varchar" MaxLength="256" />
+          <Property Name="EmailConfirmed" Type="bool" Nullable="false" />
+          <Property Name="PasswordHash" Type="longtext" />
+          <Property Name="SecurityStamp" Type="longtext" />
+          <Property Name="PhoneNumber" Type="longtext" />
+          <Property Name="PhoneNumberConfirmed" Type="bool" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="bool" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="datetime" Precision="0" />
+          <Property Name="LockoutEnabled" Type="bool" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="int" Nullable="false" />
+          <Property Name="UserName" Type="varchar" MaxLength="256" Nullable="false" />
+        </EntityType>
+        <Association Name="ApplicationUser_Claims">
+          <End Role="users" Type="Self.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userclaims" Type="Self.userclaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userclaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Logins">
+          <End Role="users" Type="Self.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userlogins" Type="Self.userlogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userlogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Roles">
+          <End Role="users" Type="Self.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userroles" Type="Self.userroles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userroles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Company1">
+          <End Role="company" Type="Self.company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="desctiption" Type="Self.desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Country1">
+          <End Role="country" Type="Self.country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="desctiption" Type="Self.desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Film1">
+          <End Role="film" Type="Self.film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="desctiption" Type="Self.desctiption" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Genre1">
+          <End Role="genre" Type="Self.genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="desctiption" Type="Self.desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Genre_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteFilms_Film1">
+          <End Role="film" Type="Self.film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="favoritefilms" Type="Self.favoritefilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="favoritefilms">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteFilms_users1">
+          <End Role="users" Type="Self.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="favoritefilms" Type="Self.favoritefilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="favoritefilms">
+              <PropertyRef Name="users_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ProducerStaff_Film1">
+          <End Role="film" Type="Self.film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="producerstaff" Type="Self.producerstaff" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="producerstaff">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserFilm_Film1">
+          <End Role="film" Type="Self.film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="download" Type="Self.download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="download">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserFilm_users1">
+          <End Role="users" Type="Self.users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="download" Type="Self.download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="download">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="IdentityRole_Users">
+          <End Role="roles" Type="Self.roles" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="userroles" Type="Self.userroles" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="roles">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userroles">
+              <PropertyRef Name="RoleId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="Хранилище videolibdbModelContainer">
+          <EntitySet Name="company" EntityType="Self.company" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="country" EntityType="Self.country" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="desctiption" EntityType="Self.desctiption" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="download" EntityType="Self.download" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="favoritefilms" EntityType="Self.favoritefilms" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="film" EntityType="Self.film" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="genre" EntityType="Self.genre" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="producerstaff" EntityType="Self.producerstaff" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="roles" EntityType="Self.roles" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="userclaims" EntityType="Self.userclaims" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="userlogins" EntityType="Self.userlogins" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="userroles" EntityType="Self.userroles" Schema="videolibdb" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="videolibdb" store:Type="Tables" />
+          <AssociationSet Name="ApplicationUser_Claims" Association="Self.ApplicationUser_Claims">
+            <End Role="users" EntitySet="users" />
+            <End Role="userclaims" EntitySet="userclaims" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Logins" Association="Self.ApplicationUser_Logins">
+            <End Role="users" EntitySet="users" />
+            <End Role="userlogins" EntitySet="userlogins" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Roles" Association="Self.ApplicationUser_Roles">
+            <End Role="users" EntitySet="users" />
+            <End Role="userroles" EntitySet="userroles" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Company1" Association="Self.fk_Desctiption_Company1">
+            <End Role="company" EntitySet="company" />
+            <End Role="desctiption" EntitySet="desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Country1" Association="Self.fk_Desctiption_Country1">
+            <End Role="country" EntitySet="country" />
+            <End Role="desctiption" EntitySet="desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Film1" Association="Self.fk_Desctiption_Film1">
+            <End Role="film" EntitySet="film" />
+            <End Role="desctiption" EntitySet="desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Genre1" Association="Self.fk_Desctiption_Genre1">
+            <End Role="genre" EntitySet="genre" />
+            <End Role="desctiption" EntitySet="desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteFilms_Film1" Association="Self.fk_FavoriteFilms_Film1">
+            <End Role="film" EntitySet="film" />
+            <End Role="favoritefilms" EntitySet="favoritefilms" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteFilms_users1" Association="Self.fk_FavoriteFilms_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="favoritefilms" EntitySet="favoritefilms" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ProducerStaff_Film1" Association="Self.fk_ProducerStaff_Film1">
+            <End Role="film" EntitySet="film" />
+            <End Role="producerstaff" EntitySet="producerstaff" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserFilm_Film1" Association="Self.fk_UserFilm_Film1">
+            <End Role="film" EntitySet="film" />
+            <End Role="download" EntitySet="download" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserFilm_users1" Association="Self.fk_UserFilm_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="download" EntitySet="download" />
+          </AssociationSet>
+          <AssociationSet Name="IdentityRole_Users" Association="Self.IdentityRole_Users">
+            <End Role="roles" EntitySet="roles" />
+            <End Role="userroles" EntitySet="userroles" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="videolibdbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="VideoLibMainContext" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Companies" EntityType="videolibdbModel.Company" />
+          <EntitySet Name="Countries" EntityType="videolibdbModel.Country" />
+          <EntitySet Name="FavoriteFilms" EntityType="videolibdbModel.FavoriteFilm" />
+          <EntitySet Name="Films" EntityType="videolibdbModel.Film" />
+          <EntitySet Name="Genres" EntityType="videolibdbModel.Genre" />
+          <EntitySet Name="roles" EntityType="videolibdbModel.roles" />
+          <EntitySet Name="userclaims" EntityType="videolibdbModel.userclaims" />
+          <EntitySet Name="userlogins" EntityType="videolibdbModel.userlogins" />
+          <EntitySet Name="users" EntityType="videolibdbModel.users" />
+          <AssociationSet Name="fk_FavoriteFilms_Film1" Association="videolibdbModel.fk_FavoriteFilms_Film1">
+            <End Role="film" EntitySet="Films" />
+            <End Role="favoritefilms" EntitySet="FavoriteFilms" />
+          </AssociationSet>
+          <AssociationSet Name="fk_FavoriteFilms_users1" Association="videolibdbModel.fk_FavoriteFilms_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="favoritefilms" EntitySet="FavoriteFilms" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Claims" Association="videolibdbModel.ApplicationUser_Claims">
+            <End Role="users" EntitySet="users" />
+            <End Role="userclaims" EntitySet="userclaims" />
+          </AssociationSet>
+          <AssociationSet Name="ApplicationUser_Logins" Association="videolibdbModel.ApplicationUser_Logins">
+            <End Role="users" EntitySet="users" />
+            <End Role="userlogins" EntitySet="userlogins" />
+          </AssociationSet>
+          <AssociationSet Name="userroles" Association="videolibdbModel.userroles">
+            <End Role="users" EntitySet="users" />
+            <End Role="roles" EntitySet="roles" />
+          </AssociationSet>
+          <EntitySet Name="Downloads" EntityType="videolibdbModel.Download" />
+          <AssociationSet Name="fk_UserFilm_Film1" Association="videolibdbModel.fk_UserFilm_Film1">
+            <End Role="film" EntitySet="Films" />
+            <End Role="download" EntitySet="Downloads" />
+          </AssociationSet>
+          <AssociationSet Name="fk_UserFilm_users1" Association="videolibdbModel.fk_UserFilm_users1">
+            <End Role="users" EntitySet="users" />
+            <End Role="download" EntitySet="Downloads" />
+          </AssociationSet>
+          <EntitySet Name="Desctiption" EntityType="videolibdbModel.Desctiption" />
+          <EntitySet Name="ProducerStaff" EntityType="videolibdbModel.ProducerStaff" />
+          <AssociationSet Name="fk_Desctiption_Company1" Association="videolibdbModel.fk_Desctiption_Company1">
+            <End Role="company" EntitySet="Companies" />
+            <End Role="desctiption" EntitySet="Desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Country1" Association="videolibdbModel.fk_Desctiption_Country1">
+            <End Role="country" EntitySet="Countries" />
+            <End Role="desctiption" EntitySet="Desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Film1" Association="videolibdbModel.fk_Desctiption_Film1">
+            <End Role="film" EntitySet="Films" />
+            <End Role="desctiption" EntitySet="Desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_Desctiption_Genre1" Association="videolibdbModel.fk_Desctiption_Genre1">
+            <End Role="genre" EntitySet="Genres" />
+            <End Role="desctiption" EntitySet="Desctiption" />
+          </AssociationSet>
+          <AssociationSet Name="fk_ProducerStaff_Film1" Association="videolibdbModel.fk_ProducerStaff_Film1">
+            <End Role="film" EntitySet="Films" />
+            <End Role="producerstaff" EntitySet="ProducerStaff" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Company">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Company1" FromRole="company" ToRole="desctiption" />
+        </EntityType>
+        <EntityType Name="Country">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Country1" FromRole="country" ToRole="desctiption" />
+        </EntityType>
+        <EntityType Name="FavoriteFilm">
+          <Key>
+            <PropertyRef Name="users_Id" />
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="users_Id" Type="Int32" Nullable="false" />
+          <Property Name="Film_Id" Type="Int32" Nullable="false" />
+          <Property Name="AdditionTime" Type="DateTime" />
+          <NavigationProperty Name="film" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="favoritefilms" ToRole="film" />
+          <NavigationProperty Name="users" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="favoritefilms" ToRole="users" />
+        </EntityType>
+        <EntityType Name="Film">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="AdditionDate" Type="DateTime" />
+          <Property Name="DownloadUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="film" ToRole="favoritefilms" />
+          <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="film" ToRole="download" />
+          <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Film1" FromRole="film" ToRole="desctiption" />
+          <NavigationProperty Name="producerstaff" Relationship="videolibdbModel.fk_ProducerStaff_Film1" FromRole="film" ToRole="producerstaff" />
+          <Property Name="ImageSmallUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="ImageBigUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Genre1" FromRole="genre" ToRole="desctiption" />
+        </EntityType>
+        <EntityType Name="roles">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="videolibdbModel.userroles" FromRole="roles" ToRole="users" />
+        </EntityType>
+        <EntityType Name="userclaims">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="ClaimType" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="ClaimValue" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="userclaims" ToRole="users" />
+        </EntityType>
+        <EntityType Name="userlogins">
+          <Key>
+            <PropertyRef Name="LoginProvider" />
+            <PropertyRef Name="ProviderKey" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="userlogins" ToRole="users" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="PasswordHash" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="SecurityStamp" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+          <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+          <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="LockoutEndDateUtc" Type="DateTime" />
+          <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+          <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="users" ToRole="favoritefilms" />
+          <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
+          <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
+          <NavigationProperty Name="roles" Relationship="videolibdbModel.userroles" FromRole="users" ToRole="roles" />
+          <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="users" ToRole="download" />
+        </EntityType>
+        <Association Name="fk_FavoriteFilms_Film1">
+          <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="favoritefilms">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_FavoriteFilms_users1">
+          <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="favoritefilms">
+              <PropertyRef Name="users_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Claims">
+          <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.userclaims" Role="userclaims" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userclaims">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ApplicationUser_Logins">
+          <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.userlogins" Role="userlogins" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="userlogins">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="userroles">
+          <End Type="videolibdbModel.users" Role="users" Multiplicity="*" />
+          <End Type="videolibdbModel.roles" Role="roles" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Download">
+          <Key>
+            <PropertyRef Name="User_Id" />
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="User_Id" Type="Int32" Nullable="false" />
+          <Property Name="Film_Id" Type="Int32" Nullable="false" />
+          <Property Name="DownloadTime" Type="DateTime" />
+          <NavigationProperty Name="film" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="download" ToRole="film" />
+          <NavigationProperty Name="users" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="download" ToRole="users" />
+        </EntityType>
+        <Association Name="fk_UserFilm_Film1">
+          <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="download">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_UserFilm_users1">
+          <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="download">
+              <PropertyRef Name="User_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Desctiption">
+          <Key>
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="Film_Id" Type="Int32" Nullable="false" />
+          <Property Name="ReleaseDate" Type="DateTime" />
+          <Property Name="TimeDuration" Type="Time" />
+          <Property Name="Text" Type="String" MaxLength="65535" FixedLength="false" Unicode="false" />
+          <Property Name="Country_id" Type="Int32" Nullable="false" />
+          <Property Name="Genre_Id" Type="Int32" Nullable="false" />
+          <Property Name="Company_Id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="company" Relationship="videolibdbModel.fk_Desctiption_Company1" FromRole="desctiption" ToRole="company" />
+          <NavigationProperty Name="country" Relationship="videolibdbModel.fk_Desctiption_Country1" FromRole="desctiption" ToRole="country" />
+          <NavigationProperty Name="film" Relationship="videolibdbModel.fk_Desctiption_Film1" FromRole="desctiption" ToRole="film" />
+          <NavigationProperty Name="genre" Relationship="videolibdbModel.fk_Desctiption_Genre1" FromRole="desctiption" ToRole="genre" />
+        </EntityType>
+        <EntityType Name="ProducerStaff">
+          <Key>
+            <PropertyRef Name="Film_Id" />
+          </Key>
+          <Property Name="Film_Id" Type="Int32" Nullable="false" />
+          <Property Name="director" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="producer" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="operator" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="composer" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="painter" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="film" Relationship="videolibdbModel.fk_ProducerStaff_Film1" FromRole="producerstaff" ToRole="film" />
+        </EntityType>
+        <Association Name="fk_Desctiption_Company1">
+          <End Type="videolibdbModel.Company" Role="company" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Desctiption" Role="desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="company">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Company_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Country1">
+          <End Type="videolibdbModel.Country" Role="country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Desctiption" Role="desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="country">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Country_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Film1">
+          <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Desctiption" Role="desctiption" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_Desctiption_Genre1">
+          <End Type="videolibdbModel.Genre" Role="genre" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.Desctiption" Role="desctiption" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="genre">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="desctiption">
+              <PropertyRef Name="Genre_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_ProducerStaff_Film1">
+          <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="videolibdbModel.ProducerStaff" Role="producerstaff" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="film">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="producerstaff">
+              <PropertyRef Name="Film_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище videolibdbModelContainer" CdmEntityContainer="VideoLibMainContext">
+          <EntitySetMapping Name="Companies">
+            <EntityTypeMapping TypeName="videolibdbModel.Company">
+              <MappingFragment StoreEntitySet="company">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Countries">
+            <EntityTypeMapping TypeName="videolibdbModel.Country">
+              <MappingFragment StoreEntitySet="country">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="FavoriteFilms">
+            <EntityTypeMapping TypeName="videolibdbModel.FavoriteFilm">
+              <MappingFragment StoreEntitySet="favoritefilms">
+                <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
+                <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+                <ScalarProperty Name="users_Id" ColumnName="users_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Films">
+            <EntityTypeMapping TypeName="videolibdbModel.Film">
+              <MappingFragment StoreEntitySet="film">
+                <ScalarProperty Name="ImageBigUrl" ColumnName="ImageBigUrl" />
+                <ScalarProperty Name="ImageSmallUrl" ColumnName="ImageSmallUrl" />
+                <ScalarProperty Name="DownloadUrl" ColumnName="DownloadUrl" />
+                <ScalarProperty Name="AdditionDate" ColumnName="AdditionDate" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="videolibdbModel.Genre">
+              <MappingFragment StoreEntitySet="genre">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="roles">
+            <EntityTypeMapping TypeName="videolibdbModel.roles">
+              <MappingFragment StoreEntitySet="roles">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userclaims">
+            <EntityTypeMapping TypeName="videolibdbModel.userclaims">
+              <MappingFragment StoreEntitySet="userclaims">
+                <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+                <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="userlogins">
+            <EntityTypeMapping TypeName="videolibdbModel.userlogins">
+              <MappingFragment StoreEntitySet="userlogins">
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+                <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="videolibdbModel.users">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+                <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+                <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+                <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+                <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+                <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+                <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+                <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+                <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="userroles" TypeName="videolibdbModel.userroles" StoreEntitySet="userroles">
+            <EndProperty Name="roles">
+              <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+            <EndProperty Name="users">
+              <ScalarProperty Name="Id" ColumnName="UserId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Downloads">
+            <EntityTypeMapping TypeName="videolibdbModel.Download">
+              <MappingFragment StoreEntitySet="download">
+                <ScalarProperty Name="DownloadTime" ColumnName="DownloadTime" />
+                <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+                <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Desctiption">
+            <EntityTypeMapping TypeName="videolibdbModel.Desctiption">
+              <MappingFragment StoreEntitySet="desctiption">
+                <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+                <ScalarProperty Name="Genre_Id" ColumnName="Genre_Id" />
+                <ScalarProperty Name="Country_id" ColumnName="Country_id" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+                <ScalarProperty Name="TimeDuration" ColumnName="TimeDuration" />
+                <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+                <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProducerStaff">
+            <EntityTypeMapping TypeName="videolibdbModel.ProducerStaff">
+              <MappingFragment StoreEntitySet="producerstaff">
+                <ScalarProperty Name="painter" ColumnName="painter" />
+                <ScalarProperty Name="composer" ColumnName="composer" />
+                <ScalarProperty Name="operator" ColumnName="operator" />
+                <ScalarProperty Name="producer" ColumnName="producer" />
+                <ScalarProperty Name="director" ColumnName="director" />
+                <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

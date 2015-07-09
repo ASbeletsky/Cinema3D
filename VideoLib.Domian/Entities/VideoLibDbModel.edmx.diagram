@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="29d2cd4ba0844ebe96a2eb0339955ef9" Name="Diagram1" ZoomLevel="78">
+        <EntityTypeShape EntityType="videolibdbModel.Company" Width="1.5" PointX="12.25" PointY="10.25" />
+        <EntityTypeShape EntityType="videolibdbModel.Country" Width="1.5" PointX="12.25" PointY="13.875" />
+        <EntityTypeShape EntityType="videolibdbModel.FavoriteFilm" Width="1.5" PointX="6.125" PointY="5.875" />
+        <EntityTypeShape EntityType="videolibdbModel.Film" Width="1.5" PointX="9" PointY="6.75" />
+        <EntityTypeShape EntityType="videolibdbModel.Genre" Width="1.5" PointX="12.25" PointY="12.125" />
+        <EntityTypeShape EntityType="videolibdbModel.roles" Width="1.5" PointX="1.125" PointY="10.25" />
+        <EntityTypeShape EntityType="videolibdbModel.userclaims" Width="1.5" PointX="1.125" PointY="7.875" />
+        <EntityTypeShape EntityType="videolibdbModel.userlogins" Width="1.5" PointX="1" PointY="5.625" />
+        <EntityTypeShape EntityType="videolibdbModel.users" Width="1.5" PointX="3.375" PointY="6" />
+        <AssociationConnector Association="videolibdbModel.fk_FavoriteFilms_Film1" />
+        <AssociationConnector Association="videolibdbModel.fk_FavoriteFilms_users1" />
+        <AssociationConnector Association="videolibdbModel.ApplicationUser_Claims" />
+        <AssociationConnector Association="videolibdbModel.ApplicationUser_Logins" />
+        <AssociationConnector Association="videolibdbModel.userroles" />
+        <EntityTypeShape EntityType="videolibdbModel.Download" Width="1.5" PointX="6.125" PointY="8.375" />
+        <AssociationConnector Association="videolibdbModel.fk_UserFilm_Film1" />
+        <AssociationConnector Association="videolibdbModel.fk_UserFilm_users1" />
+        <EntityTypeShape EntityType="videolibdbModel.Desctiption" Width="1.5" PointX="9" PointY="10.25" />
+        <EntityTypeShape EntityType="videolibdbModel.ProducerStaff" Width="1.5" PointX="11.25" PointY="7" />
+        <AssociationConnector Association="videolibdbModel.fk_Desctiption_Company1" />
+        <AssociationConnector Association="videolibdbModel.fk_Desctiption_Country1" />
+        <AssociationConnector Association="videolibdbModel.fk_Desctiption_Film1" />
+        <AssociationConnector Association="videolibdbModel.fk_Desctiption_Genre1" />
+        <AssociationConnector Association="videolibdbModel.fk_ProducerStaff_Film1" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

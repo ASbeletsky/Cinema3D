@@ -1,0 +1,137 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="Хранилище videolibdbModelContainer" CdmEntityContainer="VideoLibMainContext">
+    <EntitySetMapping Name="Companies">
+      <EntityTypeMapping TypeName="videolibdbModel.Company">
+        <MappingFragment StoreEntitySet="company">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Countries">
+      <EntityTypeMapping TypeName="videolibdbModel.Country">
+        <MappingFragment StoreEntitySet="country">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="FavoriteFilms">
+      <EntityTypeMapping TypeName="videolibdbModel.FavoriteFilm">
+        <MappingFragment StoreEntitySet="favoritefilms">
+          <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
+          <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+          <ScalarProperty Name="users_Id" ColumnName="users_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Films">
+      <EntityTypeMapping TypeName="videolibdbModel.Film">
+        <MappingFragment StoreEntitySet="film">
+          <ScalarProperty Name="ImageBigUrl" ColumnName="ImageBigUrl" />
+          <ScalarProperty Name="ImageSmallUrl" ColumnName="ImageSmallUrl" />
+          <ScalarProperty Name="DownloadUrl" ColumnName="DownloadUrl" />
+          <ScalarProperty Name="AdditionDate" ColumnName="AdditionDate" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Genres">
+      <EntityTypeMapping TypeName="videolibdbModel.Genre">
+        <MappingFragment StoreEntitySet="genre">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="roles">
+      <EntityTypeMapping TypeName="videolibdbModel.roles">
+        <MappingFragment StoreEntitySet="roles">
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="userclaims">
+      <EntityTypeMapping TypeName="videolibdbModel.userclaims">
+        <MappingFragment StoreEntitySet="userclaims">
+          <ScalarProperty Name="ClaimValue" ColumnName="ClaimValue" />
+          <ScalarProperty Name="ClaimType" ColumnName="ClaimType" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="userlogins">
+      <EntityTypeMapping TypeName="videolibdbModel.userlogins">
+        <MappingFragment StoreEntitySet="userlogins">
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="ProviderKey" ColumnName="ProviderKey" />
+          <ScalarProperty Name="LoginProvider" ColumnName="LoginProvider" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="users">
+      <EntityTypeMapping TypeName="videolibdbModel.users">
+        <MappingFragment StoreEntitySet="users">
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="userroles" TypeName="videolibdbModel.userroles" StoreEntitySet="userroles">
+      <EndProperty Name="roles">
+        <ScalarProperty Name="Id" ColumnName="RoleId" />
+      </EndProperty>
+      <EndProperty Name="users">
+        <ScalarProperty Name="Id" ColumnName="UserId" />
+      </EndProperty>
+    </AssociationSetMapping>
+    <EntitySetMapping Name="Downloads">
+      <EntityTypeMapping TypeName="videolibdbModel.Download">
+        <MappingFragment StoreEntitySet="download">
+          <ScalarProperty Name="DownloadTime" ColumnName="DownloadTime" />
+          <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+          <ScalarProperty Name="User_Id" ColumnName="User_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="Desctiption">
+      <EntityTypeMapping TypeName="videolibdbModel.Desctiption">
+        <MappingFragment StoreEntitySet="desctiption">
+          <ScalarProperty Name="Company_Id" ColumnName="Company_Id" />
+          <ScalarProperty Name="Genre_Id" ColumnName="Genre_Id" />
+          <ScalarProperty Name="Country_id" ColumnName="Country_id" />
+          <ScalarProperty Name="Text" ColumnName="Text" />
+          <ScalarProperty Name="TimeDuration" ColumnName="TimeDuration" />
+          <ScalarProperty Name="ReleaseDate" ColumnName="ReleaseDate" />
+          <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ProducerStaff">
+      <EntityTypeMapping TypeName="videolibdbModel.ProducerStaff">
+        <MappingFragment StoreEntitySet="producerstaff">
+          <ScalarProperty Name="painter" ColumnName="painter" />
+          <ScalarProperty Name="composer" ColumnName="composer" />
+          <ScalarProperty Name="operator" ColumnName="operator" />
+          <ScalarProperty Name="producer" ColumnName="producer" />
+          <ScalarProperty Name="director" ColumnName="director" />
+          <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

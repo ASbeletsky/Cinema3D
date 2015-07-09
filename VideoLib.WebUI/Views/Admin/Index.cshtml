@@ -1,0 +1,252 @@
+﻿@using VideoLib.WebUI.Models.Admin
+@model IndexViewModel
+
+<div class="row">
+    <div class="col-xs-9">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4 class="text-center">Настройки фильмов</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-striped table-condensed table-bordered table">
+                    <tr>
+                        <th class="text-center">ID</th>
+                        <th>Название</th>
+                        <th class="text-right">К-во скачиваний</th>
+                        <th class="text-center">Действия</th>
+                    </tr>
+                    @foreach (var item in Model.Films)
+                    {
+                        <tr>
+                            <td class="text-center">@item.Id</td>
+                            <td>
+                                @Ajax.ActionLink(item.Name, "EditFilm", new { id = item.Id },
+                          new AjaxOptions
+                          {
+                              UpdateTargetId = "Ajax-target",
+                              HttpMethod = "GET",
+                              InsertionMode = InsertionMode.Replace,
+                              OnSuccess = "OpenModal"
+                          }, null)
+                            </td>
+                            <td class="text-right">@item.DownloadNumber</td>
+                            <td class="text-center ">
+                                @Ajax.ActionLink("Удалить", "DeleteFilm", new { id = item.Id },
+                          new AjaxOptions
+                          {
+                              UpdateTargetId = "Ajax-target",
+                              HttpMethod = "POST",
+                              OnSuccess = "Success",
+                              Confirm = string.Format("Вы уверены что хотите удалить фильм \"{0}\"?", item.Name)
+                          }, new { @class = "btn-sm btn-danger" })
+                            </td>
+                        </tr>
+                    }
+                </table>
+            </div>
+            <div class="panel-footer ">
+                @Ajax.ActionLink("Добавить фильм", "CreateFilm", null,
+                  new AjaxOptions
+                  {
+                      UpdateTargetId = "Ajax-target",
+                      HttpMethod = "GET",
+                      InsertionMode = InsertionMode.Replace,
+                      OnSuccess = "OpenModal"
+                  },
+                  new { Id = "link", @class = "btn btn-primary" })
+
+            </div>
+        </div> <!--film panel -->
+    </div><!--col 9 -->
+
+    <div class="col-xs-3">
+        <div class="panel panel-default ">
+            <div class="panel-heading">
+                <h4 class="text-center">Настройки категорий</h4>
+            </div>
+            <div class="panel-body">
+                <div class="row">
+                    <h5 class="text-center"><strong>Жанр</strong></h5>
+                    <div class="col-xs-9">
+                        @Html.Partial("GenrePartial", Model.GenreModel) 
+                    </div>
+
+                    <div class="col-xs-3 ">
+                        <div class="btn-group-vertical " role="group">
+                            @Ajax.ActionLink(" ", "CreateGenre", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                new { Id = "AddGenre", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                            <button id="EditGenre" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                            @Ajax.ActionLink(" ", "DeleteGenre", new { id = 99},
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                           new { Id = "DeleteGenre", @class = "btn btn-danger glyphicon glyphicon-minus" })
+                        </div>
+                    </div><!--Col 3-->
+                </div><!--Genre row-->
+
+                <div class="row">
+                    <h5 class="text-center"><strong>Кинокомпания</strong></h5>
+                    <div class="col-xs-9">
+                        @Html.Partial("CompanyPartial", Model.CompanyModel)
+                    </div>
+
+                    <div class="col-xs-3 ">
+                        <div class="btn-group-vertical " role="group">
+                            @Ajax.ActionLink(" ", "CreateCompany", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                  new { Id = "AddCompany", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                            <button id="EditCompany" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                            @Ajax.ActionLink(" ", "DeleteCompany", new { id = 99 },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                   new { Id = "DeleteCompany", @class = "btn btn-danger glyphicon glyphicon-minus" })
+
+                        </div>
+                    </div><!--Col 3-->
+                </div><!--Company row-->
+
+                <div class="row">
+                    <h5 class="text-center"><strong>Страна производитель</strong></h5>
+                    <div class="col-xs-9">
+                        @Html.Partial("CountryPartial", Model.CountryModel)
+                    </div>
+
+                    <div class="col-xs-3 ">
+                        <div class="btn-group-vertical " role="group">
+                            @Ajax.ActionLink(" ", "CreateCountry", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                  new { Id = "AddCountry", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                            <button id="EditCountry" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                            @Ajax.ActionLink(" ", "DeleteCountry", new { id = 99 },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "Success"
+                                  },
+                                   new { Id = "DeleteCountry", @class = "btn btn-danger glyphicon glyphicon-minus" })
+
+                        </div>
+                    </div><!--Col 3-->
+                </div><!--Company row-->
+            </div><!--Panel body-->                                                                                              
+
+        </div>   
+    </div> <!--Col 3-->
+
+</div>
+
+<div class="modal fade " id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div id="Ajax-target" class="modal-content">
+
+        </div>
+    </div>
+</div>
+
+<script>
+    function OpenModal() {
+        $('#myModal').modal('show')
+    }
+</script>
+
+<script type="text/javascript">
+    var Success = function (data) {
+        if (data.OK) {
+            window.location.href = '/Admin/Index/';
+        }
+        else {
+            alert("Error");
+        }
+    };
+</script>
+
+<script>
+    $(function () {
+        $('#GenreDropDown').change(function () {
+            var selectedValue = $("#GenreDropDown :selected").text();
+            $('#GenreTextBox').val(selectedValue);
+        });
+    });
+    $(function () {
+        $('#CompanyDropDown').change(function () {
+            var selectedValue = $("#CompanyDropDown :selected").text();
+            $('#CompanyTextBox').val(selectedValue);
+        });
+    });
+    $(function () {
+        $('#CountryDropDown').change(function () {
+            var selectedValue = $("#CountryDropDown :selected").text();
+            $('#CountryTextBox').val(selectedValue);
+        });
+    });
+    $(function () {
+        $('#AddGenre').click(function () {
+            var name = $("#GenreTextBox").val();
+            this.href = this.href.replace("xxx", name);
+        });
+    });
+    $(function () {
+        $('#AddCompany').click(function () {
+            var name = $("#CompanyTextBox").val();
+            this.href = this.href.replace("xxx", name);
+        });
+    });
+    $(function () {
+        $('#AddCountry').click(function () {
+            var name = $("#CountryTextBox").val();
+            this.href = this.href.replace("xxx", name);
+        });
+    });
+    $(function () {
+        $('#EditCompany').click(function () {
+            $('#EditCompanyForm').submit();
+        });
+    });
+    $(function () {
+        $('#EditCountry').click(function () {
+            $('#EditCountryForm').submit();
+        });
+    });
+    $(function () {
+        $('#EditGenre').click(function () {
+            $('#EditGenreForm').submit();
+        });
+    });
+    $(function () {
+        $('#DeleteGenre').click(function () {
+           var id = $('#GenreDropDown').val();
+            this.href = this.href.replace("99", id);
+        });
+    });
+    $(function () {
+        $('#DeleteCompany').click(function () {
+            var id = $('#CompanyDropDown').val();
+            this.href = this.href.replace("99", id);
+        });
+    });
+    $(function () {
+        $('#DeleteCountry').click(function () {
+            var id = $('#CountryDropDown').val();
+            this.href = this.href.replace("99", id);
+        });
+    });
+</script>
