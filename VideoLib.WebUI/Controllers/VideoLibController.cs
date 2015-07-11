@@ -38,16 +38,16 @@ namespace VideoLib.WebUI.Controllers
         }
 
         //POST:VideoLib/UserDownloadFilmCollection
-        public JsonResult UserDownloadFilmCollection(int user_id)
+        public JsonResult UserDownloadFilmCollection(string object_id)
         {
 
-            if (user_id > 0)
+            if (!string.IsNullOrEmpty(object_id))
             {
-                var userDownloads = Repository.Users.First(user => user.Id == user_id).download;
+                var userDownloads = Repository.Users.First(user => user.ParseUserId == object_id).download;
                 if(userDownloads != null)
                 {
                     var userFilms = (from film in userDownloads
-                                                    .Select(download => download.film)
+                                          .Select(download => download.film)
                                      join descr in Repository.Desctiption
                                          on film.Id equals descr.Film_Id
                                      join genre in Repository.Genres
@@ -84,7 +84,7 @@ namespace VideoLib.WebUI.Controllers
             }
             return new JsonResult
             { 
-                Data = new { ErrorId = 1, ErrorMessege = string.Format("User with id {0} doesn't exist", user_id) },
+                Data = new { ErrorId = 1, ErrorMessege = string.Format("User with id {0} doesn't exist", object_id) },
                 JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };                        
         }
@@ -112,16 +112,16 @@ namespace VideoLib.WebUI.Controllers
         }
 
         //POST: films/favorites        
-        public JsonResult UserFavoriteFilmCollection(UserId properties)
+        public JsonResult UserFavoriteFilmCollection(string object_id)
         {
             {
-                if (properties.user_id > 0)
+                if (!string.IsNullOrEmpty(object_id))
                 {
-                    var userFavorite = Repository.Users.First(user => user.Id == properties.user_id).favoritefilms;
+                    var userFavorite = Repository.Users.First(user => user.ParseUserId == object_id).favoritefilms;
                     if (userFavorite != null)
                     {
                         var FavoriteFilms = (from film in userFavorite
-                                                        .Select(favorite => favorite.film)
+                                                  .Select(favorite => favorite.film)
                                          join descr in Repository.Desctiption
                                              on film.Id equals descr.Film_Id
                                          join genre in Repository.Genres
@@ -152,7 +152,7 @@ namespace VideoLib.WebUI.Controllers
                         return new JsonResult { Data = new { ErrorId = 2, ErrorMessege = "User doesn't have favorite films" } };
                     }
                 }
-                return new JsonResult { Data = new { ErrorId = 1, ErrorMessege = string.Format("User with id {0} doesn't exist", properties.user_id) } };
+                return new JsonResult { Data = new { ErrorId = 1, ErrorMessege = string.Format("User with id {0} doesn't exist", object_id) } };
             }
         }
 
@@ -190,16 +190,16 @@ namespace VideoLib.WebUI.Controllers
         //POST:films/add_to_favorites
         public JsonResult AddFavoriteFilm(UserFilmProperties properties)
         {
-
-            bool success = false;
-            if (properties.film_id > 0 && properties.user_id > 0)
+            if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
+                bool success = false;            
+                int user_id = Repository.GetIdByParseId(properties.object_id);
                 var favoritFilmsIds = Repository.FavoriteFilms
-                    .Where(f => f.users_Id == properties.user_id)
+                    .Where(f => f.users_Id == user_id)
                     .Select(f => f.Film_Id).ToList();
                 if(!favoritFilmsIds.Contains(properties.film_id))
                 {
-                    success = Repository.AddFavoriteFilm(properties.user_id, properties.film_id);
+                    success = Repository.AddFavoriteFilm(user_id, properties.film_id);
                     return new JsonResult { Data = new { OK = success } };
                 }
                 return new JsonResult
@@ -208,7 +208,7 @@ namespace VideoLib.WebUI.Controllers
                     {
                         OK = false,
                         ErrorId = 1,
-                        ErrorMessege = string.Format("User with id {0} have already add film with id {1}", properties.user_id, properties.film_id)
+                        ErrorMessege = string.Format("User with id {0} have already add film with id {1}", properties.object_id, properties.film_id)
                     }
                 };
             }
@@ -217,7 +217,7 @@ namespace VideoLib.WebUI.Controllers
                 { 
                     OK = false,
                     ErrorId = 2,
-                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.user_id, properties.film_id)
+                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.object_id, properties.film_id)
                 },                
             };
         }
@@ -225,16 +225,16 @@ namespace VideoLib.WebUI.Controllers
         //POST:films/remove_from_favorites
         public JsonResult RemoveFavoriteFilm(UserFilmProperties properties)
         {
-
-            bool success = false;
-            if (properties.film_id > 0 && properties.user_id > 0)
+            if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
+                int user_id = Repository.GetIdByParseId(properties.object_id); 
+                bool success = false;            
                 var favoritFilmsIds = Repository.FavoriteFilms
-                    .Where(f => f.users_Id == properties.user_id)
+                    .Where(f => f.users_Id == user_id)
                     .Select(f => f.Film_Id).ToList();
                 if (favoritFilmsIds.Contains(properties.film_id))
                 {
-                    success = Repository.RemoveFavoriteFilm(properties.user_id, properties.film_id);
+                    success = Repository.RemoveFavoriteFilm(user_id, properties.film_id);
                     return new JsonResult { Data = new { OK = success } };
                 }
                 return new JsonResult
@@ -243,7 +243,7 @@ namespace VideoLib.WebUI.Controllers
                     {
                         OK = false,
                         ErrorId = 1,
-                        ErrorMessege = string.Format("User with id {0} doen't have film with id {1}", properties.user_id, properties.film_id)
+                        ErrorMessege = string.Format("User with id {0} doen't have film with id {1}", properties.object_id, properties.film_id)
                     }
                 };
             }
@@ -253,7 +253,7 @@ namespace VideoLib.WebUI.Controllers
                 {
                     OK = false,
                     ErrorId = 2,
-                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.user_id, properties.film_id)
+                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.object_id, properties.film_id)
                 },
             };
         }
@@ -261,12 +261,11 @@ namespace VideoLib.WebUI.Controllers
         //POST:films/add_download
         public JsonResult AddDownload(UserFilmProperties properties)
         {
-         
-
+            int user_id = Repository.GetIdByParseId(properties.object_id);
             bool success = false;
-            if (properties.film_id > 0 && properties.user_id > 0)
+            if (properties.film_id > 0 && user_id > 0)
             {
-                success = Repository.AddDownload(properties.user_id, properties.film_id);
+                success = Repository.AddDownload(user_id, properties.film_id);
             }
             return new JsonResult
             {
@@ -313,24 +312,28 @@ namespace VideoLib.WebUI.Controllers
         [HttpPost]
         public JsonResult IsFavorite(UserFilmProperties properties)
         {
-            bool contains = false;
-            if (properties.film_id > 0 && properties.user_id > 0)
+            if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
-                var userFavoriteFilms = Repository.FavoriteFilms.Where(f => f.users_Id == properties.user_id).ToList();
-                if(userFavoriteFilms != null)
+                int user_id = Repository.GetIdByParseId(properties.object_id);
+                bool contains = false;
+                if (user_id > 0)
                 {
-                    contains = userFavoriteFilms.Select(film => film.Film_Id).Contains(properties.film_id);
-                    return Json(new { OK = true, Contains = contains });
-                }
-                return new JsonResult
-                {
-                    Data = new
+                    var userFavoriteFilms = Repository.FavoriteFilms.Where(f => f.users_Id == user_id).ToList();
+                    if (userFavoriteFilms != null)
                     {
-                        OK = false,
-                        ErrorId = 1,
-                        ErrorMessege = string.Format("User with id {0} doesn't have favorites films ", properties.user_id)
+                        contains = userFavoriteFilms.Select(film => film.Film_Id).Contains(properties.film_id);
+                        return Json(new { OK = true, Contains = contains });
                     }
-                };
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            OK = false,
+                            ErrorId = 1,
+                            ErrorMessege = string.Format("User with id {0} doesn't have favorites films ", properties.object_id)
+                        }
+                    };
+                }
             }
             return new JsonResult
             {
@@ -338,7 +341,7 @@ namespace VideoLib.WebUI.Controllers
                 {
                     OK = false,
                     ErrorId = 2,
-                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.user_id, properties.film_id)
+                    ErrorMessege = string.Format("User with id {0} or film with id {1} does not exist", properties.object_id, properties.film_id)
                 }
             };
         }

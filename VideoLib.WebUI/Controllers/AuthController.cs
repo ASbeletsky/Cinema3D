@@ -16,6 +16,10 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using TweetSharp;
+using Parse;
+using Facebook;
+using VideoLib.Domian.Concrete.ConfigClasses;
+using VideoLib.Domian.Abstract;
 
 namespace VideoLib.WebUI.Controllers
 {
@@ -30,213 +34,203 @@ namespace VideoLib.WebUI.Controllers
         {
             get { return  HttpContext.GetOwinContext().GetUserManager<UserManagerIntPK>(); }
         }
-        public SignInManagerIntPK SignInManager
+        private SignInManagerIntPK SignInManager
         {
             get { return HttpContext.GetOwinContext().Get<SignInManagerIntPK>(); }
         }
+        private AuthServices ExternalAuthManaher
+        {
+            get { return HttpContext.GetOwinContext().Get<AuthServices>(); }
+        }
+        private IVideoLibRepository Repository
+        {
+            get { return HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
+        }  
                                                 #endregion
 
                                     #region Server OWIN-based Authentification
-        public ActionResult Login()
-        {
-            return View();
-        }
-        [HttpPost]
+
+        
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        //GET: VideoLib/Login
-        public ActionResult Login(string provider, string returnUrl)
+
+        //Post: Auth/EmailLoginCallBack
+        [HttpPost]
+        public async Task<ActionResult> EmailLoginCallBack(string object_id)
         {
-            // Запрос перенаправления к внешнему поставщику входа
-            return new ChallengeResult(provider, Url.Action("ExternalLoginCallback", "Auth", new { ReturnUrl = returnUrl }));
-        }
-        //POST: VideoLib/ExternalLoginCallback
-        [OverrideAuthentication]
-        public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
-        {            
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
+            bool success = false;
+            var parse_user = await ParseUser.Query.GetAsync(object_id);
+            if (parse_user != null)
             {
-                return RedirectToAction("Login");
-            }
-
-            var user = await UserManager.FindAsync(loginInfo.Login);
-            var LoginSuccess =  await ExternalLogin(user, loginInfo);
-            if(LoginSuccess)
-            {
-                return Redirect(returnUrl);
-            }
-
-            return View("Login Failure");
-        }
-
-        private async Task<bool> ExternalLogin(UserIntPK user, ExternalLoginInfo loginInfo)
-        {
-            bool loginSuccess = false;
-            if (user != null)
-            {
-                loginSuccess = await SignInAsync(loginInfo, false);
-            }
-            else
-            {
-                user = new UserIntPK()
+                var my_user = await UserManager.FindByParseIdAsync(object_id);
+                if (my_user != null)
                 {
-                    Email = loginInfo.Email,
-                    UserName = loginInfo.ExternalIdentity.Name ?? loginInfo.Email
-                };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, loginInfo.Login);
-                    if (result.Succeeded)
-                    {
-                        loginSuccess = await SignInAsync(loginInfo, false);
-                    }
+                    success = SetCurrentUser(AuthType.EmailPassword, my_user);
+                    return Json(new { OK = success });  
                 }
+                success = await RegisterUser(
+                    new RegisterUserModel
+                    {
+                        Email = (parse_user.Keys.Contains("email"))? parse_user.Get<string>("email") : null , 
+                        Login = (parse_user.Keys.Contains("username"))? parse_user.Get<string>("username") : null,
+                        Name = (parse_user.Keys.Contains("name")) ? parse_user.Get<string>("name") : null,
+                        PhoneNumber = (parse_user.Keys.Contains("phone"))? parse_user.Get<string>("phone") : null,
+                        Object_id = object_id
+                    });
+                return Json(new { OK = success });
             }
-            return loginSuccess;
+
+            return new JsonResult
+            {
+                Data = new
+                    {
+                        OK = false,
+                        ErrorId = 1,
+                        ErrorMassege = string.Format("User with id {0} does not exist at Parse.com", object_id)
+                    }
+            };            
+        }
+        //Post: Auth/FacebookLoginCallBack
+        [HttpPost]
+        public async Task<ActionResult> FacebookLoginCallBack(string object_id, string access_token, string fb_key)
+        {
+            bool success = false;
+             var fbLoginInfo = new UserLoginInfo("Facebook",fb_key);
+
+             UserIntPK my_user = await UserManager.FindByParseIdAsync(object_id);
+             if (my_user != null)
+             {
+                 success = SetCurrentUser(AuthType.Facebook, my_user, access_token);
+                 return Json(new { OK = success });  
+             }
+             var fb_client = new FacebookClient(access_token);
+             fb_client.AppId = ExternalAuthManaher.FacebookService.AppID;
+             fb_client.AppSecret = ExternalAuthManaher.FacebookService.AppSecret;
+
+             dynamic userInfo = await fb_client.GetTaskAsync("me", new { fields = "first_name, last_name, link, id, email" });
+             if(userInfo != null)
+             {
+                 success = await RegisterUser(
+                     new RegisterUserModel
+                     {
+                         RegisterType = AuthType.Facebook,
+                         LoginProvider = fbLoginInfo,
+                         UserClaims = new List<Claim> 
+                            {
+                                new Claim("FacebookAccessToken", access_token),
+                                new Claim("FacebookPageLink", userInfo.link),
+                                new Claim("FacebookId", userInfo.id)
+                            },
+                         Login = "FacebookUser",
+                         Name = userInfo.first_name + " " + userInfo.last_name,
+                         Object_id = object_id
+                     });
+                 return Json(new { OK = success });   
+             }
+            
+             return Json(new { OK = false });          
         }
 
-        private async Task<bool> SignInAsync(ExternalLoginInfo loginInfo, bool isPersistent)
+        //Post: Auth/FacebookLoginCallBack
+        [HttpPost]
+        public async Task<ActionResult> TwitterLoginCallBack(string object_id, string access_token, string access_token_secret, string tw_key)
         {
-            var result = await SignInManager.ExternalSignInAsync(loginInfo, false);
-            if (result == SignInStatus.Success)
+            bool success = false;
+            var twLoginInfo = new UserLoginInfo("Twitter", tw_key);
+            UserIntPK my_user = await UserManager.FindByParseIdAsync(object_id);
+            if (my_user != null)
+            {
+                success = SetCurrentUser(AuthType.Twitter, my_user, access_token, access_token_secret);
+                return Json(new { OK = success });  
+            }
+            var tw_service = new TwitterService
+            (
+                consumerKey: ExternalAuthManaher.TwitterService.AppID,
+                consumerSecret: ExternalAuthManaher.TwitterService.AppSecret,
+                token: access_token,
+                tokenSecret: access_token_secret
+            );
+            var userInfo =  tw_service.GetUserProfile(new GetUserProfileOptions());
+            if(userInfo != null)
+            {
+                
+                success = await RegisterUser(
+                     new RegisterUserModel
+                     {
+                         RegisterType = AuthType.Twitter,
+                         LoginProvider = twLoginInfo,
+                         UserClaims = new List<Claim> 
+                            {
+                                new Claim("TwitterAccessToken", access_token),
+                                new Claim("TwitterAccessTokenSecret", access_token_secret),
+                                new Claim("TwitterPageLink", ("https://twitter.com/" + userInfo.ScreenName)),
+                                new Claim("TwitterId", userInfo.Id.ToString())
+                            },
+                         Name = userInfo.ScreenName,
+                         Login = "TwitterUser",
+                         Object_id = object_id
+                     });
+                return Json(new { OK = success }); 
+            }
+            return Json(new { OK = false });  
+        }
+        
+        private async Task<bool> RegisterUser(RegisterUserModel model)
+        {
+            UserIntPK newUser = new UserIntPK
+               {
+                   Email = model.Email,
+                   UserName = model.Login,
+                   Name = model.Name,
+                   Parse_Id = model.Object_id
+               };
+
+            var createResult = await UserManager.CreateAsync(newUser);
+            if(createResult.Succeeded)
+            {
+                if(model.RegisterType == AuthType.Facebook || model.RegisterType == AuthType.Twitter)
+                {
+                    foreach(Claim claim in model.UserClaims)
+                    {
+                        createResult = UserManager.AddClaim(newUser.Id, claim);
+                    }
+                    createResult = UserManager.AddLogin(newUser.Id, model.LoginProvider);
+                }
+                
+                createResult = UserManager.AddToRole(newUser.Id, "User");
                 return true;
+            }
             return false;
         }
 
-        // VideoLub/Logout
-        public ActionResult Logout()
-        {
-            AuthenticationManager.SignOut();
-            return RedirectToAction("Login", "Auth");
-        }
-                                                #endregion
-        //Helper Auth class
-        internal class ChallengeResult : HttpUnauthorizedResult
-        {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
+        private bool SetCurrentUser(AuthType authType ,UserIntPK user, string access_token = null, string access_token_secret = null)
+        {           
+            try
             {
-            }
-
-            public ChallengeResult(string provider, string redirectUri, string userId)
-            {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
-            }
-
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
+                
+                if (authType == AuthType.Facebook)
+                    Repository.UpdateClaim("FacebookAccessToken", access_token, user.Id);
+                if (authType == AuthType.Twitter)
                 {
-                    properties.Dictionary["XsrfId"] = UserId;
+                    Repository.UpdateClaim("TwitterAccessToken", access_token, user.Id);
+                    Repository.UpdateClaim("TwitterAccessTokenSecret", access_token_secret, user.Id);
                 }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+                return true;
+            }
+            catch
+            {
+                return false;
             }
         }
 
-                            #region Mobile Token-based Authentification
-        [HttpPost]
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginMobile (string loginOptionsJson)
+        public JsonResult GetPhoneImage()
         {
-            LoginOptionsViewModel options = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginOptionsViewModel>(loginOptionsJson);
-           
-           /* new LoginOptionsViewModel
+            return Json(new
             {
-                Provider = "Twitter",
-                Token = "3354818793-IqNx4En3lxwDKzGBo6mBRtFCOLS0yfh7IMXo1I5",
-                TwiterTokenSecret = "aS94TY5fdPa5Z6UZMsQM84UQU5HROdyNyHqGMxlAGkKxT"
-
-            };*/
-
-            var tokenExpirationTimeSpan = TimeSpan.FromDays(14);
-            UserViewModel userModel = await VerifyAccessToken(options);
-            if(userModel != null)
-            {
-                ExternalLoginInfo loginInfo = new ExternalLoginInfo()
-                {
-                    Email = userModel.email,
-                    Login = new UserLoginInfo("Facebook", userModel.id),
-                };
-
-                var user = await UserManager.FindAsync(loginInfo.Login);
-                var LoginSuccess = await ExternalLogin(user, loginInfo);
-                if (LoginSuccess)
-                {
-                    await UserManager.AddClaimAsync(user.Id, new Claim("FacebookAccessToken", options.Token));
-                    return RedirectToAction("Index", "VideoLib");
-                }
-            }            
-
-            return View("Login Failure");          
-        }
-
-        private async Task<UserViewModel> VerifyAccessToken(LoginOptionsViewModel options)
-        {
-            switch (options.Provider)
-            {
-                case "Facebook" :
-                    return await FacebookUser(options.Token);
-                case "Twitter"  :
-                    return TwitterUser(options.Token, options.TwiterTokenSecret);
-                case "Vk" :
-                    return await VkUser(options.Token, options.VkUserId);
-            }
-            return null;            
-        }
-
-        private async Task<UserViewModel> FacebookUser(string accessToken)
-        {
-            UserViewModel UserModel = null;
-            var path = "https://graph.facebook.com/me?access_token=" + accessToken;
-            var client = new HttpClient();
-            var uri = new Uri(path);
-            var response = await client.GetAsync(uri);
-            if (response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                UserModel = Newtonsoft.Json.JsonConvert.DeserializeObject<UserViewModel>(content);
-            }
-            return UserModel;
-        }
-        private UserViewModel TwitterUser(string accessToken, string accessTokenSecret)
-        {
-            UserViewModel UserModel = new UserViewModel();
-            var service = new TwitterService(
-                "MVRlIUFGPoBtwsoSsEmppRwch",
-                "kPlQJwhg6MczpzLqRdbiF1WraPc1vaOlw8eujgxPMqGvFudJMK",
-                accessToken,
-                accessTokenSecret
+                url = Repository.AdditionData.FirstOrDefault(data => data.Type == "BackgroundUrl").Value
+            },
+                JsonRequestBehavior.AllowGet
             );
-            var profile = service.GetUserProfile(new GetUserProfileOptions());
-            UserModel.id =  profile.Id.ToString();
-            UserModel.username = profile.Name ?? profile.ScreenName;            
-            return UserModel;
         }
-        //Допилить правильную десереализацию!
-        private async Task<UserViewModel> VkUser(string accessToken, int user_id)
-        {
-            UserViewModel UserModel = null;
-            string VkUserInfoRequest = string.Format("https://api.vk.com/method/users.get?user_id={0}&access_token={1}",
-                                                            user_id, accessToken);
-            HttpClient client = new HttpClient();
-            Uri uri = new Uri(VkUserInfoRequest);
-            var response = await client.GetAsync(uri);
-            if(response.IsSuccessStatusCode)
-            {
-                var content = await response.Content.ReadAsStringAsync();
-                UserModel = Newtonsoft.Json.JsonConvert.DeserializeObject<UserViewModel>(content);
-            }
-            return UserModel;
-        }
-                                            #endregion
+                                                                      #endregion
     }
 }

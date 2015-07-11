@@ -76,7 +76,9 @@
     <EntitySetMapping Name="users">
       <EntityTypeMapping TypeName="videolibdbModel.users">
         <MappingFragment StoreEntitySet="users">
-          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="ParseUserId" ColumnName="ParseUserId" />
+          <ScalarProperty Name="Name" ColumnName="Name" />
+          <ScalarProperty Name="Login" ColumnName="Login" />
           <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
           <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
           <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
@@ -130,6 +132,15 @@
           <ScalarProperty Name="producer" ColumnName="producer" />
           <ScalarProperty Name="director" ColumnName="director" />
           <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AdditionData">
+      <EntityTypeMapping TypeName="videolibdbModel.AdditionData">
+        <MappingFragment StoreEntitySet="additiodata">
+          <ScalarProperty Name="Value" ColumnName="Value" />
+          <ScalarProperty Name="Type" ColumnName="Type" />
+          <ScalarProperty Name="Id" ColumnName="Id" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

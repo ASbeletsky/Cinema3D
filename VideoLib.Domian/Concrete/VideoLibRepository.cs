@@ -11,6 +11,8 @@ using System.Data.Entity;
 using System.Data.Entity.Core;
 using System.Data.Entity.Infrastructure;
 using System.Data.Entity.Core.Objects;
+using System.Security.Claims;
+using VideoLib.Domian.Entities.AuthEntities;
 
 namespace VideoLib.Domian.Concrete
 {
@@ -59,6 +61,10 @@ namespace VideoLib.Domian.Concrete
             get { return _context.FavoriteFilms as IEnumerable<FavoriteFilm>; }
         }
 
+        public IEnumerable<AdditionData> AdditionData
+        {
+            get { return _context.AdditionData as IEnumerable<AdditionData>; }
+        }
         public void Dispose()
         {
 
@@ -256,6 +262,19 @@ namespace VideoLib.Domian.Concrete
                 return true;
             }
             return false;
+        }
+
+        public void UpdateClaim(string claimType,string claimValue, int user_id)
+        {
+            var claimToUpdate = _context.userclaims.FirstOrDefault(claim=> claim.ClaimType == claimType && claim.UserId == user_id);
+            claimToUpdate.ClaimValue = claimValue;
+            _context.Entry<userclaims>(claimToUpdate).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+
+        public int GetIdByParseId(string object_id)
+        {
+            return _context.users.FirstOrDefault(user => user.ParseUserId == object_id).Id;
         }
     }
 }

@@ -37,5 +37,6 @@ namespace VideoLib.Domian.Entities
         public virtual DbSet<Download> Downloads { get; set; }
         public virtual DbSet<Desctiption> Desctiption { get; set; }
         public virtual DbSet<ProducerStaff> ProducerStaff { get; set; }
+        public virtual DbSet<AdditionData> AdditionData { get; set; }
     }
 }

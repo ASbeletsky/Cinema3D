@@ -61,6 +61,7 @@
       <End Role="film" EntitySet="Films" />
       <End Role="producerstaff" EntitySet="ProducerStaff" />
     </AssociationSet>
+    <EntitySet Name="AdditionData" EntityType="videolibdbModel.AdditionData" />
   </EntityContainer>
   <EntityType Name="Company">
     <Key>
@@ -156,12 +157,14 @@
     <Property Name="LockoutEndDateUtc" Type="DateTime" />
     <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
     <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-    <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="users" ToRole="favoritefilms" />
     <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
     <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
     <NavigationProperty Name="roles" Relationship="videolibdbModel.userroles" FromRole="users" ToRole="roles" />
     <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="users" ToRole="download" />
+    <Property Name="Login" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="ParseUserId" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
   </EntityType>
   <Association Name="fk_FavoriteFilms_Film1">
     <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
@@ -360,4 +363,12 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="AdditionData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" />
+    <Property Name="Type" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+  </EntityType>
 </Schema>

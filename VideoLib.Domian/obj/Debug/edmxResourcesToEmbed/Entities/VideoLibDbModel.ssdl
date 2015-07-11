@@ -1,5 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Хранилище videolibdbModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityType Name="additiodata">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" Nullable="false" />
+    <Property Name="Type" Type="varchar" MaxLength="256" />
+    <Property Name="Value" Type="varchar" MaxLength="256" />
+  </EntityType>
   <EntityType Name="company">
     <Key>
       <PropertyRef Name="Id" />
@@ -122,7 +130,9 @@
     <Property Name="LockoutEndDateUtc" Type="datetime" Precision="0" />
     <Property Name="LockoutEnabled" Type="bool" Nullable="false" />
     <Property Name="AccessFailedCount" Type="int" Nullable="false" />
-    <Property Name="UserName" Type="varchar" MaxLength="256" Nullable="false" />
+    <Property Name="Login" Type="varchar" MaxLength="256" Nullable="false" />
+    <Property Name="Name" Type="varchar" MaxLength="45" />
+    <Property Name="ParseUserId" Type="varchar" MaxLength="45" Nullable="false" />
   </EntityType>
   <Association Name="ApplicationUser_Claims">
     <End Role="users" Type="Self.users" Multiplicity="1">
@@ -307,6 +317,7 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="Хранилище videolibdbModelContainer">
+    <EntitySet Name="additiodata" EntityType="Self.additiodata" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="company" EntityType="Self.company" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="country" EntityType="Self.country" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="desctiption" EntityType="Self.desctiption" Schema="videolibdb" store:Type="Tables" />

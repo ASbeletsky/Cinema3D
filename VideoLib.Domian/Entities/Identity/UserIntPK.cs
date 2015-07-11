@@ -12,7 +12,8 @@ namespace VideoLib.Domian.Entities.AuthEntities
     public class UserIntPK : IdentityUser<int, UserLoginIntPK, UserRoleIntPK, UserClaimIntPK>
     {
         //Добавить дополнительные поля тут и таблице бд
-        //public string Name { get; set; }
+        public string Name { get; set; }
+        public string Parse_Id { get; set; }
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManagerIntPK manager)
         {
             // Обратите внимание, что authenticationType должен совпадать с типом, определенным в CookieAuthenticationOptions.AuthenticationType

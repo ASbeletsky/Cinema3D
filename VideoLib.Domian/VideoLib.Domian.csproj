@@ -75,6 +75,7 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
@@ -86,7 +87,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IVideoLibRepository.cs" />
+    <Compile Include="Concrete\ConfigClasses\AuthServices.cs" />
+    <Compile Include="Concrete\ConfigClasses\FacebookService.cs" />
+    <Compile Include="Concrete\ConfigClasses\ParseService.cs" />
+    <Compile Include="Concrete\ConfigClasses\TwitterService.cs" />
     <Compile Include="Concrete\VideoLibRepository.cs" />
+    <Compile Include="Entities\AdditionData.cs">
+      <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Company.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>

@@ -34,7 +34,9 @@ namespace VideoLib.Domian.Entities
         public Nullable<System.DateTime> LockoutEndDateUtc { get; set; }
         public bool LockoutEnabled { get; set; }
         public int AccessFailedCount { get; set; }
-        public string UserName { get; set; }
+        public string Login { get; set; }
+        public string Name { get; set; }
+        public string ParseUserId { get; set; }
     
         public virtual ICollection<FavoriteFilm> favoritefilms { get; set; }
         public virtual ICollection<userclaims> userclaims { get; set; }

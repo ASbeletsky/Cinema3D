@@ -37,9 +37,9 @@ namespace VideoLib.Domian.Entities.AuthEntities
              modelBuilder.Entity<RoleIntPK>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
              // Override some column mappings that do not match our default
              //modelBuilder.Entity<MyUser>().Property(r => r.PasswordHash).HasColumnName("Password");
-             //modelBuilder.Entity<UserIntPK>().Property(r => r.UserName).HasColumnName("Login");
-             //modelBuilder.Entity<UserIntPK>().Property(r => r.Name).HasColumnName("Name");
-        
+             modelBuilder.Entity<UserIntPK>().Property(r => r.UserName).HasColumnName("Login");
+             modelBuilder.Entity<UserIntPK>().Property(r => r.Name).HasColumnName("Name");
+             modelBuilder.Entity<UserIntPK>().Property(r => r.Parse_Id).HasColumnName("ParseUserId");
          }
          
     }

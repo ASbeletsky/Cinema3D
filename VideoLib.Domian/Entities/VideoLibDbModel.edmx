@@ -5,6 +5,14 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
     <Schema Namespace="Хранилище videolibdbModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="additiodata">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="Type" Type="varchar" MaxLength="256" />
+          <Property Name="Value" Type="varchar" MaxLength="256" />
+        </EntityType>
         <EntityType Name="company">
           <Key>
             <PropertyRef Name="Id" />
@@ -127,7 +135,9 @@
           <Property Name="LockoutEndDateUtc" Type="datetime" Precision="0" />
           <Property Name="LockoutEnabled" Type="bool" Nullable="false" />
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
-          <Property Name="UserName" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Login" Type="varchar" MaxLength="256" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="45" />
+          <Property Name="ParseUserId" Type="varchar" MaxLength="45" Nullable="false" />
         </EntityType>
         <Association Name="ApplicationUser_Claims">
           <End Role="users" Type="Self.users" Multiplicity="1">
@@ -312,6 +322,7 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Хранилище videolibdbModelContainer">
+          <EntitySet Name="additiodata" EntityType="Self.additiodata" Schema="videolibdb" store:Type="Tables" />
           <EntitySet Name="company" EntityType="Self.company" Schema="videolibdb" store:Type="Tables" />
           <EntitySet Name="country" EntityType="Self.country" Schema="videolibdb" store:Type="Tables" />
           <EntitySet Name="desctiption" EntityType="Self.desctiption" Schema="videolibdb" store:Type="Tables" />
@@ -443,6 +454,7 @@
             <End Role="film" EntitySet="Films" />
             <End Role="producerstaff" EntitySet="ProducerStaff" />
           </AssociationSet>
+          <EntitySet Name="AdditionData" EntityType="videolibdbModel.AdditionData" />
         </EntityContainer>
         <EntityType Name="Company">
           <Key>
@@ -538,12 +550,14 @@
           <Property Name="LockoutEndDateUtc" Type="DateTime" />
           <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
           <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-          <Property Name="UserName" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="users" ToRole="favoritefilms" />
           <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
           <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
           <NavigationProperty Name="roles" Relationship="videolibdbModel.userroles" FromRole="users" ToRole="roles" />
           <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="users" ToRole="download" />
+          <Property Name="Login" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+          <Property Name="ParseUserId" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
         </EntityType>
         <Association Name="fk_FavoriteFilms_Film1">
           <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
@@ -742,6 +756,14 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="AdditionData">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+          <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+        </EntityType>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -823,7 +845,9 @@
           <EntitySetMapping Name="users">
             <EntityTypeMapping TypeName="videolibdbModel.users">
               <MappingFragment StoreEntitySet="users">
-                <ScalarProperty Name="UserName" ColumnName="UserName" />
+                <ScalarProperty Name="ParseUserId" ColumnName="ParseUserId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Login" ColumnName="Login" />
                 <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
                 <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
                 <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
@@ -877,6 +901,15 @@
                 <ScalarProperty Name="producer" ColumnName="producer" />
                 <ScalarProperty Name="director" ColumnName="director" />
                 <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="AdditionData">
+            <EntityTypeMapping TypeName="videolibdbModel.AdditionData">
+              <MappingFragment StoreEntitySet="additiodata">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="Id" ColumnName="Id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

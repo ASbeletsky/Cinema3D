@@ -124,3 +124,9 @@ E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\ru\System.Web.Mvc.resour
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\obj\Debug\VideoLib.WebUI.csprojResolveAssemblyReference.cache
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\obj\Debug\VideoLib.WebUI.dll
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\obj\Debug\VideoLib.WebUI.pdb
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Facebook.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Parse.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Parse.NetFx45.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Facebook.xml
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Parse.xml
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Parse.NetFx45.xml

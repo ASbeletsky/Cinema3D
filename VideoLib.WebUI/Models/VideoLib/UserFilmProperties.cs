@@ -7,7 +7,7 @@ namespace VideoLib.WebUI.Models.VideoLib
 {
     public class UserFilmProperties
     {
-        public int user_id { get; set; }
+        public string object_id { get; set; }
         public int film_id { get; set; }
     }
 }
