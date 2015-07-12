@@ -37,57 +37,7 @@ namespace VideoLib.WebUI.Controllers
             };
         }
 
-        //POST:VideoLib/UserDownloadFilmCollection
-        public JsonResult UserDownloadFilmCollection(string object_id)
-        {
-
-            if (!string.IsNullOrEmpty(object_id))
-            {
-                var userDownloads = Repository.Users.First(user => user.ParseUserId == object_id).download;
-                if(userDownloads != null)
-                {
-                    var userFilms = (from film in userDownloads
-                                          .Select(download => download.film)
-                                     join descr in Repository.Desctiption
-                                         on film.Id equals descr.Film_Id
-                                     join genre in Repository.Genres
-                                         on descr.Genre_Id equals genre.Id
-                                     join company in Repository.Companies
-                                         on descr.Company_Id equals company.Id
-
-                                     select new FilmViewModel
-                                     {
-                                         Id = film.Id,
-                                         Name = film.Name,
-                                         ImageSmallUrl = film.ImageSmallUrl,
-                                         ImageBigUrl = film.ImageBigUrl,
-                                         IsFavorite = false,
-                                         AdditionDate = film.AdditionDate.Value.Date.ToShortDateString(),
-                                         DownloadUrl = film.DownloadUrl,
-                                         Description = descr.Text,
-                                         genreId = genre.Id,
-                                         genreName = genre.Name,
-                                         companyId = company.Id,
-                                         companyName = company.Name,
-                                     }).OrderBy(film => film.AdditionDate).ToList();
-
-                    return Json(userFilms, JsonRequestBehavior.AllowGet);
-                }
-                else
-                {
-                    return new JsonResult
-                    { 
-                        Data = new { ErrorId = 2, ErrorMessege = "User doesn't have downloads" },
-                        JsonRequestBehavior = JsonRequestBehavior.AllowGet                    
-                    };
-                }
-            }
-            return new JsonResult
-            { 
-                Data = new { ErrorId = 1, ErrorMessege = string.Format("User with id {0} doesn't exist", object_id) },
-                JsonRequestBehavior = JsonRequestBehavior.AllowGet
-            };                        
-        }
+        
 
         //GET: films/popular       
         public JsonResult PopularFilmCollection()
@@ -117,7 +67,7 @@ namespace VideoLib.WebUI.Controllers
             {
                 if (!string.IsNullOrEmpty(object_id))
                 {
-                    var userFavorite = Repository.Users.First(user => user.ParseUserId == object_id).favoritefilms;
+                    var userFavorite = Repository.Users.First(user => user.Id == object_id).favoritefilms;
                     if (userFavorite != null)
                     {
                         var FavoriteFilms = (from film in userFavorite
@@ -192,14 +142,13 @@ namespace VideoLib.WebUI.Controllers
         {
             if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
-                bool success = false;            
-                int user_id = Repository.GetIdByParseId(properties.object_id);
+                bool success = false;                            
                 var favoritFilmsIds = Repository.FavoriteFilms
-                    .Where(f => f.users_Id == user_id)
+                    .Where(f => f.User_Id == properties.object_id)
                     .Select(f => f.Film_Id).ToList();
                 if(!favoritFilmsIds.Contains(properties.film_id))
                 {
-                    success = Repository.AddFavoriteFilm(user_id, properties.film_id);
+                    success = Repository.AddFavoriteFilm(properties.object_id, properties.film_id);
                     return new JsonResult { Data = new { OK = success } };
                 }
                 return new JsonResult
@@ -227,14 +176,13 @@ namespace VideoLib.WebUI.Controllers
         {
             if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
-                int user_id = Repository.GetIdByParseId(properties.object_id); 
                 bool success = false;            
                 var favoritFilmsIds = Repository.FavoriteFilms
-                    .Where(f => f.users_Id == user_id)
+                    .Where(f => f.User_Id == properties.object_id)
                     .Select(f => f.Film_Id).ToList();
                 if (favoritFilmsIds.Contains(properties.film_id))
                 {
-                    success = Repository.RemoveFavoriteFilm(user_id, properties.film_id);
+                    success = Repository.RemoveFavoriteFilm(properties.object_id, properties.film_id);
                     return new JsonResult { Data = new { OK = success } };
                 }
                 return new JsonResult
@@ -261,11 +209,10 @@ namespace VideoLib.WebUI.Controllers
         //POST:films/add_download
         public JsonResult AddDownload(UserFilmProperties properties)
         {
-            int user_id = Repository.GetIdByParseId(properties.object_id);
             bool success = false;
-            if (properties.film_id > 0 && user_id > 0)
+            if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
-                success = Repository.AddDownload(user_id, properties.film_id);
+                success = Repository.AddDownload(properties.object_id, properties.film_id);
             }
             return new JsonResult
             {
@@ -314,11 +261,8 @@ namespace VideoLib.WebUI.Controllers
         {
             if (properties.film_id > 0 && !string.IsNullOrEmpty(properties.object_id))
             {
-                int user_id = Repository.GetIdByParseId(properties.object_id);
-                bool contains = false;
-                if (user_id > 0)
-                {
-                    var userFavoriteFilms = Repository.FavoriteFilms.Where(f => f.users_Id == user_id).ToList();
+                bool contains = false;               
+                    var userFavoriteFilms = Repository.FavoriteFilms.Where(f => f.User_Id == properties.object_id).ToList();
                     if (userFavoriteFilms != null)
                     {
                         contains = userFavoriteFilms.Select(film => film.Film_Id).Contains(properties.film_id);
@@ -332,8 +276,7 @@ namespace VideoLib.WebUI.Controllers
                             ErrorId = 1,
                             ErrorMessege = string.Format("User with id {0} doesn't have favorites films ", properties.object_id)
                         }
-                    };
-                }
+                    };                
             }
             return new JsonResult
             {

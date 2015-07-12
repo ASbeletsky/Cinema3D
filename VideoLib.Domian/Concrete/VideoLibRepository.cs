@@ -70,7 +70,7 @@ namespace VideoLib.Domian.Concrete
 
         }
 
-        public bool AddFavoriteFilm(int user_id, int film_id)
+        public bool AddFavoriteFilm(string user_id, int film_id)
         {            
             var user = _context.users.Find(user_id);
             if(user != null)
@@ -78,7 +78,7 @@ namespace VideoLib.Domian.Concrete
                 FavoriteFilm newFavorite = new FavoriteFilm()
                 {
                     Film_Id = film_id,
-                    users_Id = user_id,
+                    User_Id = user_id,
                     AdditionTime = DateTime.Now
                 };
                 _context.FavoriteFilms.Add(newFavorite);
@@ -88,7 +88,7 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
-        bool IVideoLibRepository.RemoveFavoriteFilm(int user_id, int film_id)
+        bool IVideoLibRepository.RemoveFavoriteFilm(string user_id, int film_id)
         {
             FavoriteFilm favoriteToRomove = _context.FavoriteFilms.Find(user_id, film_id);
             if (favoriteToRomove != null)
@@ -101,7 +101,7 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
-        public bool AddDownload(int user_id, int film_id)
+        public bool AddDownload(string user_id, int film_id)
         {
             var download = _context.Downloads.Find(user_id, film_id);
             if (download == null)
@@ -264,7 +264,7 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
-        public void UpdateClaim(string claimType,string claimValue, int user_id)
+        public void UpdateClaim(string claimType,string claimValue, string user_id)
         {
             var claimToUpdate = _context.userclaims.FirstOrDefault(claim=> claim.ClaimType == claimType && claim.UserId == user_id);
             claimToUpdate.ClaimValue = claimValue;
@@ -272,9 +272,6 @@ namespace VideoLib.Domian.Concrete
             _context.SaveChanges();
         }
 
-        public int GetIdByParseId(string object_id)
-        {
-            return _context.users.FirstOrDefault(user => user.ParseUserId == object_id).Id;
-        }
+
     }
 }

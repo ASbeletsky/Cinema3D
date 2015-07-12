@@ -25,7 +25,7 @@ namespace VideoLib.WebUI
         public void ConfigureAuth(IAppBuilder app)
         {
             app.CreatePerOwinContext<AppIdentityContext>(AppIdentityContext.Create);
-            app.CreatePerOwinContext<UserManagerIntPK>(UserManagerIntPK.Create);
+            app.CreatePerOwinContext<MyUserManager>(MyUserManager.Create);
             app.CreatePerOwinContext<SignInManagerIntPK>(SignInManagerIntPK.Create);
             app.CreatePerOwinContext<IVideoLibRepository>(VideoLibRepository.GetRepository);
             app.CreatePerOwinContext<AuthServices>(AuthServices.Create);

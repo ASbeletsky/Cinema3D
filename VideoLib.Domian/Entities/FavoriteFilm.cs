@@ -14,7 +14,7 @@ namespace VideoLib.Domian.Entities
     
     public partial class FavoriteFilm
     {
-        public int users_Id { get; set; }
+        public string User_Id { get; set; }
         public int Film_Id { get; set; }
         public Nullable<System.DateTime> AdditionTime { get; set; }
     

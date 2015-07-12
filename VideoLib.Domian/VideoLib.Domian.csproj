@@ -117,13 +117,13 @@
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\Identity\IdentityContex.cs" />
-    <Compile Include="Entities\Identity\RoleIntPK.cs" />
+    <Compile Include="Entities\Identity\Role.cs" />
     <Compile Include="Entities\Identity\SingInManager.cs" />
-    <Compile Include="Entities\Identity\UserClaimIntPK.cs" />
+    <Compile Include="Entities\Identity\UserClaim.cs" />
     <Compile Include="Entities\Identity\UserIntPK.cs" />
-    <Compile Include="Entities\Identity\UserLoginIntPK.cs" />
+    <Compile Include="Entities\Identity\UserLogin.cs" />
     <Compile Include="Entities\Identity\UserManager.cs" />
-    <Compile Include="Entities\Identity\UserRoleIntPK.cs" />
+    <Compile Include="Entities\Identity\UserRole.cs" />
     <Compile Include="Entities\JsonResponse.cs" />
     <Compile Include="Entities\ProducerStaff.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
@@ -135,6 +135,9 @@
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\userlogins.cs">
+      <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\userroles.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\users.cs">

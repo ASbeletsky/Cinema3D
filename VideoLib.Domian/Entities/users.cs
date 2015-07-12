@@ -16,14 +16,14 @@ namespace VideoLib.Domian.Entities
     {
         public users()
         {
+            this.download = new HashSet<Download>();
             this.favoritefilms = new HashSet<FavoriteFilm>();
             this.userclaims = new HashSet<userclaims>();
             this.userlogins = new HashSet<userlogins>();
-            this.roles = new HashSet<roles>();
-            this.download = new HashSet<Download>();
+            this.userroles = new HashSet<userroles>();
         }
     
-        public int Id { get; set; }
+        public string Id { get; set; }
         public string Email { get; set; }
         public bool EmailConfirmed { get; set; }
         public string PasswordHash { get; set; }
@@ -36,12 +36,11 @@ namespace VideoLib.Domian.Entities
         public int AccessFailedCount { get; set; }
         public string Login { get; set; }
         public string Name { get; set; }
-        public string ParseUserId { get; set; }
     
+        public virtual ICollection<Download> download { get; set; }
         public virtual ICollection<FavoriteFilm> favoritefilms { get; set; }
         public virtual ICollection<userclaims> userclaims { get; set; }
         public virtual ICollection<userlogins> userlogins { get; set; }
-        public virtual ICollection<roles> roles { get; set; }
-        public virtual ICollection<Download> download { get; set; }
+        public virtual ICollection<userroles> userroles { get; set; }
     }
 }

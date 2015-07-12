@@ -3,42 +3,8 @@
   <EntityContainer Name="VideoLibMainContext" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Companies" EntityType="videolibdbModel.Company" />
     <EntitySet Name="Countries" EntityType="videolibdbModel.Country" />
-    <EntitySet Name="FavoriteFilms" EntityType="videolibdbModel.FavoriteFilm" />
     <EntitySet Name="Films" EntityType="videolibdbModel.Film" />
     <EntitySet Name="Genres" EntityType="videolibdbModel.Genre" />
-    <EntitySet Name="roles" EntityType="videolibdbModel.roles" />
-    <EntitySet Name="userclaims" EntityType="videolibdbModel.userclaims" />
-    <EntitySet Name="userlogins" EntityType="videolibdbModel.userlogins" />
-    <EntitySet Name="users" EntityType="videolibdbModel.users" />
-    <AssociationSet Name="fk_FavoriteFilms_Film1" Association="videolibdbModel.fk_FavoriteFilms_Film1">
-      <End Role="film" EntitySet="Films" />
-      <End Role="favoritefilms" EntitySet="FavoriteFilms" />
-    </AssociationSet>
-    <AssociationSet Name="fk_FavoriteFilms_users1" Association="videolibdbModel.fk_FavoriteFilms_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="favoritefilms" EntitySet="FavoriteFilms" />
-    </AssociationSet>
-    <AssociationSet Name="ApplicationUser_Claims" Association="videolibdbModel.ApplicationUser_Claims">
-      <End Role="users" EntitySet="users" />
-      <End Role="userclaims" EntitySet="userclaims" />
-    </AssociationSet>
-    <AssociationSet Name="ApplicationUser_Logins" Association="videolibdbModel.ApplicationUser_Logins">
-      <End Role="users" EntitySet="users" />
-      <End Role="userlogins" EntitySet="userlogins" />
-    </AssociationSet>
-    <AssociationSet Name="userroles" Association="videolibdbModel.userroles">
-      <End Role="users" EntitySet="users" />
-      <End Role="roles" EntitySet="roles" />
-    </AssociationSet>
-    <EntitySet Name="Downloads" EntityType="videolibdbModel.Download" />
-    <AssociationSet Name="fk_UserFilm_Film1" Association="videolibdbModel.fk_UserFilm_Film1">
-      <End Role="film" EntitySet="Films" />
-      <End Role="download" EntitySet="Downloads" />
-    </AssociationSet>
-    <AssociationSet Name="fk_UserFilm_users1" Association="videolibdbModel.fk_UserFilm_users1">
-      <End Role="users" EntitySet="users" />
-      <End Role="download" EntitySet="Downloads" />
-    </AssociationSet>
     <EntitySet Name="Desctiption" EntityType="videolibdbModel.Desctiption" />
     <EntitySet Name="ProducerStaff" EntityType="videolibdbModel.ProducerStaff" />
     <AssociationSet Name="fk_Desctiption_Company1" Association="videolibdbModel.fk_Desctiption_Company1">
@@ -62,6 +28,45 @@
       <End Role="producerstaff" EntitySet="ProducerStaff" />
     </AssociationSet>
     <EntitySet Name="AdditionData" EntityType="videolibdbModel.AdditionData" />
+    <EntitySet Name="Downloads" EntityType="videolibdbModel.Download" />
+    <EntitySet Name="FavoriteFilms" EntityType="videolibdbModel.FavoriteFilm" />
+    <EntitySet Name="userclaims" EntityType="videolibdbModel.userclaims" />
+    <EntitySet Name="userlogins" EntityType="videolibdbModel.userlogins" />
+    <EntitySet Name="users" EntityType="videolibdbModel.users" />
+    <AssociationSet Name="fk_UserFilm_Film1" Association="videolibdbModel.fk_UserFilm_Film1">
+      <End Role="Film" EntitySet="Films" />
+      <End Role="download" EntitySet="Downloads" />
+    </AssociationSet>
+    <AssociationSet Name="fk_UserFilm_users1" Association="videolibdbModel.fk_UserFilm_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="download" EntitySet="Downloads" />
+    </AssociationSet>
+    <AssociationSet Name="fk_FavoriteFilms_Film1" Association="videolibdbModel.fk_FavoriteFilms_Film1">
+      <End Role="Film" EntitySet="Films" />
+      <End Role="favoritefilms" EntitySet="FavoriteFilms" />
+    </AssociationSet>
+    <AssociationSet Name="fk_FavoriteFilms_users1" Association="videolibdbModel.fk_FavoriteFilms_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="favoritefilms" EntitySet="FavoriteFilms" />
+    </AssociationSet>
+    <AssociationSet Name="ApplicationUser_Claims" Association="videolibdbModel.ApplicationUser_Claims">
+      <End Role="users" EntitySet="users" />
+      <End Role="userclaims" EntitySet="userclaims" />
+    </AssociationSet>
+    <AssociationSet Name="ApplicationUser_Logins" Association="videolibdbModel.ApplicationUser_Logins">
+      <End Role="users" EntitySet="users" />
+      <End Role="userlogins" EntitySet="userlogins" />
+    </AssociationSet>
+    <EntitySet Name="roles" EntityType="videolibdbModel.roles" />
+    <EntitySet Name="userroles" EntityType="videolibdbModel.userroles" />
+    <AssociationSet Name="ApplicationUser_Roles" Association="videolibdbModel.ApplicationUser_Roles">
+      <End Role="users" EntitySet="users" />
+      <End Role="userroles" EntitySet="userroles" />
+    </AssociationSet>
+    <AssociationSet Name="rolesuserroles" Association="videolibdbModel.rolesuserroles">
+      <End Role="roles" EntitySet="roles" />
+      <End Role="userroles" EntitySet="userroles" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Company">
     <Key>
@@ -79,17 +84,6 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Country1" FromRole="country" ToRole="desctiption" />
   </EntityType>
-  <EntityType Name="FavoriteFilm">
-    <Key>
-      <PropertyRef Name="users_Id" />
-      <PropertyRef Name="Film_Id" />
-    </Key>
-    <Property Name="users_Id" Type="Int32" Nullable="false" />
-    <Property Name="Film_Id" Type="Int32" Nullable="false" />
-    <Property Name="AdditionTime" Type="DateTime" />
-    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="favoritefilms" ToRole="film" />
-    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="favoritefilms" ToRole="users" />
-  </EntityType>
   <EntityType Name="Film">
     <Key>
       <PropertyRef Name="Id" />
@@ -98,12 +92,12 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <Property Name="AdditionDate" Type="DateTime" />
     <Property Name="DownloadUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="film" ToRole="favoritefilms" />
-    <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="film" ToRole="download" />
     <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Film1" FromRole="film" ToRole="desctiption" />
     <NavigationProperty Name="producerstaff" Relationship="videolibdbModel.fk_ProducerStaff_Film1" FromRole="film" ToRole="producerstaff" />
     <Property Name="ImageSmallUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="ImageBigUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="Film" ToRole="download" />
+    <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="Film" ToRole="favoritefilms" />
   </EntityType>
   <EntityType Name="Genre">
     <Key>
@@ -113,158 +107,6 @@
     <Property Name="Name" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="desctiption" Relationship="videolibdbModel.fk_Desctiption_Genre1" FromRole="genre" ToRole="desctiption" />
   </EntityType>
-  <EntityType Name="roles">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="users" Relationship="videolibdbModel.userroles" FromRole="roles" ToRole="users" />
-  </EntityType>
-  <EntityType Name="userclaims">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <Property Name="ClaimType" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="ClaimValue" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="userclaims" ToRole="users" />
-  </EntityType>
-  <EntityType Name="userlogins">
-    <Key>
-      <PropertyRef Name="LoginProvider" />
-      <PropertyRef Name="ProviderKey" />
-      <PropertyRef Name="UserId" />
-    </Key>
-    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
-    <Property Name="UserId" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="userlogins" ToRole="users" />
-  </EntityType>
-  <EntityType Name="users">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
-    <Property Name="PasswordHash" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="SecurityStamp" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="PhoneNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
-    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
-    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
-    <Property Name="LockoutEndDateUtc" Type="DateTime" />
-    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
-    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="users" ToRole="favoritefilms" />
-    <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
-    <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
-    <NavigationProperty Name="roles" Relationship="videolibdbModel.userroles" FromRole="users" ToRole="roles" />
-    <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="users" ToRole="download" />
-    <Property Name="Login" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
-    <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
-    <Property Name="ParseUserId" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
-  </EntityType>
-  <Association Name="fk_FavoriteFilms_Film1">
-    <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="film">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="favoritefilms">
-        <PropertyRef Name="Film_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_FavoriteFilms_users1">
-    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="favoritefilms">
-        <PropertyRef Name="users_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ApplicationUser_Claims">
-    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.userclaims" Role="userclaims" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="userclaims">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="ApplicationUser_Logins">
-    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.userlogins" Role="userlogins" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="userlogins">
-        <PropertyRef Name="UserId" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="userroles">
-    <End Type="videolibdbModel.users" Role="users" Multiplicity="*" />
-    <End Type="videolibdbModel.roles" Role="roles" Multiplicity="*" />
-  </Association>
-  <EntityType Name="Download">
-    <Key>
-      <PropertyRef Name="User_Id" />
-      <PropertyRef Name="Film_Id" />
-    </Key>
-    <Property Name="User_Id" Type="Int32" Nullable="false" />
-    <Property Name="Film_Id" Type="Int32" Nullable="false" />
-    <Property Name="DownloadTime" Type="DateTime" />
-    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="download" ToRole="film" />
-    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="download" ToRole="users" />
-  </EntityType>
-  <Association Name="fk_UserFilm_Film1">
-    <End Type="videolibdbModel.Film" Role="film" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="film">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="download">
-        <PropertyRef Name="Film_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="fk_UserFilm_users1">
-    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
-      <OnDelete Action="Cascade" />
-    </End>
-    <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="users">
-        <PropertyRef Name="Id" />
-      </Principal>
-      <Dependent Role="download">
-        <PropertyRef Name="User_Id" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <EntityType Name="Desctiption">
     <Key>
       <PropertyRef Name="Film_Id" />
@@ -371,4 +213,198 @@
     <Property Name="Type" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
   </EntityType>
+  <EntityType Name="Download">
+    <Key>
+      <PropertyRef Name="User_Id" />
+      <PropertyRef Name="Film_Id" />
+    </Key>
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Film_Id" Type="Int32" Nullable="false" />
+    <Property Name="DownloadTime" Type="DateTime" />
+    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="download" ToRole="Film" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="download" ToRole="users" />
+  </EntityType>
+  <EntityType Name="FavoriteFilm">
+    <Key>
+      <PropertyRef Name="User_Id" />
+      <PropertyRef Name="Film_Id" />
+    </Key>
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Film_Id" Type="Int32" Nullable="false" />
+    <Property Name="AdditionTime" Type="DateTime" />
+    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="favoritefilms" ToRole="Film" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="favoritefilms" ToRole="users" />
+  </EntityType>
+  <EntityType Name="userclaims">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="ClaimType" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+    <Property Name="ClaimValue" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="userclaims" ToRole="users" />
+  </EntityType>
+  <EntityType Name="userlogins">
+    <Key>
+      <PropertyRef Name="LoginProvider" />
+      <PropertyRef Name="ProviderKey" />
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="LoginProvider" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="ProviderKey" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="userlogins" ToRole="users" />
+  </EntityType>
+  <EntityType Name="users">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="1073741823" FixedLength="false" Unicode="false" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="Login" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" MaxLength="45" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_users1" FromRole="users" ToRole="download" />
+    <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_users1" FromRole="users" ToRole="favoritefilms" />
+    <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
+    <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
+    <NavigationProperty Name="userroles" Relationship="videolibdbModel.ApplicationUser_Roles" FromRole="users" ToRole="userroles" />
+  </EntityType>
+  <Association Name="fk_UserFilm_Film1">
+    <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="download">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_UserFilm_users1">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.Download" Role="download" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="download">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_FavoriteFilms_Film1">
+    <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="favoritefilms">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_FavoriteFilms_users1">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.FavoriteFilm" Role="favoritefilms" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="favoritefilms">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ApplicationUser_Claims">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.userclaims" Role="userclaims" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="userclaims">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ApplicationUser_Logins">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.userlogins" Role="userlogins" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="userlogins">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="roles">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="userroles" Relationship="videolibdbModel.rolesuserroles" FromRole="roles" ToRole="userroles" />
+  </EntityType>
+  <EntityType Name="userroles">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="RoleId" />
+    </Key>
+    <Property Name="UserId" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="RoleId" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.ApplicationUser_Roles" FromRole="userroles" ToRole="users" />
+    <NavigationProperty Name="roles" Relationship="videolibdbModel.rolesuserroles" FromRole="userroles" ToRole="roles" />
+  </EntityType>
+  <Association Name="ApplicationUser_Roles">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.userroles" Role="userroles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="userroles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="rolesuserroles">
+    <End Type="videolibdbModel.roles" Role="roles" Multiplicity="1" />
+    <End Type="videolibdbModel.userroles" Role="userroles" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="roles">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="userroles">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

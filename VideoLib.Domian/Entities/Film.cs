@@ -16,8 +16,8 @@ namespace VideoLib.Domian.Entities
     {
         public Film()
         {
-            this.favoritefilms = new HashSet<FavoriteFilm>();
             this.download = new HashSet<Download>();
+            this.favoritefilms = new HashSet<FavoriteFilm>();
         }
     
         public int Id { get; set; }
@@ -27,9 +27,9 @@ namespace VideoLib.Domian.Entities
         public string ImageSmallUrl { get; set; }
         public string ImageBigUrl { get; set; }
     
-        public virtual ICollection<FavoriteFilm> favoritefilms { get; set; }
-        public virtual ICollection<Download> download { get; set; }
         public virtual Desctiption desctiption { get; set; }
         public virtual ProducerStaff producerstaff { get; set; }
+        public virtual ICollection<Download> download { get; set; }
+        public virtual ICollection<FavoriteFilm> favoritefilms { get; set; }
     }
 }

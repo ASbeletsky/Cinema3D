@@ -19,8 +19,8 @@ namespace VideoLib.Domian.Abstract
         IEnumerable<Company> Companies { get; }
         IEnumerable<FavoriteFilm> FavoriteFilms { get; }
         IEnumerable<AdditionData> AdditionData { get; }
-        bool AddFavoriteFilm(int user_id, int film_id);
-        bool RemoveFavoriteFilm(int user_id, int film_id);
+        bool AddFavoriteFilm(string user_id, int film_id);
+        bool RemoveFavoriteFilm(string user_id, int film_id);
         void AddNewFilm(Film film, Desctiption description, ProducerStaff staff);
 
         void EditFilm(Film film, Entities.Desctiption description, Entities.ProducerStaff staff);
@@ -30,7 +30,7 @@ namespace VideoLib.Domian.Abstract
 
         bool UpdateGenre(int id, string name);
 
-        bool AddDownload(int user_id, int film_id);
+        bool AddDownload(string user_id, int film_id);
 
         bool RemoveGenre(int id);
 
@@ -48,7 +48,6 @@ namespace VideoLib.Domian.Abstract
 
         bool RemoveCountry(int id);
 
-        void UpdateClaim(string claimType,string claimValue, int user_id);
-    
-        int GetIdByParseId(string object_id);}
+        void UpdateClaim(string claimType, string claimValue, string user_id);
+    }
 }

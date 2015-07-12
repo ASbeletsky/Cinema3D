@@ -10,20 +10,20 @@ using System.Threading.Tasks;
 
 namespace VideoLib.Domian.Entities.AuthEntities
 {
-    public class SignInManagerIntPK : SignInManager<UserIntPK, int>
+    public class SignInManagerIntPK : SignInManager<MyUser, string>
     {
-        public SignInManagerIntPK(UserManagerIntPK userManager, IAuthenticationManager authenticationManager)
+        public SignInManagerIntPK(MyUserManager userManager, IAuthenticationManager authenticationManager)
             : base(userManager, authenticationManager)
         { }
             
-        public override Task<ClaimsIdentity> CreateUserIdentityAsync(UserIntPK user)
+        public override Task<ClaimsIdentity> CreateUserIdentityAsync(MyUser user)
         {
-            return user.GenerateUserIdentityAsync((UserManagerIntPK)UserManager);
+            return user.GenerateUserIdentityAsync((MyUserManager)UserManager);
         }
 
         public static SignInManagerIntPK Create(IdentityFactoryOptions<SignInManagerIntPK> options, IOwinContext context)
         {
-            return new SignInManagerIntPK(context.GetUserManager<UserManagerIntPK>(), context.Authentication);
+            return new SignInManagerIntPK(context.GetUserManager<MyUserManager>(), context.Authentication);
         }
     }
 }

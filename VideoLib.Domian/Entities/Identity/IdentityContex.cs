@@ -9,7 +9,7 @@ using System.Data.Entity.ModelConfiguration.Conventions;
 
 namespace VideoLib.Domian.Entities.AuthEntities
 {
-    public class AppIdentityContext : IdentityDbContext<UserIntPK,RoleIntPK,int,UserLoginIntPK,UserRoleIntPK,UserClaimIntPK>
+    public class AppIdentityContext : IdentityDbContext<MyUser, MyRole, string, MyUserLogin,MyUserRole,MyUserClaim>
     {
         public AppIdentityContext()
             : base("IdentityDbContext")
@@ -26,20 +26,20 @@ namespace VideoLib.Domian.Entities.AuthEntities
 
 
              // Map Entities to their tables.
-             modelBuilder.Entity<UserIntPK>().ToTable("users");
-             modelBuilder.Entity<RoleIntPK>().ToTable("roles");
-             modelBuilder.Entity<UserClaimIntPK>().ToTable("userclaims");
-             modelBuilder.Entity<UserLoginIntPK>().ToTable("userlogins");
-             modelBuilder.Entity<UserRoleIntPK>().ToTable("userroles");
+             modelBuilder.Entity<MyUser>().ToTable("users");
+             modelBuilder.Entity<MyRole>().ToTable("roles");
+             modelBuilder.Entity<MyUserClaim>().ToTable("userclaims");
+             modelBuilder.Entity<MyUserLogin>().ToTable("userlogins");
+             modelBuilder.Entity<MyUserRole>().ToTable("userroles");
              // Set AutoIncrement-Properties
-             modelBuilder.Entity<UserIntPK>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-             modelBuilder.Entity<UserClaimIntPK>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-             modelBuilder.Entity<RoleIntPK>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+             //modelBuilder.Entity<MyUser>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+             //modelBuilder.Entity<MyUserClaim>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+             //modelBuilder.Entity<MyRole>().Property(r => r.Id).HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
              // Override some column mappings that do not match our default
              //modelBuilder.Entity<MyUser>().Property(r => r.PasswordHash).HasColumnName("Password");
-             modelBuilder.Entity<UserIntPK>().Property(r => r.UserName).HasColumnName("Login");
-             modelBuilder.Entity<UserIntPK>().Property(r => r.Name).HasColumnName("Name");
-             modelBuilder.Entity<UserIntPK>().Property(r => r.Parse_Id).HasColumnName("ParseUserId");
+             modelBuilder.Entity<MyUser>().Property(r => r.UserName).HasColumnName("Login");
+             modelBuilder.Entity<MyUser>().Property(r => r.Name).HasColumnName("Name");
+             
          }
          
     }

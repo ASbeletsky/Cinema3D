@@ -2,7 +2,7 @@
 
 namespace VideoLib.Domian.Entities.AuthEntities
 {
-    public class RoleIntPK : IdentityRole<int, UserRoleIntPK>
+    public class MyUserClaim : IdentityUserClaim
     {
     }
 }

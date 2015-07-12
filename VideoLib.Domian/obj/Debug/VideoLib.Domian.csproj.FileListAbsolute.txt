@@ -53,6 +53,6 @@ E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\bin\Debug\Microsoft.Owin.Se
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\bin\Debug\Microsoft.Owin.Security.Cookies.xml
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\bin\Debug\Microsoft.Owin.Security.OAuth.xml
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\bin\Debug\Newtonsoft.Json.xml
-E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\obj\Debug\VideoLib.Domian.csprojResolveAssemblyReference.cache
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\obj\Debug\VideoLib.Domian.dll
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\obj\Debug\VideoLib.Domian.pdb
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.Domian\obj\Debug\VideoLib.Domian.csprojResolveAssemblyReference.cache

@@ -30,9 +30,9 @@ namespace VideoLib.WebUI.Controllers
         {
             get { return HttpContext.GetOwinContext().Authentication; }
         }
-        private UserManagerIntPK UserManager
+        private MyUserManager UserManager
         {
-            get { return  HttpContext.GetOwinContext().GetUserManager<UserManagerIntPK>(); }
+            get { return  HttpContext.GetOwinContext().GetUserManager<MyUserManager>(); }
         }
         private SignInManagerIntPK SignInManager
         {
@@ -61,7 +61,7 @@ namespace VideoLib.WebUI.Controllers
             var parse_user = await ParseUser.Query.GetAsync(object_id);
             if (parse_user != null)
             {
-                var my_user = await UserManager.FindByParseIdAsync(object_id);
+                var my_user = await UserManager.FindByIdAsync(object_id);
                 if (my_user != null)
                 {
                     success = SetCurrentUser(AuthType.EmailPassword, my_user);
@@ -96,7 +96,7 @@ namespace VideoLib.WebUI.Controllers
             bool success = false;
              var fbLoginInfo = new UserLoginInfo("Facebook",fb_key);
 
-             UserIntPK my_user = await UserManager.FindByParseIdAsync(object_id);
+             MyUser my_user = await UserManager.FindByIdAsync(object_id);
              if (my_user != null)
              {
                  success = SetCurrentUser(AuthType.Facebook, my_user, access_token);
@@ -136,7 +136,7 @@ namespace VideoLib.WebUI.Controllers
         {
             bool success = false;
             var twLoginInfo = new UserLoginInfo("Twitter", tw_key);
-            UserIntPK my_user = await UserManager.FindByParseIdAsync(object_id);
+            MyUser my_user = await UserManager.FindByIdAsync(object_id);
             if (my_user != null)
             {
                 success = SetCurrentUser(AuthType.Twitter, my_user, access_token, access_token_secret);
@@ -176,12 +176,12 @@ namespace VideoLib.WebUI.Controllers
         
         private async Task<bool> RegisterUser(RegisterUserModel model)
         {
-            UserIntPK newUser = new UserIntPK
+            MyUser newUser = new MyUser
                {
+                   Id = model.Object_id,
                    Email = model.Email,
                    UserName = model.Login,
                    Name = model.Name,
-                   Parse_Id = model.Object_id
                };
 
             var createResult = await UserManager.CreateAsync(newUser);
@@ -202,7 +202,7 @@ namespace VideoLib.WebUI.Controllers
             return false;
         }
 
-        private bool SetCurrentUser(AuthType authType ,UserIntPK user, string access_token = null, string access_token_secret = null)
+        private bool SetCurrentUser(AuthType authType ,MyUser user, string access_token = null, string access_token_secret = null)
         {           
             try
             {

@@ -27,16 +27,17 @@ namespace VideoLib.Domian.Entities
     
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<FavoriteFilm> FavoriteFilms { get; set; }
         public virtual DbSet<Film> Films { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
-        public virtual DbSet<roles> roles { get; set; }
-        public virtual DbSet<userclaims> userclaims { get; set; }
-        public virtual DbSet<userlogins> userlogins { get; set; }
-        public virtual DbSet<users> users { get; set; }
-        public virtual DbSet<Download> Downloads { get; set; }
         public virtual DbSet<Desctiption> Desctiption { get; set; }
         public virtual DbSet<ProducerStaff> ProducerStaff { get; set; }
         public virtual DbSet<AdditionData> AdditionData { get; set; }
+        public virtual DbSet<Download> Downloads { get; set; }
+        public virtual DbSet<FavoriteFilm> FavoriteFilms { get; set; }
+        public virtual DbSet<userclaims> userclaims { get; set; }
+        public virtual DbSet<userlogins> userlogins { get; set; }
+        public virtual DbSet<users> users { get; set; }
+        public virtual DbSet<roles> roles { get; set; }
+        public virtual DbSet<userroles> userroles { get; set; }
     }
 }

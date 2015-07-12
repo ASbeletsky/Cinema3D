@@ -12,16 +12,12 @@ namespace VideoLib.Domian.Entities
     using System;
     using System.Collections.Generic;
     
-    public partial class roles
+    public partial class userroles
     {
-        public roles()
-        {
-            this.userroles = new HashSet<userroles>();
-        }
+        public string UserId { get; set; }
+        public string RoleId { get; set; }
     
-        public string Id { get; set; }
-        public string Name { get; set; }
-    
-        public virtual ICollection<userroles> userroles { get; set; }
+        public virtual users users { get; set; }
+        public virtual roles roles { get; set; }
     }
 }
