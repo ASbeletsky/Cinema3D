@@ -19,7 +19,7 @@ namespace VideoLib.WebUI.Controllers
     public class SearchController : Controller
     {
         private IVideoLibRepository _repository;
-        private string dataFolder = @"../../Abstract";
+        private string dataFolder = ".";
         private IVideoLibRepository Repository
         {
             get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
