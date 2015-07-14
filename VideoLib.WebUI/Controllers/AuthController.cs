@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using Microsoft.AspNet.Identity.Owin;
-using Owin;
 using VideoLib.Domian.Entities.AuthEntities;
 using VideoLib.WebUI.Models.Auth;
-using System.Net;
-using Newtonsoft.Json.Linq;
-using System.Net.Http;
 using TweetSharp;
 using Parse;
 using Facebook;
@@ -222,7 +216,8 @@ namespace VideoLib.WebUI.Controllers
             }
         }
 
-        public JsonResult GetPhoneImage()
+        //GET:Auth/GetBackgroundImage
+        public JsonResult GetBackgroundImage()
         {
             return Json(new
             {

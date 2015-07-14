@@ -1,18 +1,11 @@
 ﻿using System;
-
-using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using VideoLib.Domian.Concrete;
 using VideoLib.Domian.Entities;
 using VideoLib.Domian.Abstract;
 using VideoLib.WebUI.Models.Admin;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
-using Owin;
-using System.Diagnostics;
-using System.Data.Entity.Core.Objects;
 
 namespace VideoLib.WebUI.Controllers
 {

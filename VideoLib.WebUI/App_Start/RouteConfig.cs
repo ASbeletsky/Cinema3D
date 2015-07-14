@@ -74,6 +74,20 @@ namespace VideoLib.WebUI
             );
 
             routes.MapRoute(
+              name: "film_by_id",
+              url: "films/id={film_id}",
+              defaults: new { controller = "VideoLib", action = "FilmById", film_id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
+              name: "search",
+              url: "search",
+              defaults: new { controller = "Search", action = "OnSearch" }
+            );
+
+            
+
+            routes.MapRoute(
               name: "admin",
               url: "admin",
               defaults: new { controller = "Admin", action = "Index" }

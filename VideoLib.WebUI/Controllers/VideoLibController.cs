@@ -25,7 +25,7 @@ namespace VideoLib.WebUI.Controllers
         //GET: films
         public JsonResult AllFilmCollection()
         {
-            var Films = GetAllFilms(); 
+            var Films = GetFilms(x => x.Id > 0); 
             if(Films != null)
             {
                 var orderedFilms = Films.OrderBy(film => film.AdditionDate);
@@ -42,7 +42,7 @@ namespace VideoLib.WebUI.Controllers
         //GET: films/popular       
         public JsonResult PopularFilmCollection()
         {
-            var films = GetAllFilms();
+            var films = GetFilms( x => x.Id > 0);
             if(films != null)
             {
                 var popularFilms = films.Select(film => new
@@ -288,8 +288,22 @@ namespace VideoLib.WebUI.Controllers
                 }
             };
         }
+        //GET:films/id={film_id} 
+        public JsonResult FilmById(int film_id)
+        {
+            var Films = GetFilms(x => x.Id == film_id);
+            if (Films.First() != null)
+            {
+                return Json(Films.First(), JsonRequestBehavior.AllowGet);
+            }
+            return new JsonResult
+            {
+                Data = new {OK = false, ErrorId = 1, ErrorMessege = string.Format("Film with id {0} does not exist", film_id) },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        }
 
-        private IEnumerable<FilmViewModel> GetAllFilms()
+        private IEnumerable<FilmViewModel> GetFilms(Func<Film, bool> predicat)
         {
             var allFilms = (from film in Repository.Films
                             join descr in Repository.Desctiption
@@ -298,6 +312,7 @@ namespace VideoLib.WebUI.Controllers
                                 on descr.Genre_Id equals genre.Id
                             join company in Repository.Companies
                                 on descr.Company_Id equals company.Id
+                            where (predicat.Invoke(film))
                             select new FilmViewModel
                             {
                                 Id = film.Id,
@@ -313,6 +328,7 @@ namespace VideoLib.WebUI.Controllers
                                 companyId = company.Id,
                                 companyName = company.Name,
                             }).ToList();
+           
             return allFilms;
         }
         private IEnumerable<FilmViewModel> GetFilmsByGenre(int genre_id)
