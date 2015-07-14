@@ -24,6 +24,13 @@ namespace VideoLib.WebUI.Controllers
         {
             get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
         }
+        
+         protected override void Initialize(System.Web.Routing.RequestContext requestContext)
+          {
+            base.Initialize(requestContext);
+            dataFolder = Server.MapPath("~/Lucene");
+
+          }
 
         //Search/GetHint
         [HttpPost]
@@ -50,7 +57,7 @@ namespace VideoLib.WebUI.Controllers
         [HttpPost]
         public ActionResult OnSearch(string searchString)
         {
-            dataFolder = Server.MapPath("~/Lucene");
+            
             var finalQuery = new BooleanQuery();
             string[] terms = searchString.Split(new[] { " " }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -80,7 +87,7 @@ namespace VideoLib.WebUI.Controllers
         //Search/ReloadDocuments
         public ActionResult ReloadDocuments()
         {
-            dataFolder = Server.MapPath("~/Lucene");
+            
             var films = (from film in Repository.Films
                           join descr in Repository.Desctiption
                               on film.Id equals descr.Film_Id
