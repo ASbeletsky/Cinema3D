@@ -19,16 +19,22 @@ namespace VideoLib.WebUI.Controllers
     public class SearchController : Controller
     {
         private IVideoLibRepository _repository;
-        private string dataFolder = ".";
+        private string dataFolder;
         private IVideoLibRepository Repository
         {
             get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
         }
 
+        public SearchController() : base()
+        {            
+            dataFolder = Server.MapPath("~/Lucene");
+        }
+
         //Search/GetHint
         [HttpPost]
         public ActionResult GetHint(string term)       
-        {            
+        {
+            
             var seacher = new Seacher(dataFolder);                      
             WildcardQuery nameQuery = new WildcardQuery(new Term("Name", "*" + term + "*"));
             var Result = seacher.Search(nameQuery, 5);
