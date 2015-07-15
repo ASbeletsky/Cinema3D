@@ -14,18 +14,13 @@ using Newtonsoft.Json;
 
 namespace VideoLib.WebUI.Controllers
 {
-    public class VideoLibController : Controller
+    public class VideoLibController : BaseController
     {
-        private IVideoLibRepository _repository;
-        private IVideoLibRepository Repository
-        {
-            get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>();}
-        }        
-
+       
         //GET: films
         public JsonResult AllFilmCollection()
         {
-            var Films = GetFilms(x => x.Id > 0); 
+            var Films = GetFilms<Film>(x => x.Id > 0); 
             if(Films != null)
             {
                 var orderedFilms = Films.OrderBy(film => film.AdditionDate);
@@ -42,7 +37,7 @@ namespace VideoLib.WebUI.Controllers
         //GET: films/popular       
         public JsonResult PopularFilmCollection()
         {
-            var films = GetFilms( x => x.Id > 0);
+            var films = GetFilms<Film>( x => x.Id > 0);
             if(films != null)
             {
                 var popularFilms = films.Select(film => new
@@ -228,7 +223,7 @@ namespace VideoLib.WebUI.Controllers
             
             if (properties.genre_id > 0 )
             {
-                var filmsByGenre = GetFilmsByGenre(properties.genre_id);
+                var filmsByGenre = GetFilms<Desctiption>(descr => descr.Genre_Id == properties.genre_id);
                 if(filmsByGenre != null)
                 {
                     return Json(filmsByGenre, JsonRequestBehavior.AllowGet);
@@ -291,7 +286,7 @@ namespace VideoLib.WebUI.Controllers
         //GET:films/id={film_id} 
         public JsonResult FilmById(int film_id)
         {
-            var Films = GetFilms(x => x.Id == film_id);
+            var Films = GetFilms<Film>(x => x.Id == film_id);
             if (Films.First() != null)
             {
                 return Json(Films.First(), JsonRequestBehavior.AllowGet);
@@ -303,35 +298,8 @@ namespace VideoLib.WebUI.Controllers
             };
         }
 
-        private IEnumerable<FilmViewModel> GetFilms(Func<Film, bool> predicat)
-        {
-            var allFilms = (from film in Repository.Films
-                            join descr in Repository.Desctiption
-                                on film.Id equals descr.Film_Id
-                            join genre in Repository.Genres
-                                on descr.Genre_Id equals genre.Id
-                            join company in Repository.Companies
-                                on descr.Company_Id equals company.Id
-                            where (predicat.Invoke(film))
-                            select new FilmViewModel
-                            {
-                                Id = film.Id,
-                                Name = film.Name,
-                                ImageSmallUrl = film.ImageSmallUrl,
-                                ImageBigUrl = film.ImageBigUrl,
-                                IsFavorite = false,
-                                AdditionDate = film.AdditionDate.Value.Date.ToShortDateString(),
-                                DownloadUrl = film.DownloadUrl,
-                                Description = descr.Text,
-                                genreId = genre.Id,
-                                genreName = genre.Name,
-                                companyId = company.Id,
-                                companyName = company.Name,
-                            }).ToList();
-           
-            return allFilms;
-        }
-        private IEnumerable<FilmViewModel> GetFilmsByGenre(int genre_id)
+                
+        /*private IEnumerable<FilmViewModel> GetFilmsByGenre(int genre_id)
         {
             return (from film in Repository.Films
                     join descr in Repository.Desctiption
@@ -357,5 +325,6 @@ namespace VideoLib.WebUI.Controllers
                         companyName = company.Name,
                     }).ToList();
         }
+        */
     }
 }

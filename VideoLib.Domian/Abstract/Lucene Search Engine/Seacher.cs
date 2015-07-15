@@ -17,7 +17,7 @@ namespace VideoLib.Domian.Abstract.Lucene_Search_Engine
             seacher = new IndexSearcher(this.LuceneDirectory);
         }
 
-        public SearchResult Search(Query searchQuery, int maxHits, Sort sort = null)
+        public SearchResult Search(Query searchQuery, int maxHits, string NameField = "Name", Sort sort = null)
         {
             SearchResult result = new SearchResult();
             TopDocs hits = null;
@@ -36,7 +36,7 @@ namespace VideoLib.Domian.Abstract.Lucene_Search_Engine
                 result.SearchResultItems.Add(new SearchResultItem
                 {
                     Id = int.Parse(doctemp.Get("Id")),
-                    Name = doctemp.Get("Name"),
+                    Name = doctemp.Get(NameField),
                     Type = (DocumentType) Enum.Parse(typeof(DocumentType), doctemp.Get("Type"))
                 });
             }

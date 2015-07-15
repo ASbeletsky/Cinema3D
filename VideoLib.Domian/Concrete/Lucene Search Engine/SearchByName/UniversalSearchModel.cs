@@ -17,7 +17,6 @@ namespace VideoLib.Domian.Concrete.Lucene_Search_Engine.Universal
             set { name = value.ToLower(); }
         }
 
-        
 
     }
 

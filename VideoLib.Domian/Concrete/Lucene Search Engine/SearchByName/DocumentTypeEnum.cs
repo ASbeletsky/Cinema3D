@@ -8,8 +8,9 @@ namespace VideoLib.Domian.Concrete.Lucene_Search_Engine.Universal
 {
     public enum DocumentType
     {
-        Film = 1,
-        Genre,
-        Company
+        Film_Hint = 1,
+        Genre_Hint,
+        Company_Hint,
+        FilmDocument
     }
 }

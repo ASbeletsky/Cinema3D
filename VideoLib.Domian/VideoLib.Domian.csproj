@@ -142,6 +142,9 @@
     <Compile Include="Concrete\ConfigClasses\FacebookService.cs" />
     <Compile Include="Concrete\ConfigClasses\ParseService.cs" />
     <Compile Include="Concrete\ConfigClasses\TwitterService.cs" />
+    <Compile Include="Concrete\Lucene Search Engine\Film\FilmDocument.cs" />
+    <Compile Include="Concrete\Lucene Search Engine\Film\FilmSearchModel.cs" />
+    <Compile Include="Concrete\Lucene Search Engine\Film\FilmWriter.cs" />
     <Compile Include="Concrete\Lucene Search Engine\SearchByName\DocumentTypeEnum.cs" />
     <Compile Include="Concrete\Lucene Search Engine\SearchByName\UniversalDocument.cs" />
     <Compile Include="Concrete\Lucene Search Engine\SearchByName\UniversalWriter.cs" />

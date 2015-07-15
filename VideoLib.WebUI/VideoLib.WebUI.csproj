@@ -230,6 +230,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthController.cs" />
+    <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\VideoLibController.cs" />
     <Compile Include="Global.asax.cs">
@@ -277,6 +278,7 @@
     <Folder Include="App_Data\" />
     <Folder Include="Helpers\" />
     <Folder Include="Views\Admin\EditorTempates\" />
+    <Folder Include="Views\Base\" />
     <Folder Include="Views\Search\" />
   </ItemGroup>
   <ItemGroup>
