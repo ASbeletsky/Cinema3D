@@ -24,6 +24,11 @@ namespace VideoLib.Domian.Concrete
         {
             return new VideoLibRepository(); 
         }
+        public void Dispose()
+        {
+        }
+
+                                       #region Tables
         public IEnumerable<Film> Films 
         {
             get { return _context.Films as IEnumerable<Film>; }
@@ -65,10 +70,18 @@ namespace VideoLib.Domian.Concrete
         {
             get { return _context.AdditionData as IEnumerable<AdditionData>; }
         }
-        public void Dispose()
+        public IEnumerable<Comment> Comments
         {
-
+            get { return _context.Comments as IEnumerable<Comment>; }
         }
+        public IEnumerable<Rating> Rating
+        {
+            get { return _context.Rating as IEnumerable<Rating>; }
+        }
+
+                                        #endregion 
+
+                               #region Favorite Films Operations
 
         public bool AddFavoriteFilm(string user_id, int film_id)
         {            
@@ -100,6 +113,7 @@ namespace VideoLib.Domian.Concrete
             }
             return false;
         }
+                                        #endregion
 
         public bool AddDownload(string user_id, int film_id)
         {
@@ -119,7 +133,7 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
-
+                                       #region Film CRUD
         public void AddNewFilm(Film film, Desctiption description, ProducerStaff staff)
         {
             Film filmToAdd = new Film();
@@ -165,6 +179,10 @@ namespace VideoLib.Domian.Concrete
             }
         }
 
+                                                #endregion
+
+                                      #region Genre CRUD
+
         public void AddNewGenre(string name)
         {
             Genre newGenre = new Genre {Name = name};
@@ -197,7 +215,9 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
+                                                #endregion
 
+                                     #region Company CRUD
         public void AddNewCompany(string name)
         {
             Company newCompany = new Company { Name = name };
@@ -230,7 +250,9 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
+                                                #endregion
 
+                                      #region County CRUD
 
         public void AddNewCountry(string name)
         {
@@ -264,6 +286,7 @@ namespace VideoLib.Domian.Concrete
             return false;
         }
 
+                                            #endregion
         public void UpdateClaim(string claimType,string claimValue, string user_id)
         {
             var claimToUpdate = _context.userclaims.FirstOrDefault(claim=> claim.ClaimType == claimType && claim.UserId == user_id);
@@ -272,6 +295,119 @@ namespace VideoLib.Domian.Concrete
             _context.SaveChanges();
         }
 
+                                     #region Comment CRUD
+        public bool AddComment(string user_id, int film_id, string message)
+        {
+            var user = _context.users.Find(user_id);
+            try
+            {
+                Comment newComment = new Comment()
+                {
+                    Film_Id = film_id,
+                    User_Id = user_id,
+                    Text = message,
+                    AdditionData = DateTime.Now
+                };
+                _context.Comments.Add(newComment);
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }            
+        }
 
+        public bool EditComment(string user_id, int film_id, string message)
+        {
+            try
+            {
+                Comment currentComment = _context.Comments.FirstOrDefault(comment => comment.User_Id == user_id
+                                                                 && comment.Film_Id== film_id);
+                currentComment.Text = message;
+                currentComment.AdditionData = DateTime.Now;
+
+                _context.Entry<Comment>(currentComment).State = EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }           
+        }
+        public bool RemoveComment(string user_id, int film_id)
+        {
+            try
+            {
+                var removingComment = _context.Comments.FirstOrDefault(comment => comment.User_Id == user_id
+                                                                 && comment.Film_Id== film_id);
+                _context.Comments.Remove(removingComment);
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+                                     #endregion
+
+                                 #region Comments Like / Unlike
+
+        public bool LikeComment(int comment_id)
+        {
+            try
+            {
+                Comment currentComment = _context.Comments.Find(comment_id);
+                currentComment.Rating++;
+                _context.Entry<Comment>(currentComment).State = EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+        public bool UnlikeComment(int comment_id)
+        {
+            try
+            {
+                Comment currentComment = _context.Comments.Find(comment_id);
+                currentComment.Rating--;
+                _context.Entry<Comment>(currentComment).State = EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+                                                        #endregion
+
+                                   #region Rating Operations
+        public bool AddFilmRate(string user_id, int film_id, sbyte rate)
+        {
+            try
+            {
+                Rating newRate = new Rating
+                {
+                    Film_Id = film_id,
+                    User_Id = user_id,
+                    RatingValue = rate
+                };
+                _context.Rating.Add(newRate);
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+        public bool EditFilmRate(string user_id, int film_id, sbyte rate)
+        {
+            try
+            {
+                Rating currentRate;
+                try { currentRate = _context.Rating.Find(user_id, film_id); }
+                catch { currentRate = _context.Rating.FirstOrDefault(comment => comment.User_Id == user_id && comment.Film_Id == film_id); }
+                    
+                currentRate.RatingValue = rate;
+                _context.Entry<Rating>(currentRate).State = EntityState.Modified;
+                _context.SaveChanges();
+                return true;
+            }
+            catch { return false; }
+        }
+
+                                                #endregion
     }
 }

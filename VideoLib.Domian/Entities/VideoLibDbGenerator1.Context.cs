@@ -31,7 +31,6 @@ namespace VideoLib.Domian.Entities
         public virtual DbSet<Genre> Genres { get; set; }
         public virtual DbSet<Desctiption> Desctiption { get; set; }
         public virtual DbSet<ProducerStaff> ProducerStaff { get; set; }
-        public virtual DbSet<AdditionData> AdditionData { get; set; }
         public virtual DbSet<Download> Downloads { get; set; }
         public virtual DbSet<FavoriteFilm> FavoriteFilms { get; set; }
         public virtual DbSet<userclaims> userclaims { get; set; }
@@ -39,5 +38,8 @@ namespace VideoLib.Domian.Entities
         public virtual DbSet<users> users { get; set; }
         public virtual DbSet<roles> roles { get; set; }
         public virtual DbSet<userroles> userroles { get; set; }
+        public virtual DbSet<Comment> Comments { get; set; }
+        public virtual DbSet<AdditionData> AdditionData { get; set; }
+        public virtual DbSet<Rating> Rating { get; set; }
     }
 }

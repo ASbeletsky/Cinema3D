@@ -4,24 +4,23 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="29d2cd4ba0844ebe96a2eb0339955ef9" Name="Diagram1" ZoomLevel="95">
-        <EntityTypeShape EntityType="videolibdbModel.Company" Width="1.5" PointX="12.25" PointY="10.25" />
-        <EntityTypeShape EntityType="videolibdbModel.Country" Width="1.5" PointX="12.25" PointY="13.875" />
-        <EntityTypeShape EntityType="videolibdbModel.Film" Width="1.5" PointX="9" PointY="6.75" />
-        <EntityTypeShape EntityType="videolibdbModel.Genre" Width="1.5" PointX="12.25" PointY="12.125" />
-        <EntityTypeShape EntityType="videolibdbModel.Desctiption" Width="1.5" PointX="9" PointY="10.25" />
+      <Diagram DiagramId="29d2cd4ba0844ebe96a2eb0339955ef9" Name="Diagram1" ZoomLevel="62">
+        <EntityTypeShape EntityType="videolibdbModel.Company" Width="1.5" PointX="12.875" PointY="9.875" />
+        <EntityTypeShape EntityType="videolibdbModel.Country" Width="1.5" PointX="12.875" PointY="13.5" />
+        <EntityTypeShape EntityType="videolibdbModel.Film" Width="1.5" PointX="9" PointY="6.875" />
+        <EntityTypeShape EntityType="videolibdbModel.Genre" Width="1.5" PointX="12.875" PointY="11.75" />
+        <EntityTypeShape EntityType="videolibdbModel.Desctiption" Width="1.5" PointX="10.875" PointY="10.75" />
         <EntityTypeShape EntityType="videolibdbModel.ProducerStaff" Width="1.5" PointX="11.25" PointY="7" />
         <AssociationConnector Association="videolibdbModel.fk_Desctiption_Company1" />
         <AssociationConnector Association="videolibdbModel.fk_Desctiption_Country1" />
         <AssociationConnector Association="videolibdbModel.fk_Desctiption_Film1" />
         <AssociationConnector Association="videolibdbModel.fk_Desctiption_Genre1" />
         <AssociationConnector Association="videolibdbModel.fk_ProducerStaff_Film1" />
-        <EntityTypeShape EntityType="videolibdbModel.AdditionData" Width="1.5" PointX="9" PointY="4.375" />
-        <EntityTypeShape EntityType="videolibdbModel.Download" Width="1.5" PointX="6.875" PointY="8.75" />
-        <EntityTypeShape EntityType="videolibdbModel.FavoriteFilm" Width="1.5" PointX="6.875" PointY="6.25" />
+        <EntityTypeShape EntityType="videolibdbModel.Download" Width="1.5" PointX="6.875" PointY="6.375" />
+        <EntityTypeShape EntityType="videolibdbModel.FavoriteFilm" Width="1.5" PointX="6.875" PointY="8.75" />
         <EntityTypeShape EntityType="videolibdbModel.userclaims" Width="1.5" PointX="0.75" PointY="8.875" />
         <EntityTypeShape EntityType="videolibdbModel.userlogins" Width="1.5" PointX="0.75" PointY="6.625" />
-        <EntityTypeShape EntityType="videolibdbModel.users" Width="1.5" PointX="4.5" PointY="6.5" />
+        <EntityTypeShape EntityType="videolibdbModel.users" Width="1.5" PointX="4.5" PointY="6.375" />
         <AssociationConnector Association="videolibdbModel.fk_UserFilm_Film1" />
         <AssociationConnector Association="videolibdbModel.fk_UserFilm_users1" />
         <AssociationConnector Association="videolibdbModel.fk_FavoriteFilms_Film1" />
@@ -32,6 +31,13 @@
         <EntityTypeShape EntityType="videolibdbModel.userroles" Width="1.5" PointX="3.25" PointY="12" />
         <AssociationConnector Association="videolibdbModel.ApplicationUser_Roles" />
         <AssociationConnector Association="videolibdbModel.rolesuserroles" />
+        <EntityTypeShape EntityType="videolibdbModel.Comment" Width="1.5" PointX="6.875" PointY="11.125" />
+        <AssociationConnector Association="videolibdbModel.fk_Comment_Film1" />
+        <AssociationConnector Association="videolibdbModel.fk_Comment_users1" />
+        <EntityTypeShape EntityType="videolibdbModel.AdditionData" Width="1.5" PointX="11.25" PointY="4.75" />
+        <EntityTypeShape EntityType="videolibdbModel.Rating" Width="1.5" PointX="6.875" PointY="4" />
+        <AssociationConnector Association="videolibdbModel.fk_Rating_Film1" />
+        <AssociationConnector Association="videolibdbModel.fk_Rating_users1" />
         </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

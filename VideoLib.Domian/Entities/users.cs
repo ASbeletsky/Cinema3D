@@ -21,6 +21,8 @@ namespace VideoLib.Domian.Entities
             this.userclaims = new HashSet<userclaims>();
             this.userlogins = new HashSet<userlogins>();
             this.userroles = new HashSet<userroles>();
+            this.comment = new HashSet<Comment>();
+            this.rating = new HashSet<Rating>();
         }
     
         public string Id { get; set; }
@@ -42,5 +44,7 @@ namespace VideoLib.Domian.Entities
         public virtual ICollection<userclaims> userclaims { get; set; }
         public virtual ICollection<userlogins> userlogins { get; set; }
         public virtual ICollection<userroles> userroles { get; set; }
+        public virtual ICollection<Comment> comment { get; set; }
+        public virtual ICollection<Rating> rating { get; set; }
     }
 }

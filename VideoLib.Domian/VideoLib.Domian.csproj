@@ -152,6 +152,9 @@
     <Compile Include="Entities\AdditionData.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Comment.cs">
+      <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Company.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
@@ -183,6 +186,9 @@
     <Compile Include="Entities\Identity\UserRole.cs" />
     <Compile Include="Concrete\Lucene Search Engine\SearchByName\UniversalSearchModel.cs" />
     <Compile Include="Entities\ProducerStaff.cs">
+      <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Entities\Rating.cs">
       <DependentUpon>VideoLibDbGenerator1.tt</DependentUpon>
     </Compile>
     <Compile Include="Entities\roles.cs">

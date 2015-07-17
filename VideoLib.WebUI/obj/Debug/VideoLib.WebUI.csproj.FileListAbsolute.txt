@@ -168,3 +168,8 @@ E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Lucene.Net.Contrib.Snowb
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Lucene.Net.Contrib.Snowball.xml
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Lucene.Net.Contrib.SpellChecker.pdb
 E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Lucene.Net.Contrib.SpellChecker.xml
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Antlr3.Runtime.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\System.Web.Optimization.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\WebGrease.dll
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\Antlr3.Runtime.pdb
+E:\Workrocks\VideoLib\VideoLibServer\VideoLib.WebUI\bin\System.Web.Optimization.xml

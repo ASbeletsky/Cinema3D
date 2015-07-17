@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using Newtonsoft.Json;
+using VideoLib.WebUI.Models.Comment;
 
 namespace VideoLib.WebUI.Controllers
 {
@@ -216,14 +217,12 @@ namespace VideoLib.WebUI.Controllers
             };
         }
 
-        //POST:films/by_genre
-        public JsonResult FilmCollectionByGenre(GenreJson properties)
-        {
-            
-            
-            if (properties.genre_id > 0 )
+        //GET:films/genre_id={genre_id}
+        public JsonResult FilmCollectionByGenre(int genre_id)
+        {                        
+            if (genre_id > 0 )
             {
-                var filmsByGenre = GetFilms<Desctiption>(descr => descr.Genre_Id == properties.genre_id);
+                var filmsByGenre = GetFilms<Desctiption>(descr => descr.Genre_Id == genre_id);
                 if(filmsByGenre != null)
                 {
                     return Json(filmsByGenre, JsonRequestBehavior.AllowGet);
@@ -234,8 +233,9 @@ namespace VideoLib.WebUI.Controllers
                         {
                             OK = false,
                             ErrorId = 1,
-                            ErrorMessege = string.Format("Films collection by genre with id {0} is empty", properties.genre_id)
-                        }
+                            ErrorMessege = string.Format("Films collection by genre with id {0} is empty", genre_id)
+                        },
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
             }
             return new JsonResult
@@ -244,8 +244,9 @@ namespace VideoLib.WebUI.Controllers
                 {
                     OK = false,
                     ErrorId = 2,
-                    ErrorMessege = string.Format("Genre with id {0} doesn't exist ", properties.genre_id)
-                }
+                    ErrorMessege = string.Format("Genre with id {0} doesn't exist ", genre_id)
+                },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
         
@@ -298,33 +299,48 @@ namespace VideoLib.WebUI.Controllers
             };
         }
 
-                
-        /*private IEnumerable<FilmViewModel> GetFilmsByGenre(int genre_id)
+        //GET:films/id={film_id}/comments
+        public ActionResult GetAllComents(int film_id)
         {
-            return (from film in Repository.Films
-                    join descr in Repository.Desctiption
-                         on film.Id equals descr.Film_Id
-                    join genre in Repository.Genres
-                         on descr.Genre_Id equals genre.Id
-                    join company in Repository.Companies
-                         on descr.Company_Id equals company.Id
-                    where (descr.Genre_Id == genre_id)
-                    select new FilmViewModel
-                    {
-                        Id = film.Id,
-                        Name = film.Name,
-                        ImageSmallUrl = film.ImageSmallUrl,
-                        ImageBigUrl = film.ImageBigUrl,
-                        IsFavorite = false,
-                        AdditionDate = film.AdditionDate.Value.Date.ToShortDateString(),
-                        DownloadUrl = film.DownloadUrl,
-                        Description = descr.Text,
-                        genreId = genre.Id,
-                        genreName = genre.Name,
-                        companyId = company.Id,
-                        companyName = company.Name,
-                    }).ToList();
-        }
-        */
+            if(film_id > 0)
+            {
+                var comments = (from comment in Repository.Comments
+                                join rating in Repository.Rating
+                                    on new { comment.Film_Id, comment.User_Id } equals new {rating.Film_Id, rating.User_Id }
+                                                                                            into FullRating
+                                from fullRating in FullRating.DefaultIfEmpty()
+                                    where (comment.Film_Id == film_id)
+                                join user in Repository.Users
+                                    on comment.User_Id equals user.Id
+                                select new CommentViewModel
+                                {
+                                    Id = comment.Id,
+                                    Author = user.Name ?? user.Login,
+                                    AuthorId = user.Id,
+                                    Message = comment.Text,
+                                    AdditionTime = comment.AdditionData.Value.ToString("dd.MM.yyyy"),
+                                    CommentRating = comment.Rating,
+                                    FilmRating = (fullRating == null) ? (sbyte)0 : fullRating.RatingValue
+                                }).OrderByDescending(comment => comment.CommentRating)
+                                  .ThenBy(comment => comment.AdditionTime).Distinct().ToList();
+
+                if(comments != null)
+                {
+                    return Json(comments, JsonRequestBehavior.AllowGet);
+                }
+                return new JsonResult
+                {
+                    Data = new { OK = false, ErrorId = 1, ErrorMessege = string.Format("film with id \"{0}\" does not have comments", film_id) },
+                    JsonRequestBehavior= JsonRequestBehavior.AllowGet
+                };
+            }
+            return new JsonResult
+            {
+                Data = new { OK = false, ErrorId = 2, ErrorMessege = string.Format("film id \"{0}\" is null or film does not exist", film_id) },
+                JsonRequestBehavior = JsonRequestBehavior.AllowGet
+            };
+        } 
+ 
+
     }
 }

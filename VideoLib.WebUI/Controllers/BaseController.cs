@@ -11,6 +11,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Owin;
 using Newtonsoft.Json;
+using System.Globalization;
 
 namespace VideoLib.WebUI.Controllers
 {
@@ -35,16 +36,17 @@ namespace VideoLib.WebUI.Controllers
                             {
                                 Id = film.Id,
                                 Name = film.Name,
+                                Rating = film.Rating,
                                 ImageSmallUrl = film.ImageSmallUrl,
                                 ImageBigUrl = film.ImageBigUrl,
                                 IsFavorite = false,
-                                AdditionDate = film.AdditionDate.Value.Date.ToShortDateString(),
+                                AdditionDate = film.AdditionDate.Value.Date.ToString("dd MMMMMMM yyyy", CultureInfo.GetCultureInfo("ru")),
                                 DownloadUrl = film.DownloadUrl,
                                 Description = descr.Text,
                                 genreId = genre.Id,
                                 genreName = genre.Name,
                                 companyId = company.Id,
-                                companyName = company.Name,
+                                companyName = company.Name                               
                             }).ToList();
 
             return allFilms;

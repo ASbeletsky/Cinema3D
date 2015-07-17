@@ -19,13 +19,7 @@ namespace VideoLib.WebUI.Models.VideoLib
         public string DownloadUrl { get; set; }
         public string ImageSmallUrl { get; set; }
         public string ImageBigUrl { get; set; }
-
-
+        public float Rating { get; set; }
     }
 
-    public class GenreViewModel
-    {
-        public int Id { get; set; }
-        public string Name { get; set; }
-    }
 }

@@ -1,12 +1,23 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Schema Namespace="Хранилище videolibdbModel" Provider="MySql.Data.MySqlClient" ProviderManifestToken="5.6" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-  <EntityType Name="additiodata">
+  <EntityType Name="additiondata">
     <Key>
       <PropertyRef Name="Id" />
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Type" Type="varchar" MaxLength="256" />
     <Property Name="Value" Type="varchar" MaxLength="256" />
+  </EntityType>
+  <EntityType Name="comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="Text" Type="text" Nullable="false" />
+    <Property Name="AdditionData" Type="datetime" Precision="0" />
+    <Property Name="Rating" Type="tinyint" Nullable="false" />
+    <Property Name="users_Id" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="Film_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="company">
     <Key>
@@ -58,6 +69,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Name" Type="varchar" MaxLength="45" Nullable="false" />
+    <Property Name="Rating" Type="float" Nullable="false" />
     <Property Name="AdditionDate" Type="date" />
     <Property Name="DownloadUrl" Type="varchar" MaxLength="256" />
     <Property Name="ImageSmallUrl" Type="varchar" MaxLength="256" />
@@ -80,6 +92,15 @@
     <Property Name="operator" Type="varchar" MaxLength="45" />
     <Property Name="composer" Type="varchar" MaxLength="45" />
     <Property Name="painter" Type="varchar" MaxLength="45" />
+  </EntityType>
+  <EntityType Name="rating">
+    <Key>
+      <PropertyRef Name="User_Id" />
+      <PropertyRef Name="Film_Id" />
+    </Key>
+    <Property Name="RatingValue" Type="tinyint" Nullable="false" />
+    <Property Name="User_Id" Type="varchar" MaxLength="128" Nullable="false" />
+    <Property Name="Film_Id" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="roles">
     <Key>
@@ -172,6 +193,34 @@
       </Principal>
       <Dependent Role="userroles">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Comment_film1">
+    <End Role="film" Type="Self.film" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="comment" Type="Self.comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Comment_users1">
+    <End Role="users" Type="Self.users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="comment" Type="Self.comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="users_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -273,6 +322,34 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="fk_Rating_Film1">
+    <End Role="film" Type="Self.film" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="rating" Type="Self.rating" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rating">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Rating_users1">
+    <End Role="users" Type="Self.users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Role="rating" Type="Self.rating" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rating">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="fk_UserFilm_Film1">
     <End Role="film" Type="Self.film" Multiplicity="1">
       <OnDelete Action="Cascade" />
@@ -302,7 +379,8 @@
     </ReferentialConstraint>
   </Association>
   <EntityContainer Name="Хранилище videolibdbModelContainer">
-    <EntitySet Name="additiodata" EntityType="Self.additiodata" Schema="videolibdb" store:Type="Tables" />
+    <EntitySet Name="additiondata" EntityType="Self.additiondata" Schema="videolibdb" store:Type="Tables" />
+    <EntitySet Name="comment" EntityType="Self.comment" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="company" EntityType="Self.company" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="country" EntityType="Self.country" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="desctiption" EntityType="Self.desctiption" Schema="videolibdb" store:Type="Tables" />
@@ -311,6 +389,7 @@
     <EntitySet Name="film" EntityType="Self.film" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="genre" EntityType="Self.genre" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="producerstaff" EntityType="Self.producerstaff" Schema="videolibdb" store:Type="Tables" />
+    <EntitySet Name="rating" EntityType="Self.rating" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="roles" EntityType="Self.roles" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="userclaims" EntityType="Self.userclaims" Schema="videolibdb" store:Type="Tables" />
     <EntitySet Name="userlogins" EntityType="Self.userlogins" Schema="videolibdb" store:Type="Tables" />
@@ -327,6 +406,14 @@
     <AssociationSet Name="ApplicationUser_Roles" Association="Self.ApplicationUser_Roles">
       <End Role="users" EntitySet="users" />
       <End Role="userroles" EntitySet="userroles" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Comment_film1" Association="Self.fk_Comment_film1">
+      <End Role="film" EntitySet="film" />
+      <End Role="comment" EntitySet="comment" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Comment_users1" Association="Self.fk_Comment_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="comment" EntitySet="comment" />
     </AssociationSet>
     <AssociationSet Name="fk_Desctiption_Company1" Association="Self.fk_Desctiption_Company1">
       <End Role="company" EntitySet="company" />
@@ -355,6 +442,14 @@
     <AssociationSet Name="fk_ProducerStaff_Film1" Association="Self.fk_ProducerStaff_Film1">
       <End Role="film" EntitySet="film" />
       <End Role="producerstaff" EntitySet="producerstaff" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Rating_Film1" Association="Self.fk_Rating_Film1">
+      <End Role="film" EntitySet="film" />
+      <End Role="rating" EntitySet="rating" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Rating_users1" Association="Self.fk_Rating_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="rating" EntitySet="rating" />
     </AssociationSet>
     <AssociationSet Name="fk_UserFilm_Film1" Association="Self.fk_UserFilm_Film1">
       <End Role="film" EntitySet="film" />

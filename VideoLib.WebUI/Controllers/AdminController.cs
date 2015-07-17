@@ -18,7 +18,12 @@ namespace VideoLib.WebUI.Controllers
             get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
         }
 
-   
+        public ActionResult Main()
+        {
+            return View();
+        }
+
+
         // GET: Admin
         public ActionResult Index()
         {

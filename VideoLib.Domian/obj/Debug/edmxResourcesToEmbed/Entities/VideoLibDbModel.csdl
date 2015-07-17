@@ -27,7 +27,6 @@
       <End Role="film" EntitySet="Films" />
       <End Role="producerstaff" EntitySet="ProducerStaff" />
     </AssociationSet>
-    <EntitySet Name="AdditionData" EntityType="videolibdbModel.AdditionData" />
     <EntitySet Name="Downloads" EntityType="videolibdbModel.Download" />
     <EntitySet Name="FavoriteFilms" EntityType="videolibdbModel.FavoriteFilm" />
     <EntitySet Name="userclaims" EntityType="videolibdbModel.userclaims" />
@@ -67,6 +66,25 @@
       <End Role="roles" EntitySet="roles" />
       <End Role="userroles" EntitySet="userroles" />
     </AssociationSet>
+    <EntitySet Name="Comments" EntityType="videolibdbModel.Comment" />
+    <AssociationSet Name="fk_Comment_Film1" Association="videolibdbModel.fk_Comment_Film1">
+      <End Role="Film" EntitySet="Films" />
+      <End Role="comment" EntitySet="Comments" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Comment_users1" Association="videolibdbModel.fk_Comment_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="comment" EntitySet="Comments" />
+    </AssociationSet>
+    <EntitySet Name="AdditionData" EntityType="videolibdbModel.AdditionData" />
+    <EntitySet Name="Rating" EntityType="videolibdbModel.Rating" />
+    <AssociationSet Name="fk_Rating_Film1" Association="videolibdbModel.fk_Rating_Film1">
+      <End Role="Film" EntitySet="Films" />
+      <End Role="rating" EntitySet="Rating" />
+    </AssociationSet>
+    <AssociationSet Name="fk_Rating_users1" Association="videolibdbModel.fk_Rating_users1">
+      <End Role="users" EntitySet="users" />
+      <End Role="rating" EntitySet="Rating" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="Company">
     <Key>
@@ -98,6 +116,9 @@
     <Property Name="ImageBigUrl" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="Film" ToRole="download" />
     <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="Film" ToRole="favoritefilms" />
+    <NavigationProperty Name="comment" Relationship="videolibdbModel.fk_Comment_Film1" FromRole="Film" ToRole="comment" />
+    <Property Name="Rating" Type="Single" Nullable="false" />
+    <NavigationProperty Name="rating" Relationship="videolibdbModel.fk_Rating_Film1" FromRole="Film" ToRole="rating" />
   </EntityType>
   <EntityType Name="Genre">
     <Key>
@@ -205,14 +226,6 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
-  <EntityType Name="AdditionData">
-    <Key>
-      <PropertyRef Name="Id" />
-    </Key>
-    <Property Name="Id" Type="Int32" Nullable="false" />
-    <Property Name="Type" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-    <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
-  </EntityType>
   <EntityType Name="Download">
     <Key>
       <PropertyRef Name="User_Id" />
@@ -278,6 +291,8 @@
     <NavigationProperty Name="userclaims" Relationship="videolibdbModel.ApplicationUser_Claims" FromRole="users" ToRole="userclaims" />
     <NavigationProperty Name="userlogins" Relationship="videolibdbModel.ApplicationUser_Logins" FromRole="users" ToRole="userlogins" />
     <NavigationProperty Name="userroles" Relationship="videolibdbModel.ApplicationUser_Roles" FromRole="users" ToRole="userroles" />
+    <NavigationProperty Name="comment" Relationship="videolibdbModel.fk_Comment_users1" FromRole="users" ToRole="comment" />
+    <NavigationProperty Name="rating" Relationship="videolibdbModel.fk_Rating_users1" FromRole="users" ToRole="rating" />
   </EntityType>
   <Association Name="fk_UserFilm_Film1">
     <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1">
@@ -404,6 +419,90 @@
       </Principal>
       <Dependent Role="userroles">
         <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="Comment">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Film_Id" Type="Int32" Nullable="false" />
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Text" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
+    <Property Name="AdditionData" Type="DateTime" />
+    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_Comment_Film1" FromRole="comment" ToRole="Film" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_Comment_users1" FromRole="comment" ToRole="users" />
+    <Property Name="Rating" Type="SByte" Nullable="false" />
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+  </EntityType>
+  <Association Name="fk_Comment_Film1">
+    <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1" />
+    <End Type="videolibdbModel.Comment" Role="comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Comment_users1">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1" />
+    <End Type="videolibdbModel.Comment" Role="comment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="comment">
+        <PropertyRef Name="User_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="AdditionData">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Type" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+    <Property Name="Value" Type="String" MaxLength="256" FixedLength="false" Unicode="false" />
+  </EntityType>
+  <EntityType Name="Rating">
+    <Key>
+      <PropertyRef Name="User_Id" />
+      <PropertyRef Name="Film_Id" />
+    </Key>
+    <Property Name="RatingValue" Type="SByte" Nullable="false" />
+    <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
+    <Property Name="Film_Id" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="film" Relationship="videolibdbModel.fk_Rating_Film1" FromRole="rating" ToRole="Film" />
+    <NavigationProperty Name="users" Relationship="videolibdbModel.fk_Rating_users1" FromRole="rating" ToRole="users" />
+  </EntityType>
+  <Association Name="fk_Rating_Film1">
+    <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.Rating" Role="rating" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Film">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rating">
+        <PropertyRef Name="Film_Id" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="fk_Rating_users1">
+    <End Type="videolibdbModel.users" Role="users" Multiplicity="1">
+      <OnDelete Action="Cascade" />
+    </End>
+    <End Type="videolibdbModel.Rating" Role="rating" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="users">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="rating">
+        <PropertyRef Name="User_Id" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
