@@ -79,7 +79,7 @@ namespace VideoLib.WebUI.Controllers
                         {
                             OK = false,
                             ErrorId = 1,
-                            ErrorMessege = string.Format("Film with id \"{0}\" does not have comments from user with id \"{1}\"", film_id, object_id)
+                            ErrorMessege = string.Format("Film with id \"{0}\" does not have rating vote from user with id \"{1}\"", film_id, object_id)
                         }
                     };
             }                             
@@ -93,5 +93,49 @@ namespace VideoLib.WebUI.Controllers
                 },
             };
         }
+
+        //GET:rating/film_id={film_id}/info
+        public ActionResult FullFilmRatingInfo(int film_id)
+        {
+            if(film_id > 0)
+            {
+                var rates = Repository.Rating.Where(rating => rating.Film_Id == film_id).ToList();
+                if(rates != null)
+                { 
+                    return new JsonResult
+                    {
+                        Data = new
+                        {
+                            FiveStars = rates.Where(r => r.RatingValue == 5).Count(),
+                            FourStars = rates.Where(r => r.RatingValue == 4).Count(),
+                            ThreeStars = rates.Where(r => r.RatingValue == 3).Count(),
+                            TwoStars = rates.Where(r => r.RatingValue == 2).Count(),
+                            OneStar = rates.Where(r => r.RatingValue == 1).Count(),
+                            AllVotes = rates.Where(r => r.RatingValue > 0).Count()
+                        },
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+                return new JsonResult
+                {
+                    Data = new
+                    {
+                        OK = false,
+                        ErrorId = 1,
+                        ErrorMessege = string.Format("Film with id \"{0}\" does not have rating votes", film_id)
+                    }
+                };
+            }
+            return new JsonResult
+            {
+                Data = new
+                {
+                    OK = false,
+                    ErrorId = 2,
+                    ErrorMessege = string.Format("Film id has incorrect value")
+                },
+            };
+        }
+
     }
 }

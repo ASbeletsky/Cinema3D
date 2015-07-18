@@ -387,6 +387,7 @@ namespace VideoLib.Domian.Concrete
                 };
                 _context.Rating.Add(newRate);
                 _context.SaveChanges();
+                SetNewRatingToFilm(2, film_id);
                 return true;
             }
             catch { return false; }
@@ -403,11 +404,29 @@ namespace VideoLib.Domian.Concrete
                 currentRate.RatingValue = rate;
                 _context.Entry<Rating>(currentRate).State = EntityState.Modified;
                 _context.SaveChanges();
+                SetNewRatingToFilm(2, film_id);
                 return true;
             }
             catch { return false; }
         }
 
+        public void SetNewRatingToFilm(int n, int film_id)
+        {
+            int all_votes = _context.Rating.Where(r => r.Film_Id == film_id && r.RatingValue > 0).Count();
+            int rating_votes_sum = _context.Rating.Where(r => r.Film_Id == film_id && r.RatingValue > 0)
+                                                  .Sum(r => r.RatingValue);
+            float new_rating;
+            if(all_votes < 10)
+                new_rating = rating_votes_sum / all_votes;
+            else
+                new_rating = (rating_votes_sum + 3 * n) / (all_votes + n);
+
+            Film currect = _context.Films.Find(film_id);
+            currect.Rating = new_rating;
+            _context.Entry<Film>(currect).State = EntityState.Modified;
+            _context.SaveChanges();
+        }
+            
                                                 #endregion
     }
 }

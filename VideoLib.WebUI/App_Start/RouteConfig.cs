@@ -140,6 +140,12 @@ namespace VideoLib.WebUI
             );
 
             routes.MapRoute(
+               name: null,
+               url: "rating/film_id={film_id}/info",
+               defaults: new { controller = "Rating", action = "FullFilmRatingInfo", film_id = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/",
                 defaults: new { controller = "Admin", action = "Main" }
