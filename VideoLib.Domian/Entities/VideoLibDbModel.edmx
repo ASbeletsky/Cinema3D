@@ -586,7 +586,7 @@
           <NavigationProperty Name="download" Relationship="videolibdbModel.fk_UserFilm_Film1" FromRole="Film" ToRole="download" />
           <NavigationProperty Name="favoritefilms" Relationship="videolibdbModel.fk_FavoriteFilms_Film1" FromRole="Film" ToRole="favoritefilms" />
           <NavigationProperty Name="comment" Relationship="videolibdbModel.fk_Comment_Film1" FromRole="Film" ToRole="comment" />
-          <Property Name="Rating" Type="Single" Nullable="false" />
+          <Property Name="RatingValue" Type="Single" Nullable="false" />
           <NavigationProperty Name="rating" Relationship="videolibdbModel.fk_Rating_Film1" FromRole="Film" ToRole="rating" />
         </EntityType>
         <EntityType Name="Genre">
@@ -1000,7 +1000,7 @@
           <EntitySetMapping Name="Films">
             <EntityTypeMapping TypeName="videolibdbModel.Film">
               <MappingFragment StoreEntitySet="film">
-                <ScalarProperty Name="Rating" ColumnName="Rating" />
+                <ScalarProperty Name="RatingValue" ColumnName="Rating" />
                 <ScalarProperty Name="ImageBigUrl" ColumnName="ImageBigUrl" />
                 <ScalarProperty Name="ImageSmallUrl" ColumnName="ImageSmallUrl" />
                 <ScalarProperty Name="DownloadUrl" ColumnName="DownloadUrl" />

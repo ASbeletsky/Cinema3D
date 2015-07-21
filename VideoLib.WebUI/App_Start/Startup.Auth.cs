@@ -17,6 +17,7 @@ using VideoLib.Domian.Concrete;
 using Parse;
 using System.Configuration;
 using VideoLib.Domian.Concrete.ConfigClasses;
+using Microsoft.Owin.Security.Cookies;
 
 namespace VideoLib.WebUI
 {
@@ -30,8 +31,11 @@ namespace VideoLib.WebUI
             app.CreatePerOwinContext<IVideoLibRepository>(VideoLibRepository.GetRepository);
             app.CreatePerOwinContext<AuthServices>(AuthServices.Create);
 
-            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ExternalCookie);
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            app.SetDefaultSignInAsAuthenticationType(DefaultAuthenticationTypes.ApplicationCookie);
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationType = DefaultAuthenticationTypes.ApplicationCookie
+            });
 
             AuthServices services = AuthServices.Create();
             ParseClient.Initialize(services.ParseService.AppID, services.ParseService.DotNetKey);

@@ -28,7 +28,7 @@ namespace VideoLib.Domian.Entities
         public string DownloadUrl { get; set; }
         public string ImageSmallUrl { get; set; }
         public string ImageBigUrl { get; set; }
-        public float Rating { get; set; }
+        public float RatingValue { get; set; }
     
         public virtual Desctiption desctiption { get; set; }
         public virtual ProducerStaff producerstaff { get; set; }

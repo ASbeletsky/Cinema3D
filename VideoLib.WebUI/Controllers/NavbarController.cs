@@ -14,17 +14,16 @@ namespace VideoLib.WebUI.Controllers
         {
             var sideItems = new List<SideNavbarItem>()
             {
-                new SideNavbarItem {nameOption = "Главная", controller = "Admin", action = "Index", imageClass = "", itemClass = ""},
-                new SideNavbarItem {nameOption = "Фильмы", controller = "", action = "", imageClass = "", itemClass = ""},
-                new SideNavbarItem {nameOption = "Настройки категорий", controller = "", action = "", imageClass = "", itemClass = ""},
-                new SideNavbarItem {nameOption = "Пользователи", controller = "", action = "", imageClass = "", itemClass = ""},            
+                new SideNavbarItem {nameOption = "Главная", controller = "Admin", action = "Main", imageClass = "fa fa-home fa-fw", itemClass = ""},
+                new SideNavbarItem {nameOption = "Фильмы", controller = "Admin", action = "FilmIndex", imageClass = "fa fa-film", itemClass = ""},
+                new SideNavbarItem {nameOption = "Пользователи", controller = "", action = "", imageClass = "fa fa-user", itemClass = ""},
+                new SideNavbarItem {nameOption = "Активность", controller = "", action = "", imageClass = "fa fa-child", itemClass = ""},            
             };
-            sideItems.Where(item => item.controller == controller && item.action == action)
-                     .Select(item =>
-                     {
-                         item.itemClass += "active";
-                         return item;
-                     });
+            foreach(var item in sideItems)
+            {
+                if(item.controller == controller && item.action == action )
+                    item.itemClass = "active";
+            }
 
             return PartialView("_navbarSide", sideItems);
         }

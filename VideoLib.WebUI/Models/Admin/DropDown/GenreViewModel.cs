@@ -18,7 +18,6 @@ namespace VideoLib.WebUI.Models.Admin
         }
 
         [Display(Name = "Жанр")]
-        [Required]
         public int SelectedGenreId { get; set; }
 
         public IEnumerable<SelectListItem> GenreItems

@@ -180,7 +180,7 @@
     <Compile Include="Entities\Identity\Role.cs" />
     <Compile Include="Entities\Identity\SingInManager.cs" />
     <Compile Include="Entities\Identity\UserClaim.cs" />
-    <Compile Include="Entities\Identity\UserIntPK.cs" />
+    <Compile Include="Entities\Identity\User.cs" />
     <Compile Include="Entities\Identity\UserLogin.cs" />
     <Compile Include="Entities\Identity\UserManager.cs" />
     <Compile Include="Entities\Identity\UserRole.cs" />

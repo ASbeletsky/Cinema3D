@@ -20,7 +20,7 @@
     <EntitySetMapping Name="Films">
       <EntityTypeMapping TypeName="videolibdbModel.Film">
         <MappingFragment StoreEntitySet="film">
-          <ScalarProperty Name="Rating" ColumnName="Rating" />
+          <ScalarProperty Name="RatingValue" ColumnName="Rating" />
           <ScalarProperty Name="ImageBigUrl" ColumnName="ImageBigUrl" />
           <ScalarProperty Name="ImageSmallUrl" ColumnName="ImageSmallUrl" />
           <ScalarProperty Name="DownloadUrl" ColumnName="DownloadUrl" />

@@ -18,7 +18,6 @@ namespace VideoLib.WebUI.Models.Admin
             _countries = countries;
         }
         [Display(Name = "Страна")]
-        [Required]
         public int SelectedCountryId { get; set; }
 
         public IEnumerable<SelectListItem> CountryItems

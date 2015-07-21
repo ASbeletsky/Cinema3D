@@ -19,7 +19,6 @@ namespace VideoLib.WebUI.Models.Admin
           }
 
           [Display(Name = "Кинокомпания")]
-          [Required]
           public int SelectedCompanyId { get; set; }
 
           public IEnumerable<SelectListItem> CompanyItems

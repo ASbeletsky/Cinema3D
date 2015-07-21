@@ -1,0 +1,111 @@
+﻿@model VideoLib.WebUI.Models.Admin.SidePanelModel
+
+
+    <div class="panel panel-default ">
+        <div class="panel-heading">
+            <h4 class="text-center">Настройки категорий</h4>
+        </div>
+        <div class="panel-body">
+            <div class="row">
+                <h5 class="text-center"><strong>Жанр</strong></h5>
+                <div class="col-xs-9">
+                    @Html.Partial("~/Views/Admin/Film/SidePanel/GenrePartial.cshtml", Model.GenreModel)
+                </div>
+
+                <div class="col-xs-3 ">
+                    <div class="btn-group-vertical " role="group">
+                        @Ajax.ActionLink(" ", "CreateGenre", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                new { Id = "AddGenre", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                        <button id="EditGenre" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                        @Ajax.ActionLink(" ", "DeleteGenre", new { id = 99 },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                           new { Id = "DeleteGenre", @class = "btn btn-danger glyphicon glyphicon-minus" })
+                    </div>
+                </div><!--Col 3-->
+            </div><!--Genre row-->
+
+            <div class="row">
+                <h5 class="text-center"><strong>Кинокомпания</strong></h5>
+                <div class="col-xs-9">
+                    @Html.Partial("~/Views/Admin/Film/SidePanel/CompanyPartial.cshtml", Model.CompanyModel)
+                </div>
+
+                <div class="col-xs-3 ">
+                    <div class="btn-group-vertical " role="group">
+                        @Ajax.ActionLink(" ", "CreateCompany", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                  new { Id = "AddCompany", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                        <button id="EditCompany" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                        @Ajax.ActionLink(" ", "DeleteCompany", new { id = 99 },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                   new { Id = "DeleteCompany", @class = "btn btn-danger glyphicon glyphicon-minus" })
+
+                    </div>
+                </div><!--Col 3-->
+            </div><!--Company row-->
+
+            <div class="row">
+                <h5 class="text-center"><strong>Страна производитель</strong></h5>
+                <div class="col-xs-9">
+                    @Html.Partial("~/Views/Admin/Film/SidePanel/CountryPartial.cshtml", Model.CountryModel)
+                </div>
+
+                <div class="col-xs-3 ">
+                    <div class="btn-group-vertical " role="group">
+                        @Ajax.ActionLink(" ", "CreateCountry", new { name = "xxx" },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                  new { Id = "AddCountry", @class = "btn btn-primary glyphicon glyphicon-plus" })
+                        <button id="EditCountry" class="btn btn-warning glyphicon glyphicon-pencil"></button>
+                        @Ajax.ActionLink(" ", "DeleteCountry", new { id = 99 },
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  },
+                                   new { Id = "DeleteCountry", @class = "btn btn-danger glyphicon glyphicon-minus" })
+
+                    </div>
+                </div><!--Col 3-->
+            </div><!--Company row-->
+        </div><!--Panel body-->
+    </div>
+
+<script>
+    function SidePanelSuccess(data) {
+        if (data.OK) {
+            $('#SidePanelAlerts').addClass('alert-success');
+            $('#SidePanelAlerts').html('<p class = "text-center">Изменения успешно сохранены!</p>');
+            $('#SidePanelAlerts').addClass('in');
+            setTimeout(
+              function () {
+                  location.reload();
+              }, 1500);          
+        }
+        else {
+            $('#SidePanelAlerts').addClass('alert-danger');
+            $('#SidePanelAlerts').html('<p class = "text-center">Ошибка! Изменения не вступили в силу.</p>');
+            $('#SidePanelAlerts').addClass('in');
+        }
+    }
+</script>

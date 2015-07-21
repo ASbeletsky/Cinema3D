@@ -1,0 +1,50 @@
+﻿@model VideoLib.WebUI.Models.Auth.AdminLoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>AdminLogin</title>
+    <link rel="stylesheet" href="~/Content/bootstrap.min.css"/>
+    <script src="~/Scripts/bootstrap.min.js"></script>
+</head>
+<body>
+    <style>
+        .form-signin {
+            margin: 0 auto;
+            max-width: 330px;
+            padding: 15px;
+        }
+    </style>
+    <div class="container-fluid">
+
+        @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "form-signin", role = "form" }))
+        {
+
+            <h2 class="form-signin-heading">Please sign in</h2>
+            <hr />
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "UserName" })
+            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+            <br />
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+            <label class="checkbox">
+                @Html.CheckBoxFor(m => m.RememberMe)
+                Remember me
+            </label>
+            <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block" />
+        }
+
+    </div>
+    <!-- /.container-fluid -->
+
+</body>
+</html>

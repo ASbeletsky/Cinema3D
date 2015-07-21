@@ -128,7 +128,7 @@ body{margin-top:20px;}
         border: none;
         border-radius: 0;
         overflow-y: auto;
-        background-color: #222;
+        background-color: #f8f8f8;        
     }
 
     .side-nav>li>a {
@@ -150,7 +150,7 @@ body{margin-top:20px;}
     display: block;
     padding: 10px 15px 10px 38px;
     text-decoration: none;
-    color: #999;
+    color: #f8f8f8;
 }
 
 .side-nav>li>ul>li>a:hover {

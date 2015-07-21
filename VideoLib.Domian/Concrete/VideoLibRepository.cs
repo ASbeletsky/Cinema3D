@@ -160,7 +160,7 @@ namespace VideoLib.Domian.Concrete
 
         public void RemoveFilm(int id)
         {
-            Film filmToRemove = _context.Films.Find(id);
+            Film filmToRemove = _context.Films.FirstOrDefault(f => f.Id == id);
             if (filmToRemove != null)
             {
                 _context.Films.Remove(filmToRemove);
@@ -422,7 +422,7 @@ namespace VideoLib.Domian.Concrete
                 new_rating = (rating_votes_sum + 3 * n) / (all_votes + n);
 
             Film currect = _context.Films.Find(film_id);
-            currect.Rating = new_rating;
+            currect.RatingValue = new_rating;
             _context.Entry<Film>(currect).State = EntityState.Modified;
             _context.SaveChanges();
         }

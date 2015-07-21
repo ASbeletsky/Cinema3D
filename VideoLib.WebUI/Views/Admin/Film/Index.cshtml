@@ -1,0 +1,213 @@
+﻿@model VideoLib.WebUI.Models.Admin.IndexViewModel
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+<!--Header-->
+<div class="Row">
+    <div class="col-md-12">
+        <h1 class="text-center">Управление фильмами</h1>
+        <hr />
+    </div>
+</div>
+
+
+<!--Film Table-->
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h5 class="text-center">Список фильмов</h5>
+            </div>
+            <div class="panel-body">
+                <!-- Filter Search -->
+                <div class="row">
+
+                </div>
+                <!-- /.row Filter Search-->
+                <!-- Table Data -->
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-striped table-condensed table-bordered table">
+                            <tr>
+                                <th class="text-center">ID</th>
+                                <th>Название</th>
+                                <th>Рейтинг</th>
+                                <th class="">К-во скачиваний</th>
+                                <th>К-во добавлений в избранное</th>
+                                <th class="">Действия</th>
+                            </tr>
+                            @foreach (var item in Model.Films)
+                            {
+                                <tr>
+                                    <td class="text-center">@item.Id</td>
+                                    <td>
+                                        @Ajax.ActionLink(item.Name, "EditFilm", new { id = item.Id },
+                                          new AjaxOptions
+                                          {
+                                              UpdateTargetId = "Ajax-target",
+                                              HttpMethod = "GET",
+                                              InsertionMode = InsertionMode.Replace,
+                                              OnSuccess = "UseBootstrapControls"
+                                              
+                                          }, new { @class = "ajax-link" })
+                                    </td>
+                                    <td class="row">
+                                     @{
+                                                    string labelClass = "", labelText = "";
+                                                    <div class="col-sm-6 text-left">
+                                                        @for (int i = 0; i < (int)item.Rating; i++)
+                                                        {
+                                                            <i class="fa fa-star text-danger"></i>
+                                                        }
+                                                    </div>
+                                        switch ((int)item.Rating)
+                                        {
+                                            case 0: { labelClass = "label-default"; labelText = "не оценен"; } break;
+                                            case 1: { labelClass = "label-danger"; labelText = "ужасно"; } break;
+                                            case 2: { labelClass = "label-warning"; labelText = "плохо"; } break;
+                                            case 3: { labelClass = "label-info"; labelText = "нормально"; } break;
+                                            case 4: { labelClass = "label-primary"; labelText = "хорошо"; } break;
+                                            case 5: { labelClass = "label-success"; labelText = "отлично"; } break;
+                                        }
+                                        <div class=" col-sm-6 text-right">
+                                            <p class="label @labelClass">@item.Rating @labelText</p>
+                                        </div>
+                                        }
+                                    </td>
+                                    <td class="row">
+                                        @{
+                                            
+                                                <div class="col-sm-6 text-left">
+                                                    @for (int i = 0; i < (int)item.DownloadRating; i++)
+                                                    {
+                                                        <i class="fa fa-download text-success"></i>
+                                                    }
+                                                </div>
+                                                
+                                                    switch ((int)item.DownloadRating)
+                                                    {
+                                                        case 0: { labelClass = "label-default"; labelText = "не скачивался"; } break;
+                                                        case 1: { labelClass = "label-danger"; labelText = "очень мало"; } break;
+                                                        case 2: { labelClass = "label-warning"; labelText = "мало"; } break;
+                                                        case 3: { labelClass = "label-info"; labelText = "нормально"; } break;
+                                                        case 4: { labelClass = "label-primary"; labelText = "много"; } break;
+                                                        case 5: { labelClass = "label-success"; labelText = "очень много"; } break;
+                                                    }
+                                            }
+                                                <div class=" col-sm-6 text-right">
+                                                    <p class="label @labelClass">@item.DownloadNumber @labelText</p>
+                                                </div>
+                                        
+                                    </td>
+                                    <td class="row">
+                                        @{
+                                            <div class="col-sm-6 text-left">
+                                                @for (int i = 0; i < (int)item.AddionFavorite; i++)
+                                                {
+                                                    <i class="fa fa-heart-o text-warning"></i>
+                                                }
+                                            </div>
+
+                                            switch ((int)item.AddionFavoriteRating)
+                                            {
+                                                case 0: { labelClass = "label-default"; labelText = "не добавлялся"; } break;
+                                                case 1: { labelClass = "label-danger"; labelText = "очень мало"; } break;
+                                                case 2: { labelClass = "label-warning"; labelText = "мало"; } break;
+                                                case 3: { labelClass = "label-info"; labelText = "нормально"; } break;
+                                                case 4: { labelClass = "label-primary"; labelText = "много"; } break;
+                                                case 5: { labelClass = "label-success"; labelText = "очень много"; } break;
+                                            }
+                                        }
+                                        <div class=" col-sm-6 text-right">
+                                            <p class="label @labelClass">@item.AddionFavorite @labelText</p>
+                                        </div>
+
+                                    </td>
+
+                                    <td class="">
+                                        <a href="#" data-target="#confirm-delete" data-toggle="modal"
+                                           class="open-DeleteConfirmDialog  btn-sm btn-default" data-id="@item.Id" data-name="@item.Name">
+                                            <i class="fa fa-trash-o" style="color:black"></i>
+                                        </a> 
+
+                                        <a class="ajax-link btn-sm btn-warning" data-ajax="true" data-ajax-method="GET" data-ajax-mode="replace"
+                                           data-ajax-success="UseBootstrapControls" data-ajax-update="#Ajax-target" href="/Admin/EditFilm?id=@item.Id">
+                                            <i class="fa fa-edit"></i>
+                                        </a>                                                           
+                                    </td>
+                                </tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+                <!-- /.row Table Data -->
+                <!-- Pages Info -->
+                <div class="row">
+
+                </div>
+                <!-- /.row Pages Info-->
+            </div> <!-- /Panel Body -->
+            <div class="panel-footer ">
+                @Ajax.ActionLink("Добавить фильм", "CreateFilm", null,
+                  new AjaxOptions
+                  {
+                      UpdateTargetId = "Ajax-target",
+                      HttpMethod = "GET",
+                      InsertionMode = InsertionMode.Replace,                     
+                      OnSuccess = "UseBootstrapControls"
+                  },
+                                    new { Id = "addFilmLink", @class = "ajax-link btn btn-primary" })
+
+            </div> <!-- /Panel Footer -->
+        </div>
+    </div>
+</div>
+<!--End Film Table-->
+
+<!--Side Panel-->
+<div id="sidePanel">
+    <div id="SidePanelBody">
+        @Html.Action("SidePanel")
+    </div>    
+    <div id="SidePanelAlerts">
+        <div class="alert alert-info" role="alert" id="alerts">
+            <p class="text-justify">Введите имя новой категории что бы создать ее или выберите категорию с помошью выпадающего списка для редактирования/удаления и примените действие с помошью кнопок справа</p>
+        </div>
+    </div>
+</div>
+
+
+<!--Main Alert-->
+<div class="alert collapse alert-dismissible" role="alert" id="alerts">
+    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+    </button>
+</div>
+
+<!--Ajax container-->
+<div class="row" id="Ajax-target">
+    
+</div>
+
+<!--Delete Film Confirm Modal -->
+        <div class="modal fade" id="confirm-delete" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+            <div class="modal-dialog ">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 class="text-center">Удаление фильма</h3>
+                    </div>
+                    <div class="modal-body">
+                        ...
+                    </div>
+                    <div class="modal-footer">
+                        <a id="DeleteFilm" class="btn btn-danger btn-ok"><i class="fa fa-trash-o"></i> Удалить</a>
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Отмена</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+   
+ 

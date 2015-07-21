@@ -1,0 +1,14 @@
+﻿@model VideoLib.WebUI.Models.Admin.CountryPanelViewModel
+
+@using (Ajax.BeginForm("EditCountry", null,
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  }, new { id = "EditCountryForm" }))
+{
+    @Html.DropDownListFor(m => m.DropDown.SelectedCountryId, Model.DropDown.CountryItems, "Страна", new { id = "CountryDropDown", @class = "combobox-side form-control" })
+    <p> Выбирете действие с </p>
+    @Html.TextBoxFor(m => m.Text, new { id = "CountryTextBox", @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Text)
+}

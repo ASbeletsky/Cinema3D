@@ -1,0 +1,16 @@
+﻿@model VideoLib.WebUI.Models.Admin.CompanyPanelViewModel
+
+@using (Ajax.BeginForm("EditCompany", null,
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  }, new { id = "EditCompanyForm" }))
+{
+    @Html.DropDownListFor(m => m.DropDown.SelectedCompanyId, Model.DropDown.CompanyItems,"Компания", new { id = "CompanyDropDown", @class = "combobox-side form-control" })
+    <p> Выбирете действие с </p>
+    @Html.TextBoxFor(m => m.Text, new { id = "CompanyTextBox", @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Text)
+}
+
+

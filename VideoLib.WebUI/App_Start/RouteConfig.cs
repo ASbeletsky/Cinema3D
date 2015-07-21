@@ -148,7 +148,7 @@ namespace VideoLib.WebUI
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/",
-                defaults: new { controller = "Admin", action = "Main" }
+                defaults: new { controller = "Auth", action = "Login" }
             );
 
             

@@ -8,10 +8,15 @@ namespace VideoLib.WebUI.Models.Admin
     public class IndexViewModel
     {
         public IEnumerable<CRUD_FilmViewModel> Films { get; set; }
+        public int MaxDownloads { get; set; }
+        public int MaxAddFavorits { get; set; }
+    }
+
+    public class SidePanelModel
+    {
         public CompanyPanelViewModel CompanyModel { get; set; }
         public GenrePanelViewModel GenreModel { get; set; }
         public CountryPanelViewModel CountryModel { get; set; }
-
     }
 
     public class GenrePanelViewModel

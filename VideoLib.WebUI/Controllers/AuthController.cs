@@ -42,9 +42,86 @@ namespace VideoLib.WebUI.Controllers
         }  
                                                 #endregion
 
-                                    #region Server OWIN-based Authentification
+                                    #region Admin Authentification
+        [AllowAnonymous]
+        public ActionResult Login()
+        {
+            return View("~/Views/Auth/AdminLogin.cshtml", new AdminLoginViewModel());
+        }
 
-        
+        [HttpPost]
+        [AllowAnonymous]
+
+        public ActionResult Login(AdminLoginViewModel model )
+        {
+            if (!ModelState.IsValid)
+            {
+                return View("~/Views/Auth/AdminLogin.cshtml", model);
+            }
+            var user = UserManager.Find(model.UserName, model.Password);
+            if(user != null)
+            {
+                var roles = UserManager.GetRoles(user.Id);
+                if (roles.Contains("Admin"))
+                {
+                    var identity = new ClaimsIdentity(UserManager.GetClaims(user.Id), DefaultAuthenticationTypes.ApplicationCookie);
+
+                    AuthenticationManager.SignIn(new AuthenticationProperties
+                    {
+                        IsPersistent = model.RememberMe
+                    }, identity);
+
+                    return RedirectToAction("Main", "Admin");
+                }
+                ModelState.AddModelError("", "Вы не являетесь администратором.");
+                return View(model);
+            }            
+            
+            else
+            {
+                ModelState.AddModelError("", "Не правильное имя пользавателя или пароль.");
+                return View("~/Views/Auth/AdminLogin.cshtml", model);
+            }
+        }
+
+        // POST: /Account/LogOff
+        [HttpPost]
+
+        public ActionResult LogOff()
+        {
+            AuthenticationManager.SignOut();
+            return RedirectToAction("Login", "Auth");
+        }
+
+        // GET: /Auth/Register
+        [AllowAnonymous]
+        public ActionResult Register()
+        {
+            return View("~/Views/Auth/RegisterAdmin.cshtml");
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+
+        public async Task<ActionResult> Register(RegisterAdminViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = new MyUser {Id = "admin", UserName = model.Email, Email = model.Email, Name = model.Email };
+                var result = UserManager.Create(user, model.Password);
+                if (result.Succeeded)
+                {
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    result = await UserManager.AddToRoleAsync(user.Id, "Admin");
+
+                    return RedirectToAction("Main", "Admin");
+                }
+            }
+                return View("~/Views/Auth/RegisterAdmin.cshtml", model);
+        }
+                                                #endregion
+                                    #region Android Client Auth CallBacks
+
         [AllowAnonymous]
 
         //Post: Auth/EmailLoginCallBack

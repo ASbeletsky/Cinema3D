@@ -1,0 +1,14 @@
+﻿@model VideoLib.WebUI.Models.Admin.GenrePanelViewModel
+
+@using (Ajax.BeginForm("EditGenre", null,
+                                  new AjaxOptions
+                                  {
+                                      HttpMethod = "POST",
+                                      OnSuccess = "SidePanelSuccess"
+                                  }, new { id = "EditGenreForm" }))
+{
+    @Html.DropDownListFor(m => m.DropDown.SelectedGenreId, Model.DropDown.GenreItems, "Жанр", new { id = "GenreDropDown", @class = "combobox-side form-control" })
+    <p> Выбирете действие с </p>
+    @Html.TextBoxFor(m => m.Text, new { id = "GenreTextBox", @class = "form-control" })
+    @Html.ValidationMessageFor(m => m.Text)
+}

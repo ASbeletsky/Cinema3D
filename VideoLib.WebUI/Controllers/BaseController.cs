@@ -36,7 +36,7 @@ namespace VideoLib.WebUI.Controllers
                             {
                                 Id = film.Id,
                                 Name = film.Name,
-                                Rating = film.Rating,
+                                Rating = film.RatingValue,
                                 ImageSmallUrl = film.ImageSmallUrl,
                                 ImageBigUrl = film.ImageBigUrl,
                                 IsFavorite = false,
