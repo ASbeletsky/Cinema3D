@@ -417,7 +417,7 @@ namespace VideoLib.Domian.Concrete
                                                   .Sum(r => r.RatingValue);
             float new_rating;
             if(all_votes < 10)
-                new_rating = rating_votes_sum / all_votes;
+                new_rating = (float) rating_votes_sum / all_votes;
             else
                 new_rating = (rating_votes_sum + 3 * n) / (all_votes + n);
 

@@ -81,14 +81,15 @@ namespace VideoLib.WebUI.Controllers
                                              Name = film.Name,
                                              ImageSmallUrl = film.ImageSmallUrl,
                                              ImageBigUrl = film.ImageBigUrl,
-                                             IsFavorite = false,
-                                             AdditionDate = film.AdditionDate.Value.Date.ToShortDateString(),
+                                             IsFavorite = true,
+                                             AdditionDate = film.AdditionDate.Value.Date.ToString("dd MMMMMMM yyyy", System.Globalization.CultureInfo.GetCultureInfo("ru")),
                                              DownloadUrl = film.DownloadUrl,
                                              Description = descr.Text,
                                              genreId = genre.Id,
                                              genreName = genre.Name,
                                              companyId = company.Id,
                                              companyName = company.Name,
+                                             Rating = film.RatingValue
                                          }).OrderBy(film => film.AdditionDate).ToList();
 
                         return Json(FavoriteFilms, JsonRequestBehavior.AllowGet);

@@ -23,7 +23,7 @@ namespace VideoLib.WebUI.Controllers
         }
 
         //POST:rating/set_rate
-        public ActionResult SetFilmRate(string object_id, int film_id, sbyte rate)
+        public ActionResult SetFilmRate(string object_id = "5EV821HZ1o", int film_id = 34, sbyte rate = 4)
         {
             if (!string.IsNullOrEmpty(object_id) && film_id > 0)
             {
@@ -102,6 +102,7 @@ namespace VideoLib.WebUI.Controllers
                 var rates = Repository.Rating.Where(rating => rating.Film_Id == film_id).ToList();
                 if(rates != null)
                 { 
+
                     return new JsonResult
                     {
                         Data = new
@@ -111,7 +112,8 @@ namespace VideoLib.WebUI.Controllers
                             ThreeStars = rates.Where(r => r.RatingValue == 3).Count(),
                             TwoStars = rates.Where(r => r.RatingValue == 2).Count(),
                             OneStar = rates.Where(r => r.RatingValue == 1).Count(),
-                            AllVotes = rates.Where(r => r.RatingValue > 0).Count()
+                            AllVotes = rates.Where(r => r.RatingValue > 0).Count(),
+                            ratingValue = Repository.Films.First(f => f.Id == film_id).RatingValue
                         },
                         JsonRequestBehavior = JsonRequestBehavior.AllowGet
                     };

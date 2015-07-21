@@ -18,6 +18,7 @@ namespace VideoLib.WebUI.Controllers
     public class CommentController : Controller
     {
         private IVideoLibRepository _repository;
+        private sbyte _commentRatingLimit = 100;
         protected IVideoLibRepository Repository
         {
             get { return _repository ?? HttpContext.GetOwinContext().Get<IVideoLibRepository>(); }
@@ -112,11 +113,12 @@ namespace VideoLib.WebUI.Controllers
                                          Message = comment.Text,
                                          AdditionTime = comment.AdditionData.Value.ToString("dd.MM.yyyy"),
                                          CommentRating = comment.Rating,
-                                         FilmRating = filmRating.RatingValue
+                                         FilmRating = filmRating.RatingValue,
+                                         FilmId = film_id
                                      }).FirstOrDefault();                                                                   
                 if (current != null)
                 {                   
-                    return new JsonResult { Data = current };
+                    return new JsonResult { Data = current, JsonRequestBehavior = JsonRequestBehavior.AllowGet };
                 }
                 return new JsonResult
                 {
@@ -125,7 +127,7 @@ namespace VideoLib.WebUI.Controllers
                         OK = false,
                         ErrorId = 1,
                         ErrorMessege = "Current comment does not exist"
-                    }
+                    }, JsonRequestBehavior = JsonRequestBehavior.AllowGet
                 };
             }
             return new JsonResult
@@ -135,7 +137,7 @@ namespace VideoLib.WebUI.Controllers
                     OK = false,
                     ErrorId = 3,
                     ErrorMessege = string.Format("User id or film id have incorrect value")
-                },
+                }, JsonRequestBehavior = JsonRequestBehavior.AllowGet
             };
         }
 
@@ -148,7 +150,7 @@ namespace VideoLib.WebUI.Controllers
 
                 Comment current = Repository.Comments.FirstOrDefault(comment => comment.Id == comment_id);
                                                                          
-                    if (current != null)
+                    if (current != null && current.Rating < _commentRatingLimit)
                     {
                         Repository.LikeComment(comment_id);
                         return new JsonResult { Data = new { OK = true } };
@@ -182,7 +184,7 @@ namespace VideoLib.WebUI.Controllers
 
                 Comment current = Repository.Comments.FirstOrDefault(comment => comment.Id == comment_id);
                                                                      
-                if (current != null)
+                if (current != null && current.Rating > - _commentRatingLimit)
                 {
                     Repository.UnlikeComment(comment_id);
                     return new JsonResult { Data = new { OK = true } };
