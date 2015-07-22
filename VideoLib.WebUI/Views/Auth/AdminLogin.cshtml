@@ -26,21 +26,21 @@
         @using (Html.BeginForm("Login", "Auth", FormMethod.Post, new { @class = "form-signin", role = "form" }))
         {
 
-            <h2 class="form-signin-heading">Please sign in</h2>
+            <h2 class="form-signin-heading text-center">Вход для администраторов</h2>
             <hr />
             @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "UserName" })
+            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Эл. почта" })
             @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
             <br />
-            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Пароль" })
             @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
 
             <label class="checkbox">
                 @Html.CheckBoxFor(m => m.RememberMe)
-                Remember me
+                Запомнить
             </label>
-            <input type="submit" value="Log in" class="btn btn-lg btn-primary btn-block" />
+            <input type="submit" value="Войти" class="btn btn-lg btn-primary btn-block" />
         }
 
     </div>
