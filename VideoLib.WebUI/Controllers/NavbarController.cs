@@ -16,7 +16,7 @@ namespace VideoLib.WebUI.Controllers
             {
                 new SideNavbarItem {nameOption = "Главная", controller = "Admin", action = "Main", imageClass = "fa fa-home fa-fw", itemClass = ""},
                 new SideNavbarItem {nameOption = "Фильмы", controller = "Admin", action = "FilmIndex", imageClass = "fa fa-film", itemClass = ""},
-                new SideNavbarItem {nameOption = "Пользователи", controller = "", action = "", imageClass = "fa fa-user", itemClass = ""},
+                new SideNavbarItem {nameOption = "Пользователи", controller = "Admin", action = "UserIndex", imageClass = "fa fa-user", itemClass = ""},
                 new SideNavbarItem {nameOption = "Активность", controller = "", action = "", imageClass = "fa fa-child", itemClass = ""},            
             };
             foreach(var item in sideItems)

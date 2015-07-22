@@ -1,0 +1,78 @@
+﻿@model IEnumerable<VideoLib.WebUI.Models.Comment.CommentViewModel>
+
+<div class="portlet light">
+    <!-- Activity Header -->
+    <div class="portlet-title">
+        <h4 class="text-center">Комментарии</h4>
+    </div>
+    <!-- Activity Body -->
+    <div class="portlet-body">
+        <div class="scroller" style="height: 305px; overflow: hidden; width: auto;" data-always-visible="1" data-rail-visible1="0" data-handle-color="#D7DCE2" data-initialized="1">
+            <div class="general-item-list" style="max-height:300px; overflow-y:auto;">
+                @{
+                    string label_class = "", fa_class = "";
+                    foreach (var comment in Model)
+                    {
+                        if (comment.CommentRating > 0)
+                        {
+                            label_class = "success";
+                            fa_class = "fa-thumbs-o-up";
+                        }
+                        else 
+                        {
+                            if (comment.CommentRating < 0)
+                            {
+                                label_class = "danger";
+                                fa_class = "fa-thumbs-o-down";
+                            }
+                            else
+                            {
+                                label_class = "default";
+                                fa_class = "fa-comments-o";                               
+                            }
+                        }
+                                                                              
+                        <div class="item">
+                            <div class="item-head row">
+                                <div class="item-details col-md-8">
+                                    <div class="label label-sm label-@label_class">
+                                        <span class="fa @fa_class"></span>
+                                        <span> @comment.CommentRating</span>
+                                    </div>
+                                    <span style="padding-left:5px;" class="item-label"> Добавлен @comment.AdditionTime к фильму </span>
+                                    <span>
+                                        <a href="" class="item-name primary-link">  "@comment.FilmName"</a>
+                                    </span>                                   
+                                    
+                                </div>
+                                <div class="col-md-4">
+                                    <span class="item-status">
+                                        <span class="badge badge-empty badge-success"></span> оценка фильма: 
+                                        <span>@{
+                                            if (comment.FilmRating == 0)
+                                            {
+                                                <span>Не оценен</span>
+                                            }
+                                            else
+                                            {
+                                                for(int i = 0; i < comment.FilmRating;i++)
+                                                {
+                                                    <i class="fa fa-star text-danger"></i>
+                                                }
+                                            }
+                                        }
+                                            
+                                         </span> 
+                                    </span>
+                                </div>                               
+                            </div >
+                            <div class="item-body">
+                                <p class="text-justify">"@comment.Message"</p>                                
+                            </div>
+                        </div>
+                    }
+                }                
+            </div>
+        </div>
+    </div>
+</div>

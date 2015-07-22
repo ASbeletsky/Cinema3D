@@ -135,7 +135,7 @@ namespace VideoLib.WebUI.Controllers
                 var my_user = await UserManager.FindByIdAsync(object_id);
                 if (my_user != null)
                 {
-                    success = SetCurrentUser(AuthType.EmailPassword, my_user);
+                    success = SetCurrentUser(AuthType.Email, my_user);
                     return Json(new { OK = success });  
                 }
                 success = await RegisterUser(
@@ -177,7 +177,7 @@ namespace VideoLib.WebUI.Controllers
              fb_client.AppId = ExternalAuthManaher.FacebookService.AppID;
              fb_client.AppSecret = ExternalAuthManaher.FacebookService.AppSecret;
 
-             dynamic userInfo = await fb_client.GetTaskAsync("me", new { fields = "first_name, last_name, link, id, email" });
+             dynamic userInfo = await fb_client.GetTaskAsync("me", new { fields = "first_name, last_name, link, id, email, picture" });
              if(userInfo != null)
              {
                  success = await RegisterUser(
@@ -189,7 +189,8 @@ namespace VideoLib.WebUI.Controllers
                             {
                                 new Claim("FacebookAccessToken", access_token),
                                 new Claim("FacebookPageLink", userInfo.link),
-                                new Claim("FacebookId", userInfo.id)
+                                new Claim("FacebookId", userInfo.id),
+                                new Claim("Photo", userInfo.picture)
                             },
                          Login = "FacebookUser",
                          Name = userInfo.first_name + " " + userInfo.last_name,
@@ -234,7 +235,8 @@ namespace VideoLib.WebUI.Controllers
                                 new Claim("TwitterAccessToken", access_token),
                                 new Claim("TwitterAccessTokenSecret", access_token_secret),
                                 new Claim("TwitterPageLink", ("https://twitter.com/" + userInfo.ScreenName)),
-                                new Claim("TwitterId", userInfo.Id.ToString())
+                                new Claim("TwitterId", userInfo.Id.ToString()),
+                                new Claim("Photo", userInfo.ProfileImageUrl)
                             },
                          Name = userInfo.ScreenName,
                          Login = "TwitterUser",

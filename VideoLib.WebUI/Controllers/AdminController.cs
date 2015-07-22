@@ -7,6 +7,12 @@ using VideoLib.Domian.Abstract;
 using VideoLib.WebUI.Models.Admin;
 using Microsoft.AspNet.Identity.Owin;
 using VideoLib.WebUI.Models.Shared;
+using VideoLib.WebUI.Models.Admin.User;
+using VideoLib.WebUI.Models.Admin.User.Statistic;
+using System.Collections.Generic;
+using VideoLib.WebUI.Models.Admin.User.Events;
+using VideoLib.WebUI.Models.Admin.User.FullUserInfo;
+using VideoLib.WebUI.Models.Comment;
 
 namespace VideoLib.WebUI.Controllers
 {
@@ -23,7 +29,7 @@ namespace VideoLib.WebUI.Controllers
         {
             return View();
         }
-        
+                                                #region Film Tab
         [HttpGet]
         public ActionResult CreateFilm()
         {
@@ -295,5 +301,210 @@ namespace VideoLib.WebUI.Controllers
             return View("~/Views/Admin/Film/Index.cshtml", model);
         }
 
+                                            #endregion
+
+                                                #region Users Tab
+        public ViewResult UserIndex()
+        {
+            var model = new UserIndexViewModel();
+
+            model.UsersTable = Repository.Users.Select(user => new UserTableViewModel(user.Login)
+                {
+                    Id = user.Id,
+                    Name = user.Name,                  
+                }). ToList();
+            model.UsersTable.RemoveAll(user => user.Id.Contains("admin"));
+            foreach(var user in model.UsersTable)
+            {
+                user.PhotoUrl = Repository.UserClaims.Where(claim => claim.UserId == user.Id && claim.ClaimType == "Photo")
+                                                     .Select(claim => claim.ClaimValue).FirstOrDefault();
+            }
+            return View("~/Views/Admin/User/Index.cshtml", model);
+        }
+
+
+        public PartialViewResult ShortInfo(string id) 
+        {
+            List<UserShortInfoViewModel> userStatistic = new List<UserShortInfoViewModel>();
+            foreach (var user in Repository.Users.ToArray())
+            {
+                userStatistic.Add(new UserShortInfoViewModel
+                    {
+                        CommentsCount = Repository.Comments.Count(c => c.User_Id == user.Id),
+                        FilmDownloads = Repository.Downloads.Count(d => d.User_Id == user.Id),
+                        FilmRatingVotes = Repository.Rating.Count(r => r.User_Id == user.Id),
+                        FilmsInFavorites = Repository.FavoriteFilms.Count(f => f.User_Id == user.Id)
+                    });
+            }
+
+            var maxValues = new MaxValues
+            {
+                MaxCommentsCount = userStatistic.Max(s => s.CommentsCount),
+                MaxFilmDownloads = userStatistic.Max(s => s.FilmDownloads),
+                MaxFilmRatingVotes = userStatistic.Max(s => s.FilmRatingVotes),
+                MaxInFavorites = userStatistic.Max(s => s.FilmsInFavorites)
+            };
+
+            var current = Repository.Users.FirstOrDefault(user => user.Id == id);
+            var model = new UserShortInfoViewModel
+            {
+                Id = id,
+                Name = current.Name,
+                Email = current.Email,
+                CommentsCount = Repository.Comments.Count(comment => comment.User_Id == id),
+                FilmDownloads = Repository.Downloads.Count(download => download.User_Id == id),
+                FilmsInFavorites = Repository.FavoriteFilms.Count(favoriteFilm => favoriteFilm.User_Id == id),
+                FilmRatingVotes = Repository.Rating.Count(rating => rating.User_Id == id),
+            };
+
+            if(maxValues.MaxCommentsCount > 0)
+                model.CommentsCountPercent = model.CommentsCount * 100 / maxValues.MaxCommentsCount;
+            if (maxValues.MaxFilmDownloads > 0)
+                model.FilmDownloadsPercent = model.FilmDownloads * 100 / maxValues.MaxFilmDownloads;
+            if (maxValues.MaxInFavorites > 0)
+                model.FilmsInFavoritesPercent = model.FilmsInFavorites * 100 / maxValues.MaxInFavorites;
+            if (maxValues.MaxFilmRatingVotes > 0)
+                model.FilmRatingVotesPercent = model.FilmRatingVotes * 100 / maxValues.MaxFilmRatingVotes;
+
+            return PartialView("~/Views/Admin/User/ShortUserInfo.cshtml", model);
+
+        }
+
+        public PartialViewResult FullUserInfo(string id)
+        {
+            var model = new FullUserInfoViewModel();
+            model.UserId = id;
+            model.Events = GetEvents(id);
+            model.Comments = GetComments(id);
+            model.Downloads = GetDownloads(id);
+            model.Favorites = GetFavorites(id);
+
+            return PartialView("~/Views/Admin/User/FullUserInfo.cshtml", model);
+        }
+
+        public PartialViewResult UserActivities(string id)
+        {
+            var model = GetEvents(id);
+            return PartialView("~/Views/Admin/User/LastActivities.cshtml", model);
+        }
+
+        private IEnumerable<UniversalTableViewModel> GetDownloads(string user_id)
+        {
+            return (from download in Repository.Downloads
+                             join rating in Repository.Rating
+                                  on new { download.Film_Id, download.User_Id } equals new { rating.Film_Id, rating.User_Id }
+                             into FullRating
+                             from fullRating in FullRating.DefaultIfEmpty()
+                             where (download.User_Id == user_id)
+                             join film in Repository.Films
+                                on download.Film_Id equals film.Id
+                             select new UniversalTableViewModel
+                             {
+                                 FilmName = film.Name,
+                                 DateTime = download.DownloadTime.Value.ToString(),
+                                 FilmRating = film.RatingValue,
+                                 ratingVote = (fullRating == null) ? (sbyte)0 : fullRating.RatingValue,
+                                 ImageUrl = film.ImageSmallUrl
+                             }).ToList();
+        }
+
+        private IEnumerable<UniversalTableViewModel> GetFavorites(string user_id)
+        {
+            return (from favorites in Repository.FavoriteFilms
+                    join rating in Repository.Rating
+                         on new { favorites.Film_Id, favorites.User_Id } equals new { rating.Film_Id, rating.User_Id }
+                    into FullRating
+                    from fullRating in FullRating.DefaultIfEmpty()
+                    where (favorites.User_Id == user_id)
+                    join film in Repository.Films
+                       on favorites.Film_Id equals film.Id
+                    select new UniversalTableViewModel
+                    {
+                        FilmName = film.Name,
+                        DateTime = favorites.AdditionTime.Value.ToString(),
+                        FilmRating = film.RatingValue,
+                        ratingVote = (fullRating == null) ? (sbyte)0 : fullRating.RatingValue,
+                        ImageUrl = film.ImageSmallUrl
+                    }).ToList();
+        }
+        private IEnumerable<CommentViewModel> GetComments(string user_id)
+        {
+            return (from comment in Repository.Comments
+                    join rating in Repository.Rating
+                          on new { comment.Film_Id, comment.User_Id } equals new {rating.Film_Id, rating.User_Id }
+                    into FullRating
+                    from fullRating in FullRating.DefaultIfEmpty()
+                         where (comment.User_Id == user_id)
+                    join film in Repository.Films
+                          on comment.Film_Id equals film.Id
+                    select new CommentViewModel
+                    {
+                        Id = comment.Id,
+                        FilmName = film.Name,
+                        Message = comment.Text,
+                        AdditionTime = comment.AdditionTime.Value.ToString(),
+                        CommentRating = comment.Rating,
+                        FilmRating = (fullRating == null) ? (sbyte)0 : fullRating.RatingValue,                        
+                     });
+        }
+
+        private IEnumerable<EventViewModel> GetEvents(string id) 
+        {
+            var comments = (from comment in Repository.Comments
+                            where (comment.User_Id == id)
+                            join film in Repository.Films
+                                 on comment.Film_Id equals film.Id
+                            select new EventViewModel
+                            {
+                                Type = EventType.Comment,
+                                Message = string.Format("Добавил комментарий к фильму \"{0}\"", film.Name),
+                                RelatedObjectId = comment.Id,
+                                Time = comment.AdditionTime.Value
+                            }).ToList();
+
+            var downloads = (from download in Repository.Downloads
+                             where (download.User_Id == id)
+                             join film in Repository.Films
+                                  on download.Film_Id equals film.Id
+                             select new EventViewModel
+                             {
+                                 Type = EventType.Download,
+                                 Message = string.Format("Скачал фильм \"{0}\"", film.Name),
+                                 RelatedObjectId = download.Film_Id,
+                                 Time = download.DownloadTime.Value
+                             }).ToList();
+
+            var addionToFavorites = (from favorite in Repository.FavoriteFilms
+                                     where (favorite.User_Id == id)
+                                     join film in Repository.Films
+                                        on favorite.Film_Id equals film.Id
+                                     select new EventViewModel
+                                     {
+                                         Type = EventType.AddToFavorite,
+                                         Message = string.Format("Добавил фильм в избранные \"{0}\"", film.Name),
+                                         RelatedObjectId = favorite.Film_Id,
+                                         Time = favorite.AdditionTime.Value
+                                     }).ToList();
+
+            var ratingVotes = (from rating in Repository.Rating
+                               where (rating.User_Id == id)
+                               join film in Repository.Films
+                                    on rating.Film_Id equals film.Id
+                               select new EventViewModel
+                               {
+                                   Type = EventType.AddToFavorite,
+                                   Message = string.Format("Поставил оценку \"{0}\" фильму \"{1}\"", rating.RatingValue, film.Name),
+                                   RelatedObjectId = rating.Film_Id,
+                                   Time = rating.AdditionTime.Value
+                               }).ToList();
+            var fullList = new List<EventViewModel>();
+            fullList.AddRange(comments);
+            fullList.AddRange(downloads);
+            fullList.AddRange(ratingVotes);
+            fullList.AddRange(addionToFavorites);
+
+            return fullList.OrderBy(_event => _event.Time);
+        }
+                                                #endregion
     }
 }

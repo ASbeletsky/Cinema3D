@@ -111,7 +111,7 @@ namespace VideoLib.WebUI.Controllers
                                          Id = comment.Id,
                                          Author = user.Name ?? user.Login,
                                          Message = comment.Text,
-                                         AdditionTime = comment.AdditionData.Value.ToString("dd.MM.yyyy"),
+                                         AdditionTime = comment.AdditionTime.Value.ToString("dd.MM.yyyy"),
                                          CommentRating = comment.Rating,
                                          FilmRating = filmRating.RatingValue,
                                          FilmId = film_id

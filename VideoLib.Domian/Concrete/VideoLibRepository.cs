@@ -78,6 +78,10 @@ namespace VideoLib.Domian.Concrete
         {
             get { return _context.Rating as IEnumerable<Rating>; }
         }
+        public IEnumerable<userclaims> UserClaims
+        {
+            get { return _context.userclaims as IEnumerable<userclaims>; }
+        }
 
                                         #endregion 
 
@@ -306,7 +310,7 @@ namespace VideoLib.Domian.Concrete
                     Film_Id = film_id,
                     User_Id = user_id,
                     Text = message,
-                    AdditionData = DateTime.Now
+                    AdditionTime = DateTime.Now
                 };
                 _context.Comments.Add(newComment);
                 _context.SaveChanges();
@@ -322,7 +326,7 @@ namespace VideoLib.Domian.Concrete
                 Comment currentComment = _context.Comments.FirstOrDefault(comment => comment.User_Id == user_id
                                                                  && comment.Film_Id== film_id);
                 currentComment.Text = message;
-                currentComment.AdditionData = DateTime.Now;
+                currentComment.AdditionTime = DateTime.Now;
 
                 _context.Entry<Comment>(currentComment).State = EntityState.Modified;
                 _context.SaveChanges();
@@ -428,5 +432,8 @@ namespace VideoLib.Domian.Concrete
         }
             
                                                 #endregion
+
+
+
     }
 }

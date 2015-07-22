@@ -227,6 +227,7 @@
     <Content Include="Content\font-awesome-4.1.0\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Content\Image\220px-Pictogram_voting_question.svg.png" />
+    <Content Include="Content\Image\default-user-image.png" />
     <Content Include="Content\jquery-ui.css" />
     <Content Include="Content\jquery-ui.min.css" />
     <Content Include="Content\jquery-ui.structure.css" />
@@ -446,6 +447,13 @@
     <Compile Include="Models\Admin\EditHelperViewModel.cs" />
     <Compile Include="Models\Admin\DropDown\GenreViewModel.cs" />
     <Compile Include="Models\Admin\IndexViewModel.cs" />
+    <Compile Include="Models\Admin\User\Events\EventViewModel.cs" />
+    <Compile Include="Models\Admin\User\FullUserInfo\UniversalTableViewModel.cs" />
+    <Compile Include="Models\Admin\User\FullUserInfo\FullUserInfoViewModel.cs" />
+    <Compile Include="Models\Admin\User\Statistic\MaxValues.cs" />
+    <Compile Include="Models\Admin\User\UserIndexViewModel.cs" />
+    <Compile Include="Models\Admin\User\UserShortInfoViewModel.cs" />
+    <Compile Include="Models\Admin\User\UserTableViewModel.cs" />
     <Compile Include="Models\Auth\AdminLoginViewModel.cs" />
     <Compile Include="Models\Auth\LoginOptionsViewModel.cs" />
     <Compile Include="Models\Auth\RegisterAdminViewModel.cs" />
@@ -477,6 +485,13 @@
     <Content Include="Views\Admin\Film\SidePanel\Panel.cshtml" />
     <Content Include="Views\Auth\AdminLogin.cshtml" />
     <Content Include="Views\Auth\RegisterAdmin.cshtml" />
+    <Content Include="Views\Admin\User\Index.cshtml" />
+    <Content Include="Views\Admin\User\ShortUserInfo.cshtml" />
+    <Content Include="Views\Admin\User\FullUserInfo.cshtml" />
+    <Content Include="Views\Admin\User\LastActivities.cshtml" />
+    <Content Include="Views\Admin\User\UserComments.cshtml" />
+    <Content Include="Views\Admin\User\DownloadFilms.cshtml" />
+    <Content Include="Views\Admin\User\FavoritFilms.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

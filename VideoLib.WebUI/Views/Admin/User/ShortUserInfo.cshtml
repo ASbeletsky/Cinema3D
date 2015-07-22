@@ -1,0 +1,94 @@
+﻿@model VideoLib.WebUI.Models.Admin.User.UserShortInfoViewModel
+
+
+    <div>
+        <h4 class="text-center">Краткая информация о @Model.Name</h4>
+        <hr />
+    </div>
+    <div >
+
+        <div class="form-horizontal">
+            <div class="form-group inline-group">
+                <div class="col-md-5">
+                    <span class="">
+                        <i class="fa fa-envelope-o "></i>
+                    </span>
+                    <span class=""> Эл. Почта</span>
+                </div>
+                <div class="col-md-2">@(Model.Email ?? "не указан")<p class="text-center"></p></div>
+
+            </div>
+
+            <div class="form-group inline-group">
+                <div class="col-md-5">
+                    <i class="fa fa-star-half-o text-danger"></i>
+                    <span> Фильмов оценено</span>
+                </div>
+                <div class="col-md-2"><p class="text-center">@Model.FilmRatingVotes</p></div>
+                <div class="col-md-5">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-danger progress-bar-striped" role="progressbar" aria-valuenow="@Model.FilmRatingVotesPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.FilmRatingVotesPercent%">
+                            <span class="sr-only">@Model.FilmRatingVotesPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group inline-group" >
+                <div class="col-md-5">
+                    <i class="fa fa-download text-success"></i>
+                    <span> Фильмов загружено</span>
+                </div>
+                <div class="col-md-2"><p class="text-center">@Model.FilmDownloads</p></div>
+                <div class="col-md-5">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-success progress-bar-striped" role="progressbar" aria-valuenow="@Model.FilmDownloadsPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.FilmDownloadsPercent%">
+                            <span class="sr-only">@Model.FilmDownloadsPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group inline-group" >
+                <div class="col-md-5">
+                    <i class="glyphicon glyphicon-heart text-warning" style="color:orange"></i>
+                    <span > Фильмов в изранном</span>
+                </div>
+                <div class="col-md-2"><p class="text-center">@Model.FilmsInFavorites</p></div>
+                <div class="col-md-5">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="@Model.FilmsInFavoritesPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.FilmsInFavoritesPercent%">
+                            <span class="sr-only">@Model.FilmsInFavoritesPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group inline-group" >
+                <div class="col-md-5">
+                    <i class="fa fa-comments-o text-primary" ></i>
+                    <span > Комментариев</span>
+                </div>
+                <div class="col-md-2"><p class="text-center">@Model.CommentsCount</p></div>
+                <div class="col-md-5">
+                    <div class="progress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="@Model.CommentsCountPercent" aria-valuemin="0" aria-valuemax="100" style="width: @Model.CommentsCountPercent%">
+                            <span class="sr-only">@Model.CommentsCountPercent%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>        
+    </div>
+
+<div class="text-center">
+    @Ajax.ActionLink("Подробнее", "FullUserInfo", new { id = Model.Id },
+                                                  new AjaxOptions
+                                                  {
+                                                      UpdateTargetId = "fullInfo",
+                                                      HttpMethod = "POST",
+                                                      InsertionMode = InsertionMode.Replace,
+                                                      OnSuccess = "UseBootstrapControls"
+
+                                                  }, new { @class = "btn btn-default ajax-link" })
+</div>

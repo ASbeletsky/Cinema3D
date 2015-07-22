@@ -10,7 +10,7 @@ namespace VideoLib.WebUI.Models.Auth
 {
     public enum AuthType
     {
-        EmailPassword,
+        Email,
         Facebook,
         Twitter
     }

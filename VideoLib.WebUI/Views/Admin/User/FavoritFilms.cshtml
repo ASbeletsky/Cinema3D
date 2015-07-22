@@ -1,0 +1,94 @@
+﻿@model IEnumerable<VideoLib.WebUI.Models.Admin.User.FullUserInfo.UniversalTableViewModel>
+
+<div class="portlet light">
+    <!-- Activity Header -->
+    <div class="portlet-title">
+        <h4 class="text-center">Избранные</h4>
+
+    </div>
+    <!-- Activity Body -->
+    <div class="portlet-body" style="">
+        <table class="table table-hover table-light">
+            <thead>
+                <tr>
+                    <th colspan="1">
+
+                    </th>
+                    <th>
+                        Фильм
+                    </th>
+                    <th>
+                        Дата
+                    </th>
+                    <th>
+                        Оценил в
+                    </th>
+                    <th>
+                        Рейтинг фильма
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var dowload in Model)
+                {
+                    <tr>
+                        <td class="fit">
+                            <img class="user-pic" src="@dowload.ImageUrl">
+                        </td>
+                        <td>
+                            <a href="javascript:;" class="primary-link">@dowload.FilmName</a>
+                        </td>
+                        <td>
+                            @dowload.DateTime
+                        </td>
+                        <td>
+                            @{
+                    string labelClass = "", labelText = "";
+
+                    switch (dowload.ratingVote)
+                    {
+                        case 0: { labelClass = "label-default"; labelText = "не оценен"; } break;
+                        case 1: { labelClass = "label-danger"; labelText = "ужасно"; } break;
+                        case 2: { labelClass = "label-warning"; labelText = "плохо"; } break;
+                        case 3: { labelClass = "label-info"; labelText = "нормально"; } break;
+                        case 4: { labelClass = "label-primary"; labelText = "хорошо"; } break;
+                        case 5: { labelClass = "label-success"; labelText = "отлично"; } break;
+                    }
+                        }
+                        <p class="label @labelClass">@dowload.ratingVote @labelText</p>
+                    </td>
+                    <td>
+                        @{
+                    string barClass = "";
+
+                    if (dowload.FilmRating < 1)
+                    { barClass = "default"; }
+                    if (dowload.FilmRating < 2)
+                    { barClass = "danger"; }
+                    if (dowload.FilmRating < 3)
+                    { barClass = "warning"; }
+                    if (dowload.FilmRating < 4)
+                    { barClass = "info"; }
+                    if (dowload.FilmRating >= 4)
+                    { barClass = "success"; }
+
+
+                        }
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-@barClass " role="progressbar" aria-valuenow="@(dowload.FilmRating)" aria-valuemin="0" aria-valuemax="5" style="width: @((int) dowload.FilmRating*20)%">
+                                <span>@dowload.FilmRating</span>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+

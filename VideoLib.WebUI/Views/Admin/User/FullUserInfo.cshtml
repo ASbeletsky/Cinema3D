@@ -1,0 +1,20 @@
+﻿@model VideoLib.WebUI.Models.Admin.User.FullUserInfo.FullUserInfoViewModel
+
+<div class="row">
+    <div class="col-md-6">
+        @Html.Partial("~/Views/Admin/User/LastActivities.cshtml", Model.Events)
+    </div>
+    <div class="col-md-6">
+        @Html.Partial("~/Views/Admin/User/UserComments.cshtml", Model.Comments)
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        @Html.Partial("~/Views/Admin/User/DownloadFilms.cshtml", Model.Downloads)
+    </div>
+    <div class="col-md-6">
+        @Html.Partial("~/Views/Admin/User/FavoritFilms.cshtml", Model.Favorites)
+    </div>
+</div>
+
+

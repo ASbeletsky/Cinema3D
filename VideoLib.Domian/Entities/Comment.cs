@@ -17,9 +17,9 @@ namespace VideoLib.Domian.Entities
         public int Film_Id { get; set; }
         public string User_Id { get; set; }
         public string Text { get; set; }
-        public Nullable<System.DateTime> AdditionData { get; set; }
         public sbyte Rating { get; set; }
         public int Id { get; set; }
+        public Nullable<System.DateTime> AdditionTime { get; set; }
     
         public virtual Film film { get; set; }
         public virtual users users { get; set; }

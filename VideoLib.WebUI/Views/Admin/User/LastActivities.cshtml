@@ -1,0 +1,58 @@
+﻿@using VideoLib.WebUI.Models.Admin.User.Events
+@model IEnumerable<EventViewModel>
+
+<div class="portlet light">
+    <!-- Activity Header -->
+    <div class="portlet-title">
+        <h4 class="text-center">Последние действия</h4>
+
+    </div>
+    <!-- Activity Body -->
+    <div class="portlet-body" style="">
+        <div class="slimScrollDiv" style="position: relative; overflow: hidden; width: auto; height: 320px;">
+            <div class="" style="max-height:300px; overflow-y:auto;">
+                <ul class="feeds">
+
+                    @foreach (var _event in Model)
+                    {
+                        <li>
+                            <div class="col1">
+                                <div class="cont">
+                                    <div class="cont-col1">
+                                        @{  string label_class = "", fa_class = "";
+                                            switch (_event.Type)
+                                            {
+                                                case EventType.Comment:
+                                                    { label_class = "info"; fa_class = "fa-comments-o"; } break;
+                                                case EventType.AddToFavorite:
+                                                    { label_class = "warning"; fa_class = "fa-heart"; } break;
+                                                case EventType.Download:
+                                                    { label_class = "success"; fa_class = "fa-download"; } break;
+                                                case EventType.RatingVote:
+                                                    { label_class = "danger"; fa_class = "fa-star-half-o"; } break;
+                                            }
+                                        <div class="label label-sm label-@label_class">
+                                            <i class="fa @fa_class"></i>
+                                        </div>
+                                        }
+
+                                    </div>
+                                    <div class="cont-col2">
+                                        <div class="desc">
+                                            @_event.Message
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col2">
+                                <div class="date">
+                                    @_event.Time
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

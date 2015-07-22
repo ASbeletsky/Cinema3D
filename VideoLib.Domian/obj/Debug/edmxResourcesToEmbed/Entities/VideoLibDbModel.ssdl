@@ -14,7 +14,7 @@
     </Key>
     <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="Text" Type="text" Nullable="false" />
-    <Property Name="AdditionData" Type="datetime" Precision="0" />
+    <Property Name="AdditionTime" Type="datetime" Precision="0" />
     <Property Name="Rating" Type="tinyint" Nullable="false" />
     <Property Name="users_Id" Type="varchar" MaxLength="128" Nullable="false" />
     <Property Name="Film_Id" Type="int" Nullable="false" />
@@ -101,6 +101,7 @@
     <Property Name="RatingValue" Type="tinyint" Nullable="false" />
     <Property Name="User_Id" Type="varchar" MaxLength="128" Nullable="false" />
     <Property Name="Film_Id" Type="int" Nullable="false" />
+    <Property Name="AdditionTime" Type="datetime" Precision="0" />
   </EntityType>
   <EntityType Name="roles">
     <Key>

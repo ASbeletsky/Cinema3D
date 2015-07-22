@@ -19,7 +19,7 @@
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Text" Type="text" Nullable="false" />
-          <Property Name="AdditionData" Type="datetime" Precision="0" />
+          <Property Name="AdditionTime" Type="datetime" Precision="0" />
           <Property Name="Rating" Type="tinyint" Nullable="false" />
           <Property Name="users_Id" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="Film_Id" Type="int" Nullable="false" />
@@ -106,6 +106,7 @@
           <Property Name="RatingValue" Type="tinyint" Nullable="false" />
           <Property Name="User_Id" Type="varchar" MaxLength="128" Nullable="false" />
           <Property Name="Film_Id" Type="int" Nullable="false" />
+          <Property Name="AdditionTime" Type="datetime" Precision="0" />
         </EntityType>
         <EntityType Name="roles">
           <Key>
@@ -898,11 +899,11 @@
           <Property Name="Film_Id" Type="Int32" Nullable="false" />
           <Property Name="User_Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="false" />
           <Property Name="Text" Type="String" Nullable="false" MaxLength="65535" FixedLength="false" Unicode="false" />
-          <Property Name="AdditionData" Type="DateTime" />
           <NavigationProperty Name="film" Relationship="videolibdbModel.fk_Comment_Film1" FromRole="comment" ToRole="Film" />
           <NavigationProperty Name="users" Relationship="videolibdbModel.fk_Comment_users1" FromRole="comment" ToRole="users" />
           <Property Name="Rating" Type="SByte" Nullable="false" />
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AdditionTime" Type="DateTime" />
         </EntityType>
         <Association Name="fk_Comment_Film1">
           <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1" />
@@ -946,6 +947,7 @@
           <Property Name="Film_Id" Type="Int32" Nullable="false" />
           <NavigationProperty Name="film" Relationship="videolibdbModel.fk_Rating_Film1" FromRole="rating" ToRole="Film" />
           <NavigationProperty Name="users" Relationship="videolibdbModel.fk_Rating_users1" FromRole="rating" ToRole="users" />
+          <Property Name="AdditionTime" Type="DateTime" />
         </EntityType>
         <Association Name="fk_Rating_Film1">
           <End Type="videolibdbModel.Film" Role="Film" Multiplicity="1">
@@ -1118,9 +1120,9 @@
           <EntitySetMapping Name="Comments">
             <EntityTypeMapping TypeName="videolibdbModel.Comment">
               <MappingFragment StoreEntitySet="comment">
+                <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
                 <ScalarProperty Name="Id" ColumnName="Id" />
                 <ScalarProperty Name="Rating" ColumnName="Rating" />
-                <ScalarProperty Name="AdditionData" ColumnName="AdditionData" />
                 <ScalarProperty Name="Text" ColumnName="Text" />
                 <ScalarProperty Name="User_Id" ColumnName="users_Id" />
                 <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
@@ -1139,6 +1141,7 @@
           <EntitySetMapping Name="Rating">
             <EntityTypeMapping TypeName="videolibdbModel.Rating">
               <MappingFragment StoreEntitySet="rating">
+                <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
                 <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
                 <ScalarProperty Name="User_Id" ColumnName="User_Id" />
                 <ScalarProperty Name="RatingValue" ColumnName="RatingValue" />

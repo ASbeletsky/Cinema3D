@@ -138,9 +138,9 @@
     <EntitySetMapping Name="Comments">
       <EntityTypeMapping TypeName="videolibdbModel.Comment">
         <MappingFragment StoreEntitySet="comment">
+          <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
           <ScalarProperty Name="Id" ColumnName="Id" />
           <ScalarProperty Name="Rating" ColumnName="Rating" />
-          <ScalarProperty Name="AdditionData" ColumnName="AdditionData" />
           <ScalarProperty Name="Text" ColumnName="Text" />
           <ScalarProperty Name="User_Id" ColumnName="users_Id" />
           <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
@@ -159,6 +159,7 @@
     <EntitySetMapping Name="Rating">
       <EntityTypeMapping TypeName="videolibdbModel.Rating">
         <MappingFragment StoreEntitySet="rating">
+          <ScalarProperty Name="AdditionTime" ColumnName="AdditionTime" />
           <ScalarProperty Name="Film_Id" ColumnName="Film_Id" />
           <ScalarProperty Name="User_Id" ColumnName="User_Id" />
           <ScalarProperty Name="RatingValue" ColumnName="RatingValue" />

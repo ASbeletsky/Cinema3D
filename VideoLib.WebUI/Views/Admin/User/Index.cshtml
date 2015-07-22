@@ -1,0 +1,101 @@
+﻿@model VideoLib.WebUI.Models.Admin.User.UserIndexViewModel
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<!--Header-->
+<div class="Row">
+    <div class="col-md-12">
+        <h1 class="text-center">Управление пользователями</h1>
+        <br />
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <!--User Table Panel-->
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="text-center">Пользователи</h4>
+                    </div> <!--/.panel-heading-->
+                    <div class="panel-body">
+                        <!-- Filter Search -->
+                        <div class="row">
+
+                        </div>
+                        <!-- Table Data -->
+                        <div>
+                            <div class="col-sm-12">
+                                <table class="table table-striped table-bordered">
+                                    <tr>
+                                        <th class="text-center">Фото</th>
+                                        <th class="text-center">Имя</th>
+                                        <th class="text-center">Тип авторицации</th>
+                                    </tr>
+                                    @{
+                                        int i = 0; string table_row_class;
+                                        foreach (var user in Model.UsersTable)
+                                        {
+                                            i++; table_row_class = (i % 2 == 0) ? "" : "info";
+                                            <tr class="">
+                                                <td width="60" style="padding:1px;">
+                                                    <div>
+                                                        <img class="img-thumbnail center-block" style="height:45px; padding:1px;" src='@((user.PhotoUrl == null)? "/Content/Image/default-user-image.png": user.PhotoUrl )' />
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p class="text-center">
+                                                        @Ajax.ActionLink(user.Name, "ShortInfo", new { id = user.Id },
+                                                  new AjaxOptions
+                                                  {
+                                                      UpdateTargetId = "shortInfo",
+                                                      HttpMethod = "POST",
+                                                      InsertionMode = InsertionMode.Replace,
+                                                      OnSuccess = "UseBootstrapControls"
+
+                                                  }, new { @class = "ajax-link" })
+                                                    </p>
+                                                </td>
+                                                <td class="col-md-3 col-sm-6">
+                                                    <div>
+                                                        @{
+                                            string auth_class = (user.AuthType == VideoLib.WebUI.Models.Auth.AuthType.Email) ?
+                                                                   "envelope-o" : user.AuthType.ToString().ToLower();
+                                                                <div class="btn-group btn-group-justified" role="group" aria-label="...">
+                                                                    <a class="btn btn-@auth_class"><i class="fa fa-@auth_class" style="color:white"></i></a>
+                                                                    <a class="btn btn-@auth_class">@user.AuthType</a>
+                                                                </div>
+                                                        }
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        }
+                                    }
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div> <!--/.panel-default-->
+            </div><!--User Table Panel /.col-md-6-->
+            <!--User short Info-->
+            <div class="col-md-6">
+                <div id="shortInfo">
+                    @Html.Action("ShortInfo", new {id = Model.UsersTable[0].Id })
+                </div>
+            </div>
+
+        </div>
+    </div> <!--/.col-md-12-->
+</div> <!--/.row-->
+<br />
+<div class="row">
+    <div id="fullInfo">
+        <div class="alert alert-info">
+            <p class="text-justify">Нажмите на имя пользователя что бы увидеть краткую информацию о нем</p>
+        </div>
+    </div>
+</div>
+

@@ -20,6 +20,12 @@ namespace VideoLib.WebUI.Models.VideoLib
         public string ImageSmallUrl { get; set; }
         public string ImageBigUrl { get; set; }
         public float Rating { get; set; }
+        public string Director { get; set; }
+        public string Producer { get; set; }
+        public string @Operator { get; set; }
+        public string Composer { get; set; }
+        public string Painter { get; set; }
+        public string TimeDuration { get; set; }
     }
 
 }

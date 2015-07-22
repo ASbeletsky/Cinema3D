@@ -25,6 +25,8 @@ namespace VideoLib.WebUI.Controllers
         protected IEnumerable<FilmViewModel> GetFilms<T>(Func<T, bool> predicat)
         {
             var allFilms = (from film in Repository.Films
+                            join staff in Repository.ProducerStaff
+                                on film.Id equals staff.Film_Id
                             join descr in Repository.Desctiption
                                 on film.Id equals descr.Film_Id
                             join genre in Repository.Genres
@@ -46,7 +48,13 @@ namespace VideoLib.WebUI.Controllers
                                 genreId = genre.Id,
                                 genreName = genre.Name,
                                 companyId = company.Id,
-                                companyName = company.Name                               
+                                companyName = company.Name,
+                                TimeDuration = descr.TimeDuration.Value.ToString(@"hh\:mm\:ss"),
+                                Producer = staff.producer,
+                                Operator = staff.@operator,
+                                Painter = staff.painter,
+                                Composer = staff.composer,
+                                Director = staff.director
                             }).ToList();
 
             return allFilms;

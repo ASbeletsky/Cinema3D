@@ -68,6 +68,8 @@ namespace VideoLib.WebUI.Controllers
                     {
                         var FavoriteFilms = (from film in userFavorite
                                                   .Select(favorite => favorite.film)
+                                         join staff in Repository.ProducerStaff
+                                             on film.Id equals staff.Film_Id
                                          join descr in Repository.Desctiption
                                              on film.Id equals descr.Film_Id
                                          join genre in Repository.Genres
@@ -89,7 +91,13 @@ namespace VideoLib.WebUI.Controllers
                                              genreName = genre.Name,
                                              companyId = company.Id,
                                              companyName = company.Name,
-                                             Rating = film.RatingValue
+                                             Rating = film.RatingValue,
+                                             TimeDuration = descr.TimeDuration.Value.ToString(@"hh\:mm\:ss"),
+                                             Producer = staff.producer,
+                                             Operator = staff.@operator,
+                                             Painter = staff.painter,
+                                             Composer = staff.composer,
+                                             Director = staff.director
                                          }).OrderBy(film => film.AdditionDate).ToList();
 
                         return Json(FavoriteFilms, JsonRequestBehavior.AllowGet);
@@ -319,7 +327,7 @@ namespace VideoLib.WebUI.Controllers
                                     Author = user.Name ?? user.Login,
                                     AuthorId = user.Id,
                                     Message = comment.Text,
-                                    AdditionTime = comment.AdditionData.Value.ToString("dd.MM.yyyy"),
+                                    AdditionTime = comment.AdditionTime.Value.ToString("dd.MM.yyyy"),
                                     CommentRating = comment.Rating,
                                     FilmRating = (fullRating == null) ? (sbyte)0 : fullRating.RatingValue
                                 }).OrderByDescending(comment => comment.CommentRating)

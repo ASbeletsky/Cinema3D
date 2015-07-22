@@ -11,6 +11,7 @@ namespace VideoLib.Domian.Abstract
     {
         IEnumerable<Film> Films { get; }
         IEnumerable<users> Users { get; }
+        IEnumerable<userclaims> UserClaims { get; }
         IEnumerable<Download> Downloads { get; }
         IEnumerable<Genre> Genres { get; }
         IEnumerable<ProducerStaff> ProducerStaff { get; }
