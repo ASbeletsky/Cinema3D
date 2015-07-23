@@ -18,6 +18,8 @@ namespace VideoLib.WebUI.Models.Admin.User
         public string Name { get; set; }
         public string PhotoUrl { get; set; }
         public AuthType AuthType { get; set; }
+        public string Email { get; set; }
+        public string PageInSN { get; set; }
    
         private AuthType ConvertToAuthType(string login)
         {

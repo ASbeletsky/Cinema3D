@@ -66,7 +66,9 @@
                                                                    "envelope-o" : user.AuthType.ToString().ToLower();
                                                                 <div class="btn-group btn-group-justified" role="group" aria-label="...">
                                                                     <a class="btn btn-@auth_class"><i class="fa fa-@auth_class" style="color:white"></i></a>
-                                                                    <a class="btn btn-@auth_class">@user.AuthType</a>
+                                                                    <a href="@((user.AuthType != VideoLib.WebUI.Models.Auth.AuthType.Email)? user.PageInSN : "#")" 
+                                                                        class="btn btn-@auth_class">@user.AuthType
+                                                                    </a>
                                                                 </div>
                                                         }
                                                     </div>

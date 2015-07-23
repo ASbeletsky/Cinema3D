@@ -168,6 +168,8 @@ namespace VideoLib.Domian.Concrete
             if (filmToRemove != null)
             {
                 _context.Films.Remove(filmToRemove);
+
+
                 _context.Entry<Film>(filmToRemove).State = EntityState.Deleted;
                 try
                 {
@@ -387,7 +389,8 @@ namespace VideoLib.Domian.Concrete
                 {
                     Film_Id = film_id,
                     User_Id = user_id,
-                    RatingValue = rate
+                    RatingValue = rate,
+                    AdditionTime = DateTime.Now
                 };
                 _context.Rating.Add(newRate);
                 _context.SaveChanges();
@@ -406,6 +409,7 @@ namespace VideoLib.Domian.Concrete
                 catch { currentRate = _context.Rating.FirstOrDefault(comment => comment.User_Id == user_id && comment.Film_Id == film_id); }
                     
                 currentRate.RatingValue = rate;
+                currentRate.AdditionTime = DateTime.Now;
                 _context.Entry<Rating>(currentRate).State = EntityState.Modified;
                 _context.SaveChanges();
                 SetNewRatingToFilm(2, film_id);

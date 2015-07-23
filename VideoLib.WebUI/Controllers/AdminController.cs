@@ -46,6 +46,7 @@ namespace VideoLib.WebUI.Controllers
         
         public ActionResult CreateFilm(CRUD_FilmViewModel model)
         {
+
                 Film film;
                 Desctiption description;
                 ProducerStaff staff;
@@ -311,12 +312,15 @@ namespace VideoLib.WebUI.Controllers
             model.UsersTable = Repository.Users.Select(user => new UserTableViewModel(user.Login)
                 {
                     Id = user.Id,
-                    Name = user.Name,                  
+                    Name = user.Name, 
+                    Email = user.Email
                 }). ToList();
             model.UsersTable.RemoveAll(user => user.Id.Contains("admin"));
             foreach(var user in model.UsersTable)
             {
                 user.PhotoUrl = Repository.UserClaims.Where(claim => claim.UserId == user.Id && claim.ClaimType == "Photo")
+                                                     .Select(claim => claim.ClaimValue).FirstOrDefault();
+                user.PageInSN = Repository.UserClaims.Where(claim => claim.UserId == user.Id && claim.ClaimType == (user.AuthType.ToString() + "PageLink"))
                                                      .Select(claim => claim.ClaimValue).FirstOrDefault();
             }
             return View("~/Views/Admin/User/Index.cshtml", model);

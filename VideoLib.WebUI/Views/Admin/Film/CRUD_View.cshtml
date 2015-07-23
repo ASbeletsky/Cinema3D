@@ -8,7 +8,7 @@
             <h5 class="text-center">@Model.Title</h5>
         </div>
 
-        @using (Ajax.BeginForm(Model.Action, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "OnSuccess" }))
+        @using (Ajax.BeginForm(Model.Action, null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "OnSuccess" }, new {id = "CRUD_Form" }))
         {
             <div id="modal_body" class="row panel-body">
                 <div class="form-horizontal">
@@ -17,11 +17,11 @@
                             <h4 class="text-center">Общая информация</h4>
 
                             @Html.HiddenFor(m => m.Id)
-                            <div class="form-group inline-group">
+                            <div class="form-group inline-group has-feedback">
                                 <div class="col-md-4">@Html.LabelFor(m => m.Name)</div>
                                 <div class="col-md-8 ">
                                     <div class="input-group">
-                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+                                        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })                                      
                                         <span class="input-group-addon @ViewBag.Style">*</span>
                                     </div>
                                 </div>

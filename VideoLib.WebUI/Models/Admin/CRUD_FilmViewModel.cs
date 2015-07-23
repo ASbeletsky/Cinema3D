@@ -24,13 +24,11 @@ namespace VideoLib.WebUI.Models.Admin
 //--------------------------------------------------------      
         [Required]
         [Display(Name = "Дата выхода")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}",
-            ApplyFormatInEditMode = true)]
+
         public System.DateTime? ReleaseDate { get; set; }
 //----------------------------------------------------------        
         [Display(Name = "Продолжительность")]
-        [DisplayFormat(DataFormatString = "{0:h\\:mm\\:ss}",
-            ApplyFormatInEditMode = true)]
+
         public TimeSpan? TimeDuration { get; set; }
 //-----------------------------------------------------------
         [Display(Name = "Рейтинг")]
